@@ -1,38 +1,32 @@
 "use client";
 
 import * as React from "react";
-import { Home, Settings, Camera, Database } from "lucide-react";
+import { Phone, Camera, Database } from "lucide-react";
 
 import {
   Sidebar,
   SidebarHeader,
   SidebarGroupContent,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
 } from "@/components/ui/sidebar";
+import { HomeNav } from "@/components/home-nav";
+import { NavMain } from "./nav-main";
 
 // Menu items.
 const items = [
   {
-    title: "Home",
-    url: "#",
-    icon: Home,
-  },
-  {
     title: "Data",
-    url: "#",
+    url: "/dashboard",
     icon: Database,
   },
   {
     title: "Photos",
-    url: "#",
+    url: "/photos",
     icon: Camera,
   },
   {
     title: "Phone",
-    url: "#",
-    icon: Settings,
+    url: "/phonebook",
+    icon: Phone,
   },
 ];
 
@@ -41,20 +35,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <SidebarGroupContent>
-          <SidebarMenu>
-            {items.map((item) => (
-              <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild>
-                  <a href={item.url}>
-                    <item.icon size={16} strokeWidth={1.25} />
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
-        </SidebarGroupContent>
+        <HomeNav />
       </SidebarHeader>
+      <SidebarGroupContent className="flex justify-center w-full p-0">
+        <NavMain items={items} />
+      </SidebarGroupContent>
     </Sidebar>
   );
 }
