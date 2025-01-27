@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import TableComponent from "@/components/phonebook-table";
+import TableComponent from "@/components/table";
 import { SidebarInset } from "@/components/ui/sidebar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -9,56 +9,10 @@ import {
   localLineNumbers,
   highendRestaurants,
   localRestaurants,
+  localLineColumns,
+  localRestaurantColumns,
+  highendRestaurantColumns,
 } from "@/lib/data";
-
-const localLineColumns = [
-  {
-    header: "Name",
-    accessorKey: "name",
-    size: 300,
-  },
-  {
-    header: "Phone",
-    accessorKey: "phone",
-    size: 150,
-  },
-];
-
-const highendRestaurantColumns = [
-  {
-    header: "Name",
-    accessorKey: "name",
-    size: 300,
-  },
-  {
-    header: "Location",
-    accessorKey: "location",
-    size: 300,
-  },
-  {
-    header: "Phone",
-    accessorKey: "phone",
-    size: 300,
-  },
-];
-
-const localRestaurantColumns = [
-  {
-    header: "Name",
-    accessorKey: "name",
-    size: 300,
-  },
-  {
-    header: "Location",
-    accessorKey: "location",
-    size: 300,
-  },
-  {
-    header: "Phone",
-    accessorKey: "phone",
-    size: 300,
-  },
-];
 
 export default function PhoneBookPage() {
   return (
