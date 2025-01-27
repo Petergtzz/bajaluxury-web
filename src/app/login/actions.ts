@@ -37,11 +37,11 @@ export async function login(prevState: any, formData: FormData) {
 
   try {
     const userQuery = await client.execute({
-      sql: "SELECT user_id, email, password, role FROM users WHERE email = ?",
+      sql: "SELECT user_id, email, password, role, house_id FROM users WHERE email = ?",
       args: [email],
     });
 
-    console.log("userQuery", userQuery);
+    // console.log("userQuery", userQuery);
 
     if (userQuery.rows.length === 0) {
       return {
@@ -52,7 +52,7 @@ export async function login(prevState: any, formData: FormData) {
     }
 
     const user = userQuery.rows[0];
-    console.log("user", user);
+    // console.log("user", user);
 
     if (password !== user.password) {
       return {
@@ -62,7 +62,7 @@ export async function login(prevState: any, formData: FormData) {
       };
     }
 
-    await createSession(user.user_id);
+    await createSession(user.user_id, user.role, user.house_id);
 
     redirectPath = `/dashboard`;
   } catch (error) {
