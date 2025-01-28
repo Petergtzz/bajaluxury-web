@@ -2,12 +2,10 @@ export const localLineColumns = [
   {
     header: "Name",
     accessorKey: "name",
-    size: 300,
   },
   {
     header: "Phone",
     accessorKey: "phone",
-    size: 150,
   },
 ];
 
@@ -15,17 +13,14 @@ export const highendRestaurantColumns = [
   {
     header: "Name",
     accessorKey: "name",
-    size: 300,
   },
   {
     header: "Location",
     accessorKey: "location",
-    size: 300,
   },
   {
     header: "Phone",
     accessorKey: "phone",
-    size: 300,
   },
 ];
 
@@ -33,17 +28,14 @@ export const localRestaurantColumns = [
   {
     header: "Name",
     accessorKey: "name",
-    size: 300,
   },
   {
     header: "Location",
     accessorKey: "location",
-    size: 300,
   },
   {
     header: "Phone",
     accessorKey: "phone",
-    size: 300,
   },
 ];
 
