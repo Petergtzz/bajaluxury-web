@@ -26,7 +26,7 @@ export default function PhoneBookPage() {
           </div>
         </div>
       </header>
-      <Tabs defaultValue="fine dinning" className="space-y-4 p-6 px-8">
+      <Tabs defaultValue="fine dinning" className="space-y-1 p-5 px-8">
         <TabsList>
           <TabsTrigger value="fine dinning">Fine Dinning</TabsTrigger>
           <TabsTrigger value="eateries">Eateries</TabsTrigger>
