@@ -1,7 +1,8 @@
 import React from "react";
-import { fetchUserBalances } from "@/lib/fetchuser";
-import { TableComponent } from "@/components/data-table";
+import { fetchUserBalances, fetchUserExpenseCategories } from "@/lib/fetchuser";
+import { AccountBalanceCard } from "./account-balance-card";
 import { getSession } from "@/lib/session";
+import { PieComponent } from "../pie-chart";
 
 export async function UserBalanceContent() {
   const session = await getSession();
@@ -13,17 +14,17 @@ export async function UserBalanceContent() {
     throw new Error("User session or houseId is missing.");
   }
 
-  const expenses = await fetchUserBalances(session.houseId);
-  const plainExpense = JSON.parse(JSON.stringify(expenses));
+  const balances = await fetchUserBalances(session.houseId);
+  const plainBalances = JSON.parse(JSON.stringify(balances));
+  const { balance } = plainBalances[0];
 
-  const columns = [
-    { accessorKey: "house", header: "House" },
-    { accessorKey: "balance", header: "Balance" },
-  ];
+  const monthlyExpenses = await fetchUserExpenseCategories(session.houseId);
+  const plainMonthlyExpense = JSON.parse(JSON.stringify(monthlyExpenses));
 
   return (
     <div>
-      <TableComponent data={plainExpense} columns={columns} />
+      <AccountBalanceCard balance={balance} />
+      <PieComponent monthlyExpenses={plainMonthlyExpense} />
     </div>
   );
 }

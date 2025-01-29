@@ -28,7 +28,7 @@ export function LoginForm({
           <CardTitle className="text-xl">
             Welcome to Baja Luxury Management
           </CardTitle>
-          <CardDescription>Whatever</CardDescription>
+          <CardDescription>You Dream it, We make it Happen</CardDescription>
         </CardHeader>
         <CardContent>
           <form action={loginAction}>

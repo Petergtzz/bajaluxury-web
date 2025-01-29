@@ -1,14 +1,28 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-export const AccountBalanceCard = () => (
-  <Card>
-    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-      <CardTitle className="text-2xl font-medium tracking-tight">
-        Account Balance
-      </CardTitle>
-    </CardHeader>
-    <CardContent>
-      <div className="text-2xl font-bold">$45,231.89</div>
-    </CardContent>
-  </Card>
-);
+type AccountBalanceCardProps = {
+  balance: number;
+};
+
+export function AccountBalanceCard({ balance }: AccountBalanceCardProps) {
+  return (
+    <Card className="w-60 my-5">
+      <CardHeader className="flex flex-row pb-2">
+        <CardTitle className="tracking-tight text-lg font-medium">
+          Account Balance
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div
+          className={`text-2xl font-bold ${balance >= 0 ? "text-green-800" : "text-red-800"}`}
+        >
+          $
+          {balance.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}

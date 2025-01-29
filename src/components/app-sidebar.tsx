@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Phone, Camera, Database } from "lucide-react";
+import { Phone, PencilRuler, Database } from "lucide-react";
 
 import {
   Sidebar,
@@ -19,9 +19,9 @@ const items = [
     icon: Database,
   },
   {
-    title: "Photos",
-    url: "/photos",
-    icon: Camera,
+    title: "Punchlist",
+    url: "/punchlist",
+    icon: PencilRuler,
   },
   {
     title: "Phone",
