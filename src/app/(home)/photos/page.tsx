@@ -1,6 +1,6 @@
 import { SidebarInset } from "@/components/ui/sidebar";
 
-export default async function PhotosPage() {
+export default function PhotosPage() {
   return (
     <SidebarInset>
       <header className="flex h-16 shrink-0 items-center gap-6 px-8 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">

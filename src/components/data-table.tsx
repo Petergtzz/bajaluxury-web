@@ -57,11 +57,11 @@ export function TableComponent({ data, columns }: TableComponentProps) {
         accessorKey: column.accessorKey,
         header: column.header,
         cell:
-          column.accessorKey === "amount"
+          column.accessorKey === "amount" || column.accessorKey === "balance"
             ? ({ row }) => {
                 const value = row.getValue(column.accessorKey);
                 if (typeof value === "number" && !isNaN(value)) {
-                  return `$${value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                  return `$ ${value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
                 }
                 return `$0.00`; // Return a default value if not a valid number
               }
