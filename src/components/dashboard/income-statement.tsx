@@ -1,20 +1,55 @@
+"use client";
+
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ChevronDown, ChevronRight } from "lucide-react";
 
 type ExpenseItem = {
-  monthlyExpenses: { category: string; total_amount: number }[];
+  monthlyExpenses: {
+    category: string;
+    concept: string;
+    total_amount: number;
+  }[];
 };
 
 export function IncomeStatement({ monthlyExpenses = [] }: ExpenseItem) {
   const exchangeRate = 19.0;
-  const cashExpensesInUsd = monthlyExpenses.map((item) => ({
-    ...item,
-    total_amount: item.total_amount / exchangeRate,
-  }));
 
-  const total = cashExpensesInUsd.reduce(
-    (sum, item) => sum + item.total_amount,
+  // Group expenses by category
+  const groupedExpenses = monthlyExpenses.reduce(
+    (acc, item) => {
+      const category = item.category;
+      if (!acc[category]) {
+        acc[category] = { total: 0, concepts: [] };
+      }
+      acc[category].total += item.total_amount / exchangeRate;
+      acc[category].concepts.push({
+        concept: item.concept,
+        total_amount: item.total_amount / exchangeRate,
+      });
+      return acc;
+    },
+    {} as Record<
+      string,
+      { total: number; concepts: { concept: string; total_amount: number }[] }
+    >,
+  );
+
+  const total = Object.values(groupedExpenses).reduce(
+    (sum, item) => sum + item.total,
     0,
   );
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+
+  const toggleExpand = (category: string) => {
+    setExpanded((prev) => ({ ...prev, [category]: !prev[category] }));
+  };
+
+  const formatNumber = (num: number) =>
+    num.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
 
   return (
     <Card className="h-full">
@@ -28,31 +63,54 @@ export function IncomeStatement({ monthlyExpenses = [] }: ExpenseItem) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex font-bold py-2 border-b border-gray-400">
+        <div className="flex tracking-tight text-sm font-medium py-2 border-b border-gray-700">
           <div className="w-1/2 px-4">Category</div>
           <div className="w-1/4 px-4 text-right">Total Cost</div>
           <div className="w-1/4 px-4 text-right">% of Expenses</div>
         </div>
 
-        {/* Expense Rows */}
-        {cashExpensesInUsd.map((item, index) => (
-          <div key={index} className="flex py-2 border-b border-gray-300">
-            <div className="w-1/2 px-8">{item.category}</div>
-            <div className="w-1/4 px-4 text-right">
-              ${item.total_amount.toFixed(2)}
+        {Object.entries(groupedExpenses).map(([category, data]) => (
+          <div key={category}>
+            <div
+              className="flex tracking-tight text-sm font-medium py-2 border-b border-gray-300 cursor-pointer"
+              onClick={() => toggleExpand(category)}
+            >
+              <div className="w-1/2 tracking-tight text-sm font-medium px-4 flex items-center">
+                {expanded[category] ? (
+                  <ChevronDown size={16} strokeWidth={1.0} />
+                ) : (
+                  <ChevronRight size={16} strokeWidth={1.0} />
+                )}{" "}
+                {category}
+              </div>
+              <div className="w-1/4 px-4 text-right">
+                ${formatNumber(data.total)}
+              </div>
+              <div className="w-1/4 px-4 text-right">
+                {total ? ((data.total / total) * 100).toFixed(2) + "%" : "0%"}
+              </div>
             </div>
-            <div className="w-1/4 px-4 text-right">
-              {total
-                ? ((item.total_amount / total) * 100).toFixed(2) + "%"
-                : "0%"}
-            </div>
+            {expanded[category] &&
+              data.concepts.map((concept, index) => (
+                <div
+                  key={index}
+                  className="flex text-sm py-2 border-b border-gray-200 bg-gray-50 dark:bg-gray-800"
+                >
+                  <div className="w-1/2 px-8">- {concept.concept}</div>
+                  <div className="w-1/4 px-4 text-right">
+                    ${formatNumber(concept.total_amount)}
+                  </div>
+                  <div className="w-1/4 px-4 text-right">
+                    {((concept.total_amount / data.total) * 100).toFixed(2)}%
+                  </div>
+                </div>
+              ))}
           </div>
         ))}
 
-        {/* Grand Total Row */}
-        <div className="flex font-bold py-2 border-t border-gray-400">
+        <div className="flex tracking-tight text-sm font-medium py-2 border-t border-gray-700">
           <div className="w-1/2 px-4">Grand Total</div>
-          <div className="w-1/4 px-4 text-right">${total.toFixed(2)}</div>
+          <div className="w-1/4 px-4 text-right">${formatNumber(total)}</div>
           <div className="w-1/4 px-4 text-right">100%</div>
         </div>
       </CardContent>
