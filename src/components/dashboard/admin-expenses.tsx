@@ -1,6 +1,6 @@
 import React from "react";
 import { fetchAllExpenses } from "@/lib/fetchadmin";
-import { TableComponent } from "@/components/data-table";
+import { TableComponent } from "@/components/data-table/data-table";
 
 export async function ExpensesContent() {
   const expenses = await fetchAllExpenses();

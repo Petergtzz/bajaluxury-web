@@ -1,6 +1,6 @@
 import React from "react";
 import { fetchUserIncomes } from "@/lib/fetchuser";
-import { TableComponent } from "@/components/data-table";
+import { TableComponent } from "@/components/data-table/data-table";
 import { getSession } from "@/lib/session";
 
 export async function UserIncomesContent() {
@@ -18,7 +18,7 @@ export async function UserIncomesContent() {
 
   const columns = [
     { accessorKey: "date", header: "Date" },
-    { accessorKey: "payment_method", header: "Method" },
+    { accessorKey: "method", header: "Method" },
     { accessorKey: "amount", header: "Amount" },
     { accessorKey: "description", header: "Description" },
   ];

@@ -1,6 +1,6 @@
 import React from "react";
 import { fetchUserExpenses } from "@/lib/fetchuser";
-import { TableComponent } from "@/components/data-table";
+import { TableComponent } from "@/components/data-table/data-table";
 import { getSession } from "@/lib/session";
 
 export async function UserExpensesContent() {
@@ -20,7 +20,7 @@ export async function UserExpensesContent() {
     { accessorKey: "date", header: "Date" },
     { accessorKey: "category", header: "Category" },
     { accessorKey: "concept", header: "Concept" },
-    { accessorKey: "payment_method", header: "Method" },
+    { accessorKey: "method", header: "Method" },
     { accessorKey: "amount", header: "Amount" },
     { accessorKey: "description", header: "Description" },
   ];
