@@ -4,12 +4,12 @@ type AccountBalanceCardProps = {
   balance: number;
 };
 
-export function AccountBalanceCard({ balance }: AccountBalanceCardProps) {
+export function AccountBalanceCardMxn({ balance }: AccountBalanceCardProps) {
   return (
-    <Card className="w-60 my-5">
-      <CardHeader className="flex flex-row pb-2">
-        <CardTitle className="tracking-tight text-lg font-medium">
-          Account Balance
+    <Card>
+      <CardHeader className="pb-2">
+        <CardTitle className="tracking-tight text-sm font-medium">
+          Account Balance (MXN)
         </CardTitle>
       </CardHeader>
       <CardContent>

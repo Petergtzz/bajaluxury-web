@@ -1,8 +1,10 @@
 import React from "react";
 import { fetchUserBalances, fetchUserExpenseCategories } from "@/lib/fetchuser";
-import { AccountBalanceCard } from "./account-balance-card";
+import { AccountBalanceCardMxn } from "./account-balance-card-mxn";
 import { getSession } from "@/lib/session";
 import { PieComponent } from "../pie-chart";
+import { AccountBalanceCardUsd } from "./account-balance-card-usd";
+import { IncomeStatement } from "./income-statement";
 
 export async function UserBalanceContent() {
   const session = await getSession();
@@ -22,9 +24,28 @@ export async function UserBalanceContent() {
   const plainMonthlyExpense = JSON.parse(JSON.stringify(monthlyExpenses));
 
   return (
-    <div>
-      <AccountBalanceCard balance={balance} />
-      <PieComponent monthlyExpenses={plainMonthlyExpense} />
+    <div className="relative w-full my-5 flex flex-col md:flex-row gap-4">
+      {/* Income Statement - Takes Full Height */}
+      <div className="w-full md:w-1/2 flex flex-col">
+        <IncomeStatement monthlyExpenses={plainMonthlyExpense} />
+      </div>
+
+      {/* Right Side: Balance Cards & Pie Chart */}
+      <div className="w-full md:w-1/2 flex flex-col gap-4">
+        {/* Balance Cards - Side by Side */}
+        <div className="flex flex-col md:flex-row gap-4 w-full">
+          <div className="w-full md:w-1/2">
+            <AccountBalanceCardUsd balance={balance} />
+          </div>
+          <div className="w-full md:w-1/2">
+            <AccountBalanceCardMxn balance={balance} />
+          </div>
+        </div>
+        {/* Pie Chart - Same Width as Balance Cards */}
+        <div className="w-full">
+          <PieComponent monthlyExpenses={plainMonthlyExpense} />
+        </div>
+      </div>
     </div>
   );
 }
