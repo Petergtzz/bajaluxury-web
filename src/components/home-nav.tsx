@@ -40,18 +40,6 @@ export function HomeNav() {
             align="end"
             sideOffset={4}
           >
-            <div
-              className="w-full h-[120px] mb-2 overflow-hidden flex flex-col justify-end bg-white rounded-t-lg"
-              style={{
-                background:
-                  "url('https://qvfyv6rrab.ufs.sh/f/iq2bdhwTfBnrHZNhvLqH09wfpsJyoMnWA1vRxrO7Q3GlhU8e') center center / cover",
-              }}
-            >
-              <div className="bg-black bg-opacity-50 p-1 text-white text-center">
-                <div className="font-bold text-sm">Baja Luxury Management</div>
-              </div>
-            </div>
-
             <div className="space-y-2">
               <DropdownMenuItem className="p-1">
                 <button

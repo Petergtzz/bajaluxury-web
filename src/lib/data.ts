@@ -56,6 +56,10 @@ export const localLineNumbers = [
     name: "Hospital H+ Emergencies",
     phone: "624 104 9300",
   },
+  {
+    name: "Querencia",
+    phone: "624 145 6600",
+  },
 ];
 
 export const highendRestaurants = [
