@@ -11,7 +11,6 @@ import {
 import { HomeNav } from "@/components/home-nav";
 import { NavMain } from "./nav-main";
 
-// Menu items.
 const items = [
   {
     title: "Data",
@@ -30,14 +29,13 @@ const items = [
   },
 ];
 
-// Only keep icons in the sidebar.
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <HomeNav />
       </SidebarHeader>
-      <SidebarGroupContent className="flex justify-center w-full p-0">
+      <SidebarGroupContent>
         <NavMain items={items} />
       </SidebarGroupContent>
     </Sidebar>

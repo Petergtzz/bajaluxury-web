@@ -13,7 +13,7 @@ export default async function DashboardPage() {
   return (
     <SidebarInset>
       <DashboardHeader />
-      <Tabs defaultValue={tabs[0]?.value} className="space-y-4 p-6 px-8">
+      <Tabs defaultValue={tabs[0]?.value} className="space-y-1 p-5 px-8">
         <TabsList>
           {tabs.map((tab) => (
             <TabsTrigger key={tab.value} value={tab.value}>
@@ -23,7 +23,7 @@ export default async function DashboardPage() {
         </TabsList>
 
         {tabs.map((tab) => (
-          <TabsContent key={tab.value} value={tab.value} className="space-y-4">
+          <TabsContent key={tab.value} value={tab.value} className="space-y-1">
             {tab.content}
           </TabsContent>
         ))}
