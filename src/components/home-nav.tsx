@@ -64,13 +64,6 @@ export function HomeNav() {
                   <button onClick={() => logout()}>Log out</button>
                 </div>
               </DropdownMenuItem>
-              <hr className="border-t border-gray-200" />
-              <DropdownMenuItem className="p-1">
-                <div className="flex items-center gap-2">
-                  <Bug className="size-4" size={16} strokeWidth={1.0} />
-                  <button>Report Issues</button>
-                </div>
-              </DropdownMenuItem>
             </div>
           </DropdownMenuContent>
         </DropdownMenu>
