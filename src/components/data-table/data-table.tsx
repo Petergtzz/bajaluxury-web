@@ -12,7 +12,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ChevronDown, ChevronUp, DownloadIcon } from "lucide-react";
+import { ChevronDown, DownloadIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -32,6 +32,7 @@ import {
 } from "@/components/ui/table";
 import { exportTableToCSV } from "@/lib/export";
 import { DataPagination } from "./data-table-pagination";
+import { DataTableColumnHeader } from "./data-table-header";
 
 export type TableColumn = {
   accessorKey: string;
@@ -111,7 +112,7 @@ export function TableComponent({ data, columns }: TableComponentProps) {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
-              Columns <ChevronDown />
+              Columns <ChevronDown size={16} strokeWidth={1.0} />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -150,23 +151,10 @@ export function TableComponent({ data, columns }: TableComponentProps) {
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
                   <TableHead key={header.id}>
-                    <div
-                      className="flex items-center cursor-pointer"
-                      onClick={header.column.getToggleSortingHandler()}
-                    >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                      <span className="ml-2 inline-block w-4 h-4">
-                        {{
-                          asc: <ChevronUp className="h-4 w-4" />,
-                          desc: <ChevronDown className="h-4 w-4" />,
-                        }[header.column.getIsSorted() as string] ?? null}
-                      </span>
-                    </div>
+                    <DataTableColumnHeader
+                      column={header.column}
+                      title={String(header.column.columnDef.header)}
+                    />
                   </TableHead>
                 ))}
               </TableRow>

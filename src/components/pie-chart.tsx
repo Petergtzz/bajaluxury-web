@@ -82,7 +82,13 @@ export function PieComponent({ monthlyExpenses }: PieComponentProps) {
                   />
                 ))}
               </Pie>
-              <Legend layout="vertical" align="right" verticalAlign="middle" />
+              <Legend
+                layout="vertical"
+                align="right"
+                verticalAlign="middle"
+                iconSize={10}
+                wrapperStyle={{ fontSize: "16px" }}
+              />
             </PieChart>
           </ResponsiveContainer>
         </ChartContainer>

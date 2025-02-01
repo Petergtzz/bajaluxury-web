@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, LogOut, Moon, Sun, Bug } from "lucide-react";
+import { Home, LogOut, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 
 import {

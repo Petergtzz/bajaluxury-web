@@ -83,8 +83,9 @@ export function IncomeStatement({ monthlyExpenses = [] }: ExpenseItem) {
                 )}{" "}
                 {category}
               </div>
-              <div className="w-1/4 px-4 text-right">
-                ${formatNumber(data.total)}
+              <div className="w-1/4 px-4 text-right ">
+                <span className="mr-1">$</span>
+                {formatNumber(data.total)}
               </div>
               <div className="w-1/4 px-4 text-right">
                 {total ? ((data.total / total) * 100).toFixed(2) + "%" : "0%"}
@@ -94,11 +95,12 @@ export function IncomeStatement({ monthlyExpenses = [] }: ExpenseItem) {
               data.concepts.map((concept, index) => (
                 <div
                   key={index}
-                  className="flex text-sm py-2 border-b border-gray-200 bg-gray-50 dark:bg-gray-800"
+                  className="flex text-sm py-2 border-b border-gray-200 bg-gray-100 dark:bg-gray-800"
                 >
                   <div className="w-1/2 px-8">- {concept.concept}</div>
                   <div className="w-1/4 px-4 text-right">
-                    ${formatNumber(concept.total_amount)}
+                    <span className="mr-1">$</span>
+                    {formatNumber(concept.total_amount)}
                   </div>
                   <div className="w-1/4 px-4 text-right">
                     {((concept.total_amount / data.total) * 100).toFixed(2)}%
@@ -108,8 +110,8 @@ export function IncomeStatement({ monthlyExpenses = [] }: ExpenseItem) {
           </div>
         ))}
 
-        <div className="flex tracking-tight text-sm font-medium py-2 border-t border-gray-700">
-          <div className="w-1/2 px-4">Grand Total</div>
+        <div className="flex tracking-tight text-sm font-bold py-2 border-t border-gray-700">
+          <div className="w-1/2 px-4">Total</div>
           <div className="w-1/4 px-4 text-right">${formatNumber(total)}</div>
           <div className="w-1/4 px-4 text-right">100%</div>
         </div>

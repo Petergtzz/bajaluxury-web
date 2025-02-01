@@ -1,4 +1,4 @@
-import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 import {
   ChevronLeft,
   ChevronRight,
@@ -15,17 +15,17 @@ import {
 } from "@/components/ui/select";
 
 interface DataPaginationProps {
-  table: any; // Replace `any` with the correct table type if available
+  table: any;
   pageSizeOptions?: number[];
 }
 
 export function DataPagination({
   table,
-  pageSizeOptions = [10, 20, 30, 40, 50],
+  pageSizeOptions = [10, 40, 80, 160, 320],
 }: DataPaginationProps) {
-  const searchParams = useSearchParams();
-  const page = searchParams.get("page") ?? 1;
-  const perPage = searchParams.get("per_page") ?? 10;
+  const [selectedPageSize, setSelectedPageSize] = useState(
+    table.getState().pagination.pageSize,
+  );
 
   return (
     <div className="flex w-full flex-col-reverse items-center justify-end gap-4 overflow-auto p-1 sm:flex-row sm:gap-8">
@@ -35,14 +35,16 @@ export function DataPagination({
             Rows per page
           </p>
           <Select
-            value={`${perPage}`}
+            value={`${selectedPageSize}`}
             onValueChange={(value) => {
+              const newSize = Number(value);
+              setSelectedPageSize(newSize);
               table.setPageIndex(0);
-              table.setPageSize(Number(value));
+              table.setPageSize(newSize);
             }}
           >
             <SelectTrigger className="h-8 w-[4.5rem]">
-              <SelectValue placeholder={table.getState().pagination.pageSize} />
+              <SelectValue placeholder={selectedPageSize} />
             </SelectTrigger>
             <SelectContent
               side="top"

@@ -80,7 +80,7 @@ export async function fetchUserCategories(houseId: number) {
     FROM expenses e
     WHERE
         e.house_id = ?
-        AND strftime('%Y-%m', e.date) = strftime('%Y-%m', 'now')
+        AND strftime('%Y-%m', e.date) = strftime('%Y-%m', 'now', '-7 hours')
     GROUP BY e.category
     ORDER BY total_amount DESC;
     `;
@@ -101,9 +101,9 @@ export async function fetchUserCategoriesAndConcepts(houseId: number) {
     FROM expenses e
     WHERE
         e.house_id = ?
-        AND strftime('%Y-%m', e.date) = strftime('%Y-%m', 'now')
+        AND strftime('%Y-%m', e.date) = strftime('%Y-%m', 'now', '-7 hours')
     GROUP BY e.category, e.concept
-    ORDER BY e.category, total_amount DESC;
+    ORDER BY total_amount DESC;
     `;
   const result = await client.execute({ sql: query, args: [houseId] });
   return result.rows;

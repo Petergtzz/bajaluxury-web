@@ -27,14 +27,6 @@ body {
         --border: 240 5.9% 90%;
         --input: 240 5.9% 90%;
         --ring: 240 10% 3.9%;
-        --chart-1: 196, 100%, 18%;
-        --chart-2: 213, 39%, 33%;
-        --chart-3: 252, 21%, 37%;
-        --chart-4: 320, 31%, 40%;
-        --chart-5: 330, 49%, 52%;
-        --chart-6: 357, 76%, 60%;
-        --chart-7: 23, 100%, 60%;
-        --chart-8: 39, 100%, 50%;
         --radius: 0.5rem;
         --sidebar-background: 0 0% 98%;
         --sidebar-foreground: 240 5.3% 26.1%;
@@ -65,11 +57,6 @@ body {
         --border: 240 3.7% 15.9%;
         --input: 240 3.7% 15.9%;
         --ring: 240 4.9% 83.9%;
-        --chart-1: 220 70% 50%;
-        --chart-5: 160 60% 45%;
-        --chart-3: 30 80% 55%;
-        --chart-4: 280 65% 60%;
-        --chart-2: 340 75% 55%;
         --sidebar-background: 240 5.9% 10%;
         --sidebar-foreground: 240 4.8% 95.9%;
         --sidebar-primary: 224.3 76.3% 48%;
@@ -122,6 +109,6 @@ body {
 }
 
 .table {
-    table-layout: fixed; /* Ensures consistent column widths */
+    table-layout: fixed;
     width: 100%;
 }
