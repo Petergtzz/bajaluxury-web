@@ -5,6 +5,7 @@ import {
   ColumnFiltersState,
   SortingState,
   VisibilityState,
+  CellContext,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -34,16 +35,16 @@ import { exportTableToCSV } from "@/lib/export";
 import { DataPagination } from "./data-table-pagination";
 import { DataTableColumnHeader } from "./data-table-header";
 
-type TableColumn<T> = {
+type TableColumn = {
   accessorKey: string;
   header: string;
   isNumeric?: boolean;
-  cell?: (row: T[]) => React.ReactNode;
+  cell?: (row: any) => React.ReactNode;
 };
 
 type TableComponentProps<T> = {
   data: T[];
-  columns: TableColumn<T>[];
+  columns: TableColumn[];
 };
 
 export function TableComponent<T>({ data, columns }: TableComponentProps<T>) {
@@ -61,14 +62,19 @@ export function TableComponent<T>({ data, columns }: TableComponentProps<T>) {
         header: column.header,
         cell:
           column.accessorKey === "amount" || column.accessorKey === "balance"
-            ? ({ row }) => {
+            ? ({ row }: CellContext<T, unknown>) => {
                 const value = row.getValue(column.accessorKey);
                 if (typeof value === "number" && !isNaN(value)) {
-                  return `$ ${value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                  return `$ ${value.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}`;
                 }
                 return `$0.00`;
               }
-            : (column.cell ?? (({ row }) => row.getValue(column.accessorKey))),
+            : (column.cell ??
+              (({ row }: CellContext<T, unknown>) =>
+                row.getValue(column.accessorKey))),
         enableSorting: true,
         enableHiding: true,
         size: 150,

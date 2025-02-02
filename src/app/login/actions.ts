@@ -23,7 +23,7 @@ const loginSchema = z.object({
     .trim(),
 });
 
-export async function login(_prevState: string, formData: FormData) {
+export async function login(prevState: any, formData: FormData) {
   const result = loginSchema.safeParse(Object.fromEntries(formData));
   let redirectPath: string | null = null;
 
@@ -61,7 +61,12 @@ export async function login(_prevState: string, formData: FormData) {
       };
     }
 
-    await createSession(user.user_id, user.role, user.house_id);
+    console.log("user.user_id:", user.user_id, typeof user.user_id);
+    await createSession(
+      Number(user.user_id),
+      user.role as "admin" | "user",
+      Number(user.house_id) ?? undefined,
+    );
 
     redirectPath = `/dashboard`;
   } catch (error) {

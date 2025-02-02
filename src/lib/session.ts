@@ -6,7 +6,7 @@ const secretKey = process.env.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
 
 export async function createSession(
-  userId: string,
+  userId: number,
   role: "admin" | "user",
   houseId?: number,
 ) {
@@ -30,7 +30,7 @@ export async function deleteSession() {
 }
 
 type SessionPayload = {
-  userId: string;
+  userId: number;
   role: "admin" | "user";
   houseId?: number;
   expiresAt: Date;

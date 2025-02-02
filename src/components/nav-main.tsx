@@ -25,9 +25,7 @@ export function NavMain({ items }: NavMainProps) {
           <SidebarMenuItem key={item.title}>
             <SidebarMenuButton asChild>
               <a href={item.url}>
-                {item.icon && (
-                  <item.icon className="size-4" size={16} strokeWidth={1.0} />
-                )}{" "}
+                {item.icon && <item.icon className="w-4 h-4 stroke-1" />}{" "}
                 <span>{item.title}</span>
               </a>
             </SidebarMenuButton>
