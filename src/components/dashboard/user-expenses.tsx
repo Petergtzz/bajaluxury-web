@@ -1,6 +1,7 @@
 import React from "react";
-import { fetchUserExpenses } from "@/lib/fetchuser";
+import { UserExpense } from "@/types";
 import { TableComponent } from "@/components/data-table/data-table";
+import { fetchUserExpenses } from "@/lib/fetchuser";
 import { getSession } from "@/lib/session";
 
 export async function UserExpensesContent() {
@@ -14,7 +15,7 @@ export async function UserExpensesContent() {
   }
 
   const expenses = await fetchUserExpenses(session.houseId);
-  const plainExpense = JSON.parse(JSON.stringify(expenses));
+  // const plainExpense = JSON.parse(JSON.stringify(expenses));
 
   const columns = [
     { accessorKey: "date", header: "Date" },
@@ -27,7 +28,7 @@ export async function UserExpensesContent() {
 
   return (
     <div>
-      <TableComponent data={plainExpense} columns={columns} />
+      <TableComponent<UserExpense> data={expenses} columns={columns} />
     </div>
   );
 }

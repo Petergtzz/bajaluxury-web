@@ -21,24 +21,26 @@ export async function UserBalanceContent() {
   }
 
   const balances = await fetchUserBalances(session.houseId);
-  const plainBalances = JSON.parse(JSON.stringify(balances));
-  const { balance } = plainBalances[0];
+  // const plainBalances = JSON.parse(JSON.stringify(balances));
+  // const { balance } = plainBalances[0];
 
   const categoryExpense = await fetchUserCategories(session.houseId);
-  const plainCategoryExpense = JSON.parse(JSON.stringify(categoryExpense));
+  //const plainCategoryExpense = JSON.parse(JSON.stringify(categoryExpense));
 
   const categoryAndConceptExpense = await fetchUserCategoriesAndConcepts(
     session.houseId,
   );
-  const plainCategoryAndConceptExpense = JSON.parse(
-    JSON.stringify(categoryAndConceptExpense),
-  );
+  //const plainCategoryAndConceptExpense = JSON.parse(
+  //  JSON.stringify(categoryAndConceptExpense),
+  //);
+
+  const balance = balances?.[0]?.balance ?? 0;
 
   return (
     <div className="relative w-full my-5 flex flex-col md:flex-row gap-4">
       {/* Income Statement - Takes Full Height */}
       <div className="w-full md:w-1/2 flex flex-col">
-        <IncomeStatement monthlyExpenses={plainCategoryAndConceptExpense} />
+        <IncomeStatement monthlyExpenses={categoryAndConceptExpense} />
       </div>
 
       {/* Right Side: Balance Cards & Pie Chart */}
@@ -54,7 +56,7 @@ export async function UserBalanceContent() {
         </div>
         {/* Pie Chart - Same Width as Balance Cards */}
         <div className="w-full">
-          <PieComponent monthlyExpenses={plainCategoryExpense} />
+          <PieComponent monthlyExpenses={categoryExpense} />
         </div>
       </div>
     </div>

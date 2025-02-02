@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Table } from "@tanstack/react-table";
 import {
   ChevronLeft,
   ChevronRight,
@@ -14,15 +15,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-interface DataPaginationProps {
-  table: any;
+interface DataPaginationProps<TData> {
+  table: Table<TData>;
   pageSizeOptions?: number[];
 }
 
-export function DataPagination({
+export function DataPagination<TData>({
   table,
   pageSizeOptions = [10, 40, 80, 160, 320],
-}: DataPaginationProps) {
+}: DataPaginationProps<TData>) {
   const [selectedPageSize, setSelectedPageSize] = useState(
     table.getState().pagination.pageSize,
   );

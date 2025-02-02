@@ -12,7 +12,7 @@ export async function BalancesContent() {
   ];
 
   return (
-    <div className="w-1/2">
+    <div>
       <TableComponent data={plainBalances} columns={columns} />
     </div>
   );

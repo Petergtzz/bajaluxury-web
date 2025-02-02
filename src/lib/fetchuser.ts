@@ -1,6 +1,9 @@
 import { client } from "@/lib/turso";
+import { UserExpense, UserIncome, UserBalance } from "@/types";
 
-export async function fetchUserExpenses(houseId: number) {
+export async function fetchUserExpenses(
+  houseId: number,
+): Promise<UserExpense[]> {
   if (!houseId) {
     throw new Error("houseId is required to fetch expenses.");
   }
@@ -21,11 +24,23 @@ export async function fetchUserExpenses(houseId: number) {
     WHERE
         e.house_id = ?;
     `;
-  const result = await client.execute({ sql: query, args: [houseId] });
-  return result.rows;
+  const result = await client.execute({
+    sql: query,
+    args: [houseId],
+  });
+
+  return result.rows.map((row) => ({
+    house: row.house as string,
+    date: row.date as string,
+    category: row.category as string,
+    concept: row.concept as string,
+    method: row.method as string,
+    amount: Number(row.amount),
+    description: row.description as string,
+  }));
 }
 
-export async function fetchUserIncomes(houseId: number) {
+export async function fetchUserIncomes(houseId: number): Promise<UserIncome[]> {
   if (!houseId) {
     throw new Error("houseId is required to fetch expenses.");
   }
@@ -45,10 +60,18 @@ export async function fetchUserIncomes(houseId: number) {
         i.house_id = ?;
     `;
   const result = await client.execute({ sql: query, args: [houseId] });
-  return result.rows;
+  return result.rows.map((row) => ({
+    house: row.house as string,
+    date: row.date as string,
+    method: row.method as string,
+    amount: Number(row.amount),
+    description: row.description as string,
+  }));
 }
 
-export async function fetchUserBalances(houseId: number) {
+export async function fetchUserBalances(
+  houseId: number,
+): Promise<UserBalance[]> {
   if (!houseId) {
     throw new Error("houseId is required to fetch expenses.");
   }
@@ -65,7 +88,10 @@ export async function fetchUserBalances(houseId: number) {
         b.house_id = ?;
     `;
   const result = await client.execute({ sql: query, args: [houseId] });
-  return result.rows;
+  return result.rows.map((row) => ({
+    house: row.house as string,
+    balance: Number(row.balance),
+  }));
 }
 
 export async function fetchUserCategories(houseId: number) {
@@ -85,7 +111,10 @@ export async function fetchUserCategories(houseId: number) {
     ORDER BY total_amount DESC;
     `;
   const result = await client.execute({ sql: query, args: [houseId] });
-  return result.rows;
+  return result.rows.map((row) => ({
+    category: row.category as string,
+    total_amount: Number(row.total_amount),
+  }));
 }
 
 export async function fetchUserCategoriesAndConcepts(houseId: number) {
@@ -106,5 +135,9 @@ export async function fetchUserCategoriesAndConcepts(houseId: number) {
     ORDER BY total_amount DESC;
     `;
   const result = await client.execute({ sql: query, args: [houseId] });
-  return result.rows;
+  return result.rows.map((row) => ({
+    category: row.category as string,
+    concept: row.concept as string,
+    total_amount: Number(row.total_amount),
+  }));
 }

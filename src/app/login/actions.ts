@@ -23,7 +23,7 @@ const loginSchema = z.object({
     .trim(),
 });
 
-export async function login(prevState: any, formData: FormData) {
+export async function login(_prevState: any, formData: FormData) {
   const result = loginSchema.safeParse(Object.fromEntries(formData));
   let redirectPath: string | null = null;
 
@@ -52,7 +52,6 @@ export async function login(prevState: any, formData: FormData) {
     }
 
     const user = userQuery.rows[0];
-    // console.log("user", user);
 
     if (password !== user.password) {
       return {

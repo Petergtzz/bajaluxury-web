@@ -34,19 +34,19 @@ import { exportTableToCSV } from "@/lib/export";
 import { DataPagination } from "./data-table-pagination";
 import { DataTableColumnHeader } from "./data-table-header";
 
-export type TableColumn = {
+type TableColumn<T> = {
   accessorKey: string;
   header: string;
   isNumeric?: boolean;
-  cell?: (row: any) => React.ReactNode;
+  cell?: (row: T[]) => React.ReactNode;
 };
 
-export type TableComponentProps = {
-  data: any[];
-  columns: TableColumn[];
+type TableComponentProps<T> = {
+  data: T[];
+  columns: TableColumn<T>[];
 };
 
-export function TableComponent({ data, columns }: TableComponentProps) {
+export function TableComponent<T>({ data, columns }: TableComponentProps<T>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],

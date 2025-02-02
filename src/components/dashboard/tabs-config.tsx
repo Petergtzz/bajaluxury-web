@@ -21,8 +21,8 @@ export const TABS_CONFIG: TabsConfig = {
     { value: "incomes", label: "Incomes", content: <UserIncomesContent /> },
   ],
   admin: [
+    { value: "balances", label: "Balances", content: <BalancesContent /> },
     { value: "expenses", label: "Expenses", content: <ExpensesContent /> },
     { value: "incomes", label: "Incomes", content: <IncomesContent /> },
-    { value: "balances", label: "Balances", content: <BalancesContent /> },
   ],
 };
