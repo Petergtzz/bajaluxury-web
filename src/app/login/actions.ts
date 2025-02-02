@@ -23,7 +23,7 @@ const loginSchema = z.object({
     .trim(),
 });
 
-export async function login(_prevState: any, formData: FormData) {
+export async function login(_prevState: string, formData: FormData) {
   const result = loginSchema.safeParse(Object.fromEntries(formData));
   let redirectPath: string | null = null;
 

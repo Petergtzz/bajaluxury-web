@@ -7,7 +7,7 @@ import { getSession } from "@/lib/session";
 export default async function DashboardPage() {
   const session = await getSession();
 
-  const { role } = session;
+  const { role } = session?.role ? session : { role: "user" };
   const tabs = TABS_CONFIG[role] || [];
 
   return (
