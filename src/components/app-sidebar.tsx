@@ -18,8 +18,8 @@ const items = [
     icon: Database,
   },
   {
-    title: "Punchlist",
-    url: "/punchlist",
+    title: "Tasks",
+    url: "/tasks",
     icon: PencilRuler,
   },
   {
