@@ -1,10 +1,11 @@
 import React from "react";
-import { ExpensesContent } from "./admin-expenses";
-import { IncomesContent } from "./admin-incomes";
-import { BalancesContent } from "./admin-balances";
-import { UserExpensesContent } from "./user-expenses";
-import { UserIncomesContent } from "./user-incomes";
-import { UserBalanceContent } from "./user-balance";
+import { AdminExpenses } from "./admin/admin-expenses";
+import { AdminIncomes } from "./admin/admin-incomes";
+import { AdminBalances } from "./admin/admin-balances";
+import { UserExpensesContent } from "./user/user-expenses";
+import { UserIncomesContent } from "./user/user-incomes";
+import { UserBalanceContent } from "./user/user-balance";
+import { IncomeDashboard } from "./user/income-dashboard";
 
 type Tab = {
   value: string;
@@ -21,8 +22,8 @@ export const TABS_CONFIG: TabsConfig = {
     { value: "incomes", label: "Incomes", content: <UserIncomesContent /> },
   ],
   admin: [
-    { value: "balances", label: "Balances", content: <BalancesContent /> },
-    { value: "expenses", label: "Expenses", content: <ExpensesContent /> },
-    { value: "incomes", label: "Incomes", content: <IncomesContent /> },
+    { value: "balances", label: "Balances", content: <AdminBalances /> },
+    { value: "expenses", label: "Expenses", content: <AdminExpenses /> },
+    { value: "incomes", label: "Incomes", content: <AdminIncomes /> },
   ],
 };

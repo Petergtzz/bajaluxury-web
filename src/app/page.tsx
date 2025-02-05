@@ -2,9 +2,5 @@ import React from "react";
 import Main from "@/components/main";
 
 export default function HomePage() {
-  return (
-    <div>
-      <Main />
-    </div>
-  );
+  return <Main />;
 }
