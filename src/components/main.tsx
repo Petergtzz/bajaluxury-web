@@ -5,18 +5,20 @@ import { LoginForm } from "./login-form";
 
 export default function Main() {
   return (
-    <div className="main">
+    <section className="relative flex items-center justify-center h-screen">
       <video
         className="bgvideo"
-        src="https://qvfyv6rrab.ufs.sh/f/iq2bdhwTfBnr0ZKbQHRbXkrpMJSl3OLWqPNYHTxUv5A76sog"
+        src="https://qvfyv6rrab.ufs.sh/f/iq2bdhwTfBnrBSyXelumbHzsTaEiJjYprwKLUxB8ROl9V7Gv"
         autoPlay
         loop
         muted
+        playsInline
+        preload="auto"
       />
       <div className="overlay" />
       <div className="login-form">
         <LoginForm />
       </div>
-    </div>
+    </section>
   );
 }
