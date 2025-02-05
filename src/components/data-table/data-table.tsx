@@ -1,18 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
-  CellContext,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import { flexRender } from "@tanstack/react-table";
 import { ChevronDown, DownloadIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -34,6 +23,7 @@ import {
 import { exportTableToCSV } from "@/lib/export";
 import { DataPagination } from "./data-table-pagination";
 import { DataTableColumnHeader } from "./data-table-header";
+import { useTableConfig } from "@/hooks/use-table-config";
 
 type TableColumn = {
   accessorKey: string;
@@ -48,73 +38,20 @@ type TableComponentProps<T> = {
 };
 
 export function TableComponent<T>({ data, columns }: TableComponentProps<T>) {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    [],
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-
-  const tableColumns = React.useMemo(
-    () =>
-      columns.map((column) => ({
-        accessorKey: column.accessorKey,
-        header: column.header,
-        cell:
-          column.accessorKey === "amount" || column.accessorKey === "balance"
-            ? ({ row }: CellContext<T, unknown>) => {
-                const value = row.getValue(column.accessorKey);
-                if (typeof value === "number" && !isNaN(value)) {
-                  return `$ ${value.toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}`;
-                }
-                return `$0.00`;
-              }
-            : (column.cell ??
-              (({ row }: CellContext<T, unknown>) =>
-                row.getValue(column.accessorKey))),
-        enableSorting: true,
-        enableHiding: true,
-        size: 150,
-      })),
-    [columns],
-  );
-
-  const table = useReactTable({
+  const { table, globalFilter, setGlobalFilter } = useTableConfig(
     data,
-    columns: tableColumns,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-    state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
-    },
-  });
-
-  const filterableColumn =
-    table.getAllColumns().find((col) => col.getCanFilter()) ||
-    table.getAllColumns()[0];
+    columns,
+  );
 
   return (
     <div className="w-full">
       <div className="flex items-center py-4 gap-3">
         <Input
-          placeholder="Filter..."
-          value={(filterableColumn.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            filterableColumn.setFilterValue(event.target.value)
-          }
+          placeholder="Search"
+          value={globalFilter ?? ""}
+          onChange={(event) => setGlobalFilter(event.target.value)}
           className="max-w-sm"
         />
-
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
@@ -156,7 +93,7 @@ export function TableComponent<T>({ data, columns }: TableComponentProps<T>) {
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>
+                  <TableHead key={header.id} className="px-4">
                     <DataTableColumnHeader
                       column={header.column}
                       title={String(header.column.columnDef.header)}
@@ -171,7 +108,11 @@ export function TableComponent<T>({ data, columns }: TableComponentProps<T>) {
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id} style={{ height: "55px" }}>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} style={{ width: "150px" }}>
+                    <TableCell
+                      key={cell.id}
+                      style={{ width: "150px" }}
+                      className="px-4"
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext(),
