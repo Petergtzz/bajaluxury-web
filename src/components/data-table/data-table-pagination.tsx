@@ -22,7 +22,7 @@ interface DataPaginationProps<TData> {
 
 export function DataPagination<TData>({
   table,
-  pageSizeOptions = [10, 40, 80, 160, 320],
+  pageSizeOptions = [10, 20, 30, 40, 50, 100, 500],
 }: DataPaginationProps<TData>) {
   const [selectedPageSize, setSelectedPageSize] = useState(
     table.getState().pagination.pageSize,
