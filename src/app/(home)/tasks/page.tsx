@@ -1,7 +1,7 @@
 import { SidebarInset } from "@/components/ui/sidebar";
 import { UserTasksContent } from "@/components/tasks/user-tasks-content";
 
-export default async function PunchListPage() {
+export default async function TasksPage() {
   return (
     <SidebarInset>
       <header className="flex h-16 shrink-0 items-center gap-6 px-8 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">

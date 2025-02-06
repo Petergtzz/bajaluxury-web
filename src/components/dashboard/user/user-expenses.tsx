@@ -2,19 +2,15 @@ import React from "react";
 import { UserExpense } from "@/types";
 import { TableComponent } from "@/components/data-table/data-table";
 import { fetchUserExpenses } from "@/lib/fetchuser";
-import { getSession } from "@/lib/session";
 
-export async function UserExpensesContent() {
-  const session = await getSession();
-  if (
-    !session ||
-    session.role !== "user" ||
-    typeof session.houseId !== "number"
-  ) {
-    throw new Error("User session or houseId is missing.");
-  }
+type UserExpensesContentProps = {
+  houseId: number;
+};
 
-  const expenses = await fetchUserExpenses(session.houseId);
+export async function UserExpensesContent({
+  houseId,
+}: UserExpensesContentProps) {
+  const expenses = await fetchUserExpenses(houseId);
 
   const columns = [
     { accessorKey: "date", header: "Date" },

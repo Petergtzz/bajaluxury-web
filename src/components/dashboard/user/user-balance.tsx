@@ -5,25 +5,21 @@ import {
   fetchIncomeData,
 } from "@/lib/fetchuser";
 import { AccountBalanceCardMxn } from "./account-balance-card-mxn";
-import { getSession } from "@/lib/session";
 import { PieComponent } from "./pie-chart";
 import { AccountBalanceCardUsd } from "./account-balance-card-usd";
 import { IncomeStatement } from "./income-statement";
 
-export async function UserBalanceContent() {
-  const session = await getSession();
-  if (
-    !session ||
-    session.role !== "user" ||
-    typeof session.houseId !== "number"
-  ) {
-    throw new Error("User session or houseId is missing.");
-  }
+type UserBalanceContentProps = {
+  houseId: number;
+};
 
+export default async function UserBalanceContent({
+  houseId,
+}: UserBalanceContentProps) {
   const [balances, pieData, statementData] = await Promise.all([
-    fetchUserBalances(session.houseId),
-    fetchPieData(session.houseId),
-    fetchIncomeData(session.houseId),
+    fetchUserBalances(houseId),
+    fetchPieData(houseId),
+    fetchIncomeData(houseId),
   ]);
 
   const balance = balances?.[0]?.balance ?? 0;

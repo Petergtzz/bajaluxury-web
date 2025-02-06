@@ -4,17 +4,12 @@ import { TableComponent } from "@/components/data-table/data-table";
 import { fetchUserIncomes } from "@/lib/fetchuser";
 import { getSession } from "@/lib/session";
 
-export async function UserIncomesContent() {
-  const session = await getSession();
-  if (
-    !session ||
-    session.role !== "user" ||
-    typeof session.houseId !== "number"
-  ) {
-    throw new Error("User session or houseId is missing.");
-  }
+type UserIncomesContentProps = {
+  houseId: number;
+};
 
-  const expenses = await fetchUserIncomes(session.houseId);
+export async function UserIncomesContent({ houseId }: UserIncomesContentProps) {
+  const expenses = await fetchUserIncomes(houseId);
 
   const columns = [
     { accessorKey: "date", header: "Date" },
