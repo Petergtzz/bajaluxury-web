@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   fetchUserBalances,
   fetchPieData,
@@ -42,26 +42,28 @@ export async function UserBalanceContent() {
   );
 
   return (
-    <div className="relative w-full my-5 flex flex-col md:flex-row gap-4">
-      {/* Income Statement - Takes Full Height */}
-      <div className="w-full md:w-1/2 flex flex-col">
-        <IncomeStatement monthlyExpenses={incomeStatementData} />
-      </div>
-
-      {/* Right Side: Balance Cards & Pie Chart */}
-      <div className="w-full md:w-1/2 flex flex-col gap-4">
-        {/* Balance Cards - Side by Side */}
-        <div className="flex flex-col md:flex-row gap-4 w-full">
-          <div className="w-full md:w-1/2">
-            <AccountBalanceCardUsd balance={balance} />
-          </div>
-          <div className="w-full md:w-1/2">
-            <AccountBalanceCardMxn balance={balance} />
-          </div>
+    <div className="relative w-full flex flex-col">
+      <div className="w-full my-5 flex flex-col md:flex-row gap-4">
+        {/* Income Statement - Takes Full Height */}
+        <div className="w-full md:w-1/2 flex flex-col">
+          <IncomeStatement monthlyExpenses={incomeStatementData} />
         </div>
-        {/* Pie Chart - Same Width as Balance Cards */}
-        <div className="w-full">
-          <PieComponent monthlyExpenses={pieChartData} />
+
+        {/* Right Side: Balance Cards & Pie Chart */}
+        <div className="w-full md:w-1/2 flex flex-col gap-4">
+          {/* Balance Cards - Side by Side */}
+          <div className="flex flex-col md:flex-row gap-4 w-full">
+            <div className="w-full md:w-1/2">
+              <AccountBalanceCardUsd balance={balance} />
+            </div>
+            <div className="w-full md:w-1/2">
+              <AccountBalanceCardMxn balance={balance} />
+            </div>
+          </div>
+          {/* Pie Chart - Same Width as Balance Cards */}
+          <div className="w-full">
+            <PieComponent monthlyExpenses={pieChartData} />
+          </div>
         </div>
       </div>
     </div>

@@ -25,6 +25,12 @@ type PieComponentProps = {
   monthlyExpenses: { category: string; total_amount: number }[];
 };
 
+type CustomTooltipProps = {
+  active?: boolean;
+  payload?: { payload: { category: string; total: number } }[];
+  label?: string;
+};
+
 export function PieComponent({ monthlyExpenses }: PieComponentProps) {
   const chartData = monthlyExpenses.map((expense) => ({
     category: expense.category,
@@ -34,6 +40,40 @@ export function PieComponent({ monthlyExpenses }: PieComponentProps) {
   const chartConfig = {
     total: { label: "Amount:" },
   } satisfies ChartConfig;
+
+  const formatAmount = (amount: number) => {
+    return amount.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  };
+
+  const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
+    if (active && payload && payload.length) {
+      const { category, total } = payload[0].payload;
+      const color =
+        COLORS[
+          chartData.findIndex((item) => item.category === category) %
+            COLORS.length
+        ];
+
+      return (
+        <div className="bg-white p-3 rounded-lg shadow-md border border-gray-200">
+          <div className="flex items-center space-x-2">
+            <div
+              className="w-2 h-2 rounded-full"
+              style={{ backgroundColor: color }}
+            />
+            <p className="tracking-tight text-sm font-semibold">{category}</p>
+          </div>
+          <p className="tracking-tight text-sm font-medium mt-1">
+            Amount: $ {formatAmount(total)} MXN
+          </p>
+        </div>
+      );
+    }
+    return null;
+  };
 
   const COLORS = [
     "#005f73ff",
@@ -51,12 +91,8 @@ export function PieComponent({ monthlyExpenses }: PieComponentProps) {
 
   const totalAmount = chartData.reduce((acc, item) => acc + item.total, 0);
 
-  const formatAmount = (amount: number) => {
-    return amount.toLocaleString();
-  };
-
   return (
-    <Card>
+    <Card className="tracking-tight text-sm font-medium">
       <CardHeader className="items-center pb-0">
         <CardTitle>Monthly Expenses</CardTitle>
         <CardDescription>
@@ -70,7 +106,7 @@ export function PieComponent({ monthlyExpenses }: PieComponentProps) {
         <ChartContainer config={chartConfig}>
           <ResponsiveContainer>
             <PieChart>
-              <Tooltip content={<ChartTooltipContent hideLabel />} />
+              <Tooltip content={<CustomTooltip />} />
               <Pie
                 data={chartData}
                 dataKey="total"
@@ -110,7 +146,7 @@ export function PieComponent({ monthlyExpenses }: PieComponentProps) {
                 layout="vertical"
                 align="right"
                 verticalAlign="middle"
-                iconSize={10}
+                iconSize={8}
                 wrapperStyle={{ fontSize: "16px" }}
               />
             </PieChart>

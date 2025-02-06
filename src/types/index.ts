@@ -43,3 +43,11 @@ export interface UserIncome {
   amount: number;
   description: string;
 }
+
+export interface Tasks {
+  task: number;
+  house: string;
+  concept: string;
+  status: string;
+  date: string;
+}

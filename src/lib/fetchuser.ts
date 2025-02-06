@@ -10,19 +10,21 @@ export async function fetchUserExpenses(
 
   const query = `
     SELECT
-        h.address AS house,
-        e.date,
-        e.concept,
-        e.category,
-        e.payment_method AS method,
-        e.amount,
-        e.description
+      h.address AS house,
+      e.date,
+      e.concept,
+      e.category,
+      e.payment_method AS method,
+      e.amount,
+      e.description
     FROM
-        expenses e
+      expenses e
     JOIN
-        houses h ON e.house_id = h.house_id
+      houses h ON e.house_id = h.house_id
     WHERE
-        e.house_id = ?;
+      e.house_id = ?
+    ORDER BY
+      e.date DESC;
     `;
   const result = await client.execute({
     sql: query,
@@ -46,18 +48,20 @@ export async function fetchUserIncomes(houseId: number): Promise<UserIncome[]> {
   }
 
   const query = `
-      SELECT
-        h.address AS house,
-        i.date,
-        i.payment_method AS method,
-        i.amount,
-        i.description
-      FROM
-        incomes i
-      JOIN
-        houses h ON i.house_id = h.house_id
-      WHERE
-        i.house_id = ?;
+    SELECT
+      h.address AS house,
+      i.date,
+      i.payment_method AS method,
+      i.amount,
+      i.description
+    FROM
+      incomes i
+    JOIN
+      houses h ON i.house_id = h.house_id
+    WHERE
+      i.house_id = ?
+    ORDER BY
+      i.date DESC;
     `;
   const result = await client.execute({ sql: query, args: [houseId] });
   return result.rows.map((row) => ({
@@ -77,15 +81,15 @@ export async function fetchUserBalances(
   }
 
   const query = `
-      SELECT
-        h.address AS house,
-        b.balance
-      FROM
-        balances b
-      JOIN
-        houses h ON b.house_id = h.house_id
-      WHERE
-        b.house_id = ?;
+    SELECT
+      h.address AS house,
+      b.balance
+    FROM
+      balances b
+    JOIN
+      houses h ON b.house_id = h.house_id
+    WHERE
+      b.house_id = ?;
     `;
   const result = await client.execute({ sql: query, args: [houseId] });
   return result.rows.map((row) => ({
@@ -94,47 +98,60 @@ export async function fetchUserBalances(
   }));
 }
 
-export async function fetchUserCategories(houseId: number) {
+export async function fetchPieData(houseId: number) {
   if (!houseId) {
     throw new Error("houseId is required to fetch expenses.");
   }
 
   const query = `
     SELECT
-        e.category,
-        SUM(e.amount) AS total_amount
-    FROM expenses e
+      e.category,
+      SUM(e.amount) AS total_amount
+    FROM
+      expenses e
     WHERE
-        e.house_id = ?
-        AND strftime('%Y-%m', e.date) = strftime('%Y-%m', 'now', '-7 hours')
-    GROUP BY e.category
-    ORDER BY total_amount DESC;
+      e.house_id = ?
+      AND strftime('%Y-%m', e.date) = strftime('%Y-%m', 'now', '-1 month')
+    GROUP BY
+      e.category
+    ORDER BY
+      total_amount DESC;
     `;
-  const result = await client.execute({ sql: query, args: [houseId] });
+  const result = await client.execute({
+    sql: query,
+    args: [houseId],
+  });
   return result.rows.map((row) => ({
     category: row.category as string,
     total_amount: Number(row.total_amount),
   }));
 }
 
-export async function fetchUserCategoriesAndConcepts(houseId: number) {
+export async function fetchIncomeData(houseId: number) {
   if (!houseId) {
     throw new Error("houseId is required to fetch expenses.");
   }
 
   const query = `
     SELECT
-        e.category,
-        e.concept,
-        SUM(e.amount) AS total_amount
-    FROM expenses e
+      e.category,
+      e.concept,
+      SUM(e.amount) AS total_amount
+    FROM
+      expenses e
     WHERE
-        e.house_id = ?
-        AND strftime('%Y-%m', e.date) = strftime('%Y-%m', 'now', '-7 hours')
-    GROUP BY e.category, e.concept
-    ORDER BY total_amount DESC;
+      e.house_id = ?
+      AND strftime('%Y-%m', e.date) = strftime('%Y-%m', 'now', '-1 month')
+    GROUP BY
+      e.category,
+      e.concept
+    ORDER BY
+      total_amount DESC;
     `;
-  const result = await client.execute({ sql: query, args: [houseId] });
+  const result = await client.execute({
+    sql: query,
+    args: [houseId],
+  });
   return result.rows.map((row) => ({
     category: row.category as string,
     concept: row.concept as string,

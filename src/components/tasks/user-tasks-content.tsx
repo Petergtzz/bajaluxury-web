@@ -17,7 +17,6 @@ export async function UserTasksContent() {
   const tasks = await fetchTasks(session.houseId);
 
   const columns = [
-    { accessorKey: "task", header: "Task" },
     { accessorKey: "concept", header: "Concept" },
     { accessorKey: "status", header: "Status" },
     { accessorKey: "date", header: "Date" },

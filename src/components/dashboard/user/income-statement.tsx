@@ -3,12 +3,6 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChevronDown, ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 type ExpenseItem = {
   monthlyExpenses: {
@@ -62,19 +56,10 @@ export function IncomeStatement({ monthlyExpenses = [] }: ExpenseItem) {
       <CardHeader className="pb-2">
         <CardTitle className="tracking-tight text-sm font-medium">
           Income Statement (USD) -{" "}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto">
-                {" "}
-                {new Date().toLocaleString("default", {
-                  month: "long",
-                  year: "numeric",
-                })}{" "}
-                <ChevronDown size={16} strokeWidth={1.0} />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end"></DropdownMenuContent>
-          </DropdownMenu>
+          {new Date().toLocaleString("default", {
+            month: "long",
+            year: "numeric",
+          })}{" "}
         </CardTitle>
       </CardHeader>
       <CardContent>
