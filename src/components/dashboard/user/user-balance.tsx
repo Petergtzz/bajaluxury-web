@@ -1,48 +1,64 @@
-import React from "react";
-import {
-  fetchUserBalances,
-  fetchPieData,
-  fetchIncomeData,
-} from "@/lib/fetchuser";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import { AccountBalanceCardMxn } from "./account-balance-card-mxn";
 import { PieComponent } from "./pie-chart";
 import { AccountBalanceCardUsd } from "./account-balance-card-usd";
 import { IncomeStatement } from "./income-statement";
+import MonthSelector from "@/components/month-selector";
+import {
+  fetchBalance,
+  fetchPieData,
+  fetchIncomeStatementData,
+} from "@/actions/fetch-user-data";
 
 type UserBalanceContentProps = {
   houseId: number;
 };
 
-export default async function UserBalanceContent({
+export default function UserBalanceContent({
   houseId,
 }: UserBalanceContentProps) {
-  const [balances, pieData, statementData] = await Promise.all([
-    fetchUserBalances(houseId),
-    fetchPieData(houseId),
-    fetchIncomeData(houseId),
-  ]);
+  const defaultMonth = new Date().toISOString().slice(0, 7);
+  const [selectedMonth, setSelectedMonth] = useState<string>(defaultMonth);
+  const [data, setData] = useState<any>(null);
 
-  const balance = balances?.[0]?.balance ?? 0;
+  useEffect(() => {
+    const fetchData = async () => {
+      const [balance, pieData, incomeStatementData] = await Promise.all([
+        fetchBalance(houseId),
+        fetchPieData(houseId, selectedMonth),
+        fetchIncomeStatementData(houseId, selectedMonth),
+      ]);
 
-  const pieChartData = pieData.map(({ category, total_amount }) => ({
-    category,
-    total_amount,
-  }));
+      const updatedBalance = balance?.[0]?.balance ?? 0;
 
-  const incomeStatementData = statementData.map(
-    ({ category, concept, total_amount }) => ({
-      category,
-      concept,
-      total_amount,
-    }),
-  );
+      setData({ updatedBalance, pieData, incomeStatementData });
+    };
+    fetchData();
+  }, [houseId, selectedMonth]);
+
+  const handleMonthAction = (month: string) => {
+    setSelectedMonth(month);
+  };
+
+  if (!data) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="relative w-full flex flex-col">
+      {/* Month Selector */}
+      <div className="w-full flex justify-end">
+        <MonthSelector
+          defaultValue={selectedMonth}
+          onMonthAction={handleMonthAction}
+        />
+      </div>
       <div className="w-full my-5 flex flex-col md:flex-row gap-4">
         {/* Income Statement - Takes Full Height */}
         <div className="w-full md:w-1/2 flex flex-col">
-          <IncomeStatement monthlyExpenses={incomeStatementData} />
+          <IncomeStatement monthlyExpenses={data.incomeStatementData} />
         </div>
 
         {/* Right Side: Balance Cards & Pie Chart */}
@@ -50,15 +66,15 @@ export default async function UserBalanceContent({
           {/* Balance Cards - Side by Side */}
           <div className="flex flex-col md:flex-row gap-4 w-full">
             <div className="w-full md:w-1/2">
-              <AccountBalanceCardUsd balance={balance} />
+              <AccountBalanceCardUsd balance={data.updatedBalance} />
             </div>
             <div className="w-full md:w-1/2">
-              <AccountBalanceCardMxn balance={balance} />
+              <AccountBalanceCardMxn balance={data.updatedBalance} />
             </div>
           </div>
           {/* Pie Chart - Same Width as Balance Cards */}
           <div className="w-full">
-            <PieComponent monthlyExpenses={pieChartData} />
+            <PieComponent pieData={data.pieData} />
           </div>
         </div>
       </div>

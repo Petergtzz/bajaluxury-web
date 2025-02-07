@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/chart";
 
 type PieComponentProps = {
-  monthlyExpenses: { category: string; total_amount: number }[];
+  pieData: { category: string; total_amount: number }[];
 };
 
 type CustomTooltipProps = {
@@ -31,8 +31,9 @@ type CustomTooltipProps = {
   label?: string;
 };
 
-export function PieComponent({ monthlyExpenses }: PieComponentProps) {
-  const chartData = monthlyExpenses.map((expense) => ({
+export function PieComponent({ pieData }: PieComponentProps) {
+  console.log("PieComponent received pieData:", pieData);
+  const chartData = pieData.map((expense) => ({
     category: expense.category,
     total: expense.total_amount,
   }));

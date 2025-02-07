@@ -49,3 +49,6 @@ public/_next-video
 
 # docker
 .dockerignore
+
+# github
+.github
