@@ -20,6 +20,7 @@ import {
   ChartContainer,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 type PieComponentProps = {
   pieData: { category: string; total_amount: number }[];
@@ -32,7 +33,8 @@ type CustomTooltipProps = {
 };
 
 export function PieComponent({ pieData }: PieComponentProps) {
-  console.log("PieComponent received pieData:", pieData);
+  const isMobile = useIsMobile();
+
   const chartData = pieData.map((expense) => ({
     category: expense.category,
     total: expense.total_amount,
@@ -115,10 +117,10 @@ export function PieComponent({ pieData }: PieComponentProps) {
                 labelLine={false}
                 label={({ cx, cy, midAngle, outerRadius, value, index }) => {
                   const percentage = (value / totalAmount) * 100;
-                  if (percentage <= 0.2) return null; // Hide labels for percentages < 0.01%
+                  if (percentage <= 0.5) return null; // Hide labels for percentages < 0.01%
 
                   const RADIAN = Math.PI / 180;
-                  const radius = outerRadius + 20; // Move labels 20 units outside the pie
+                  const radius = outerRadius + 25; // Move labels 20 units outside the pie
                   const x = cx + radius * Math.cos(-midAngle * RADIAN);
                   const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
@@ -144,11 +146,14 @@ export function PieComponent({ pieData }: PieComponentProps) {
                 ))}
               </Pie>
               <Legend
-                layout="vertical"
-                align="right"
-                verticalAlign="middle"
+                layout={isMobile ? "horizontal" : "vertical"}
+                align={isMobile ? "center" : "right"}
+                verticalAlign={isMobile ? "bottom" : "middle"}
                 iconSize={8}
-                wrapperStyle={{ fontSize: "16px" }}
+                wrapperStyle={{
+                  fontSize: "16px",
+                  marginTop: isMobile ? "40px" : undefined,
+                }}
               />
             </PieChart>
           </ResponsiveContainer>

@@ -11,6 +11,7 @@ import {
   fetchPieData,
   fetchIncomeStatementData,
 } from "@/actions/fetch-user-data";
+import LoadingComponent from "@/components/loading-component";
 
 type UserBalanceContentProps = {
   houseId: number;
@@ -43,13 +44,17 @@ export default function UserBalanceContent({
   };
 
   if (!data) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center h-full">
+        <LoadingComponent />
+      </div>
+    );
   }
 
   return (
     <div className="relative w-full flex flex-col">
       {/* Month Selector */}
-      <div className="w-full flex justify-end">
+      <div className="w-full flex md:justify-end">
         <MonthSelector
           defaultValue={selectedMonth}
           onMonthAction={handleMonthAction}

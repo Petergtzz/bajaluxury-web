@@ -77,6 +77,25 @@ body {
     }
 }
 
+.layout-container {
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+    width: 100%; /* Sidebar on left, content on right */
+}
+
+.main-content {
+    flex: 1;
+}
+
+/* Mobile layout: Move sidebar to bottom */
+@media (max-width: 768px) {
+    .layout-container {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+}
+
 html,
 body {
     margin: 0;

@@ -39,7 +39,7 @@ export default function MonthSelector({
 
   return (
     <Select onValueChange={handleSelect} value={defaultValue}>
-      <SelectTrigger className="w-[200px]">
+      <SelectTrigger className="w-full md:w-[200px]">
         <SelectValue placeholder="Select Month" />
       </SelectTrigger>
       <SelectContent>

@@ -1,3 +1,5 @@
+"server only";
+
 import { client } from "@/lib/turso";
 import { UserExpense, UserIncome, UserBalance } from "@/types";
 
@@ -98,7 +100,7 @@ export async function fetchUserBalances(
   }));
 }
 
-export async function fetchPieData(houseId: number) {
+export async function fetchPieData(houseId: number, month: string) {
   if (!houseId) {
     throw new Error("houseId is required to fetch expenses.");
   }
@@ -111,15 +113,16 @@ export async function fetchPieData(houseId: number) {
       expenses e
     WHERE
       e.house_id = ?
-      AND strftime('%Y-%m', e.date) = strftime('%Y-%m', 'now', '-1 month')
+      AND strftime('%Y-%m', e.date) = ?
     GROUP BY
       e.category
     ORDER BY
       total_amount DESC;
     `;
+  console.log(query);
   const result = await client.execute({
     sql: query,
-    args: [houseId],
+    args: [houseId, month],
   });
   return result.rows.map((row) => ({
     category: row.category as string,

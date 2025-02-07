@@ -13,8 +13,10 @@ export default function RootLayout({
       <body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <SidebarProvider>
-            <AppSidebar />
-            {children}
+            <div className="layout-container">
+              <AppSidebar />
+              <div className="main-content ">{children}</div>
+            </div>
           </SidebarProvider>
         </ThemeProvider>
       </body>

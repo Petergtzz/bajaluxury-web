@@ -82,7 +82,41 @@ export function useTableConfig<T>(data: T[], columns: TableColumn[]) {
       const rawValue = row.getValue(columnId);
       if (!rawValue) return false;
 
-      // Convert rawValue to a string for comparison
+      const normalizedFilter = filterValue.toLowerCase();
+
+      // Special handling for "date" column.
+      if (columnId === "date") {
+        // Ensure rawValue is a valid type:
+        if (
+          typeof rawValue !== "string" &&
+          typeof rawValue !== "number" &&
+          !(rawValue instanceof Date)
+        ) {
+          return false;
+        }
+        const date = new Date(rawValue as string | number | Date);
+        if (isNaN(date.getTime())) return false;
+
+        // Create different string representations:
+        const monthName = date
+          .toLocaleString("en-US", { month: "long" })
+          .toLowerCase();
+        const fullDateString = date
+          .toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })
+          .toLowerCase();
+
+        // Match if the filter text appears in either the month alone or the full date string.
+        return (
+          monthName.includes(normalizedFilter) ||
+          fullDateString.includes(normalizedFilter)
+        );
+      }
+
+      // Fallback for other columns:
       const stringValue =
         typeof rawValue === "number"
           ? rawValue.toString()
@@ -98,10 +132,6 @@ export function useTableConfig<T>(data: T[], columns: TableColumn[]) {
                   .toLowerCase()
               : "";
 
-      // Normalize the filter value
-      const normalizedFilter = filterValue.toLowerCase();
-
-      // Check if the normalized filter matches the stringValue
       return stringValue.includes(normalizedFilter);
     },
   });

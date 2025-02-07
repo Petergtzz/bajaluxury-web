@@ -110,7 +110,9 @@ export function TableComponent<T>({ data, columns }: TableComponentProps<T>) {
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
-                      style={{ width: "150px" }}
+                      style={{
+                        width: "140px",
+                      }}
                       className="px-4"
                     >
                       {flexRender(
