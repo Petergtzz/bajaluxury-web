@@ -1,5 +1,5 @@
 import React from "react";
-import { fetchAllExpenses } from "@/lib/fetchadmin";
+import { fetchAllExpenses } from "@/actions/fetch-admin-data";
 import { TableComponent } from "@/components/data-table/data-table";
 
 export async function AdminExpenses() {

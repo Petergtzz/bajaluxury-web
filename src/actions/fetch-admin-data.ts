@@ -1,6 +1,7 @@
+"use server";
+
 import { client } from "@/lib/turso";
 
-// Admin data
 export async function fetchAllExpenses() {
   const query = `
     SELECT
