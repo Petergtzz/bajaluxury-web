@@ -14,7 +14,7 @@ export default function RootLayout({
       <body>
         <meta
           name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover"
+          content="width=device-width, initial-scale=1, maximum-scale=1"
         />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <SidebarProvider>
