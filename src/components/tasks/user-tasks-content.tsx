@@ -1,20 +1,14 @@
 import React from "react";
 import { Tasks } from "@/types";
 import { TableComponent } from "@/components/data-table/data-table";
-import { fetchTasks } from "@/lib/fetchtasks";
-import { getSession } from "@/lib/session";
+import { fetchUserTasks } from "@/actions/fetch-tasks";
 
-export async function UserTasksContent() {
-  const session = await getSession();
-  if (
-    !session ||
-    session.role !== "user" ||
-    typeof session.houseId !== "number"
-  ) {
-    throw new Error("User session or houseId is missing.");
-  }
+type UserTasksContentProps = {
+  houseId: number;
+};
 
-  const tasks = await fetchTasks(session.houseId);
+export async function UserTasksContent({ houseId }: UserTasksContentProps) {
+  const tasks = await fetchUserTasks(houseId);
 
   const columns = [
     { accessorKey: "concept", header: "Concept" },
