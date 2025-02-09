@@ -10,12 +10,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head />
       <body>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover"
+        />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <SidebarProvider>
             <div className="layout-container">
               <AppSidebar />
-              <div className="main-content ">{children}</div>
+              <div className="main-content">{children}</div>
             </div>
           </SidebarProvider>
         </ThemeProvider>
