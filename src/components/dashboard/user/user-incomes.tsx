@@ -1,8 +1,7 @@
 import React from "react";
-import { UserIncome } from "@/types";
+import { Income } from "@/types";
 import { TableComponent } from "@/components/data-table/data-table";
-import { fetchUserIncomes } from "@/lib/fetchuser";
-import { getSession } from "@/lib/session";
+import { fetchUserIncomes } from "@/actions/fetch-user-data";
 
 type UserIncomesContentProps = {
   houseId: number;
@@ -20,7 +19,7 @@ export async function UserIncomesContent({ houseId }: UserIncomesContentProps) {
 
   return (
     <div>
-      <TableComponent<UserIncome> data={expenses} columns={columns} />
+      <TableComponent<Income> data={expenses} columns={columns} />
     </div>
   );
 }

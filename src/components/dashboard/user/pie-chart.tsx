@@ -153,6 +153,9 @@ export function PieComponent({ pieData }: PieComponentProps) {
                 wrapperStyle={{
                   fontSize: "16px",
                   marginTop: isMobile ? "40px" : undefined,
+                  width: "150px",
+                  whiteSpace: "nowrap",
+                  textOverflow: "ellipsis",
                 }}
               />
             </PieChart>

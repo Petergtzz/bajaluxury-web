@@ -54,7 +54,7 @@ export default function UserBalanceContent({
   return (
     <div className="relative w-full flex flex-col">
       {/* Month Selector */}
-      <div className="w-full flex md:justify-end">
+      <div className="w-full pt-3 flex md:justify-start">
         <MonthSelector
           defaultValue={selectedMonth}
           onMonthAction={handleMonthAction}

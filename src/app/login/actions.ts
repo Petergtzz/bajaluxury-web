@@ -61,7 +61,7 @@ export async function login(prevState: any, formData: FormData) {
       };
     }
 
-    console.log("user.user_id:", user.user_id, typeof user.user_id);
+    // console.log("user.user_id:", user.user_id, typeof user.user_id);
     await createSession(
       Number(user.user_id),
       user.role as "admin" | "user",

@@ -1,7 +1,7 @@
 import React from "react";
-import { UserExpense } from "@/types";
+import { Expense } from "@/types";
 import { TableComponent } from "@/components/data-table/data-table";
-import { fetchUserExpenses } from "@/lib/fetchuser";
+import { fetchUserExpenses } from "@/actions/fetch-user-data";
 
 type UserExpensesContentProps = {
   houseId: number;
@@ -23,7 +23,7 @@ export async function UserExpensesContent({
 
   return (
     <div>
-      <TableComponent<UserExpense> data={expenses} columns={columns} />
+      <TableComponent<Expense> data={expenses} columns={columns} />
     </div>
   );
 }

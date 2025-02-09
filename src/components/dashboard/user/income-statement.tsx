@@ -14,6 +14,7 @@ type ExpenseItem = {
 
 export function IncomeStatement({ monthlyExpenses = [] }: ExpenseItem) {
   const exchangeRate = 19.0;
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
 
   // Group expenses by category
   const groupedExpenses = monthlyExpenses.reduce(
@@ -39,7 +40,6 @@ export function IncomeStatement({ monthlyExpenses = [] }: ExpenseItem) {
     (sum, item) => sum + item.total,
     0,
   );
-  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
 
   const toggleExpand = (category: string) => {
     setExpanded((prev) => ({ ...prev, [category]: !prev[category] }));
@@ -63,7 +63,7 @@ export function IncomeStatement({ monthlyExpenses = [] }: ExpenseItem) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex tracking-tight text-sm font-medium py-2 border-b border-gray-700">
+        <div className="flex tracking-tight text-sm font-medium py-2 border-b border-gray-700 dark:border-gray-100">
           <div className="w-1/2 px-4">Category</div>
           <div className="w-1/4 px-4 text-right">Total Cost</div>
           <div className="w-1/4 px-4 text-right">% of Expenses</div>
@@ -95,9 +95,9 @@ export function IncomeStatement({ monthlyExpenses = [] }: ExpenseItem) {
               data.concepts.map((concept, index) => (
                 <div
                   key={index}
-                  className="flex text-sm py-2 border-b border-gray-200 bg-gray-100 dark:bg-gray-800"
+                  className="flex text-sm py-2 border-b border-gray-200 bg-gray-200 dark:bg-gray-700"
                 >
-                  <div className="w-1/2 px-8">- {concept.concept}</div>
+                  <div className="w-1/2 px-8"> - {concept.concept}</div>
                   <div className="w-1/4 px-4 text-right">
                     <span className="mr-1">$</span>
                     {formatNumber(concept.total_amount)}
@@ -110,7 +110,7 @@ export function IncomeStatement({ monthlyExpenses = [] }: ExpenseItem) {
           </div>
         ))}
 
-        <div className="flex tracking-tight text-sm font-bold py-2 border-t border-gray-700">
+        <div className="flex tracking-tight text-sm font-bold py-2 border-t border-gray-700 ">
           <div className="w-1/2 px-4">Total</div>
           <div className="w-1/4 px-4 text-right">
             <span className="mr-1">$</span>

@@ -1,10 +1,10 @@
 import React from "react";
 import { fetchAllBalances } from "@/actions/fetch-admin-data";
 import { TableComponent } from "@/components/data-table/data-table";
+import { Balance } from "@/types";
 
 export async function AdminBalances() {
-  const expenses = await fetchAllBalances();
-  const plainBalances = JSON.parse(JSON.stringify(expenses));
+  const balances = await fetchAllBalances();
 
   const columns = [
     { accessorKey: "house", header: "House" },
@@ -13,7 +13,7 @@ export async function AdminBalances() {
 
   return (
     <div>
-      <TableComponent data={plainBalances} columns={columns} />
+      <TableComponent<Balance> data={balances} columns={columns} />
     </div>
   );
 }

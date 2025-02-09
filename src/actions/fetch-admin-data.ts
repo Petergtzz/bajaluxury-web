@@ -1,15 +1,16 @@
 "use server";
 
 import { client } from "@/lib/turso";
+import { Expense, Income, Balance } from "@/types";
 
-export async function fetchAllExpenses() {
+export async function fetchAllExpenses(): Promise<Expense[]> {
   const query = `
     SELECT
       h.address AS house,
       e.date,
       e.concept,
       e.category,
-      e.payment_method,
+      e.payment_method AS method,
       e.amount,
       e.description
     FROM
@@ -20,15 +21,23 @@ export async function fetchAllExpenses() {
       e.date DESC
     `;
   const result = await client.execute(query);
-  return result.rows;
+  return result.rows.map((row) => ({
+    house: row.house as string,
+    date: row.date as string,
+    category: row.category as string,
+    concept: row.concept as string,
+    method: row.method as string,
+    amount: Number(row.amount),
+    description: row.description as string,
+  }));
 }
 
-export async function fetchAllIncomes() {
+export async function fetchAllIncomes(): Promise<Income[]> {
   const query = `
     SELECT
       h.address AS house,
       i.date,
-      i.payment_method,
+      i.payment_method AS method,
       i.amount,
       i.description
     FROM
@@ -39,10 +48,16 @@ export async function fetchAllIncomes() {
       i.date desc
     `;
   const result = await client.execute(query);
-  return result.rows;
+  return result.rows.map((row) => ({
+    house: row.house as string,
+    date: row.date as string,
+    method: row.method as string,
+    amount: Number(row.amount),
+    description: row.description as string,
+  }));
 }
 
-export async function fetchAllBalances() {
+export async function fetchAllBalances(): Promise<Balance[]> {
   const query = `
     SELECT
       h.address AS house,
@@ -53,5 +68,8 @@ export async function fetchAllBalances() {
       houses h ON b.house_id = h.house_id
     `;
   const result = await client.execute(query);
-  return result.rows;
+  return result.rows.map((row) => ({
+    house: row.house as string,
+    balance: Number(row.balance),
+  }));
 }

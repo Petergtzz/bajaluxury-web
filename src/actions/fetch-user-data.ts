@@ -1,9 +1,79 @@
 "use server";
 
-import { UserBalance } from "@/types";
+import { Balance, Income, Expense } from "@/types";
 import { client } from "@/lib/turso";
 
-export async function fetchBalance(houseId: number): Promise<UserBalance[]> {
+export async function fetchUserExpenses(houseId: number): Promise<Expense[]> {
+  if (!houseId) {
+    throw new Error("houseId is required to fetch expenses.");
+  }
+
+  const query = `
+    SELECT
+      h.address AS house,
+      e.date,
+      e.concept,
+      e.category,
+      e.payment_method AS method,
+      e.amount,
+      e.description
+    FROM
+      expenses e
+    JOIN
+      houses h ON e.house_id = h.house_id
+    WHERE
+      e.house_id = ?
+    ORDER BY
+      e.date DESC;
+    `;
+  const result = await client.execute({
+    sql: query,
+    args: [houseId],
+  });
+
+  return result.rows.map((row) => ({
+    house: row.house as string,
+    date: row.date as string,
+    category: row.category as string,
+    concept: row.concept as string,
+    method: row.method as string,
+    amount: Number(row.amount),
+    description: row.description as string,
+  }));
+}
+
+export async function fetchUserIncomes(houseId: number): Promise<Income[]> {
+  if (!houseId) {
+    throw new Error("houseId is required to fetch expenses.");
+  }
+
+  const query = `
+    SELECT
+      h.address AS house,
+      i.date,
+      i.payment_method AS method,
+      i.amount,
+      i.description
+    FROM
+      incomes i
+    JOIN
+      houses h ON i.house_id = h.house_id
+    WHERE
+      i.house_id = ?
+    ORDER BY
+      i.date DESC;
+    `;
+  const result = await client.execute({ sql: query, args: [houseId] });
+  return result.rows.map((row) => ({
+    house: row.house as string,
+    date: row.date as string,
+    method: row.method as string,
+    amount: Number(row.amount),
+    description: row.description as string,
+  }));
+}
+
+export async function fetchBalance(houseId: number): Promise<Balance[]> {
   if (!houseId) {
     throw new Error("houseId is required to fetch expenses.");
   }
