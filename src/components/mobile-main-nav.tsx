@@ -30,7 +30,7 @@ export default function MobileNav() {
               : "translate-y-0 opacity-0 scale-0"
           }`}
       >
-        <div className="flex h-full w-full items-center justify-center bg-red-500">
+        <div className="flex h-full w-full items-center justify-center">
           <HomeNav />
         </div>
       </div>

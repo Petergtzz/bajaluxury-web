@@ -30,7 +30,7 @@ export function HomeNav() {
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <SidebarMenuButton>
+            <SidebarMenuButton className="flex items-center justify-center">
               <Home className="size-4" size={16} strokeWidth={1} />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
