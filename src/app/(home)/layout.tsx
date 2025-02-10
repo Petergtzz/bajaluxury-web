@@ -2,6 +2,7 @@ import "../globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
+import { NavWrapper } from "@/components/nav-wrapper";
 
 export default function RootLayout({
   children,
@@ -11,15 +12,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
       <body>
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1"
-        />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <SidebarProvider>
             <div className="layout-container">
-              <AppSidebar />
+              <NavWrapper />
               <div className="main-content">{children}</div>
             </div>
           </SidebarProvider>

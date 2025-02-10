@@ -13,6 +13,7 @@ export default function Main() {
         loop
         muted
         playsInline
+        webkit-playsinline="true"
         preload="auto"
       />
       <div className="overlay" />

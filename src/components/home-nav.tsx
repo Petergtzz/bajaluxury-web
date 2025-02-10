@@ -31,7 +31,7 @@ export function HomeNav() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton>
-              <Home className="size-4" size={16} strokeWidth={1.0} />
+              <Home className="size-4" size={16} strokeWidth={1} />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent

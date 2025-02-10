@@ -14,10 +14,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Baja Luxury Management",
-  description: "Property management for high-end homes in Cabo",
+  description: "You Dream it, We make it Happen",
 };
-
-// const footer = <footer></footer>;
 
 export default function RootLayout({
   children,
