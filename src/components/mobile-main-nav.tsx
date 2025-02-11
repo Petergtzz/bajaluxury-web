@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { Database, PencilRuler, Phone, Plus } from "lucide-react";
-import { HomeNav } from "@/components/home-nav"; // adjust path as needed
+import { HomeNav } from "@/components/home-nav";
 
 export default function MobileNav() {
   const [open, setOpen] = React.useState(false);

@@ -61,15 +61,17 @@ export function PieComponent({ pieData }: PieComponentProps) {
         ];
 
       return (
-        <div className="bg-white p-3 rounded-lg shadow-md border border-gray-200">
+        <div className="bg-white dark:bg-gray-950 p-3 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
           <div className="flex items-center space-x-2">
             <div
               className="w-2 h-2 rounded-full"
               style={{ backgroundColor: color }}
             />
-            <p className="tracking-tight text-sm font-semibold">{category}</p>
+            <p className="tracking-tight text-sm font-semibold text-gray-900 dark:text-gray-100">
+              {category}
+            </p>
           </div>
-          <p className="tracking-tight text-sm font-medium mt-1">
+          <p className="tracking-tight text-sm font-medium mt-1 text-gray-900 dark:text-gray-200">
             Amount: $ {formatAmount(total)} MXN
           </p>
         </div>
@@ -92,6 +94,21 @@ export function PieComponent({ pieData }: PieComponentProps) {
     "#001219ff",
   ];
 
+  const legendWrapperStyle = isMobile
+    ? {
+        fontSize: "14px",
+        width: "100%",
+        whiteSpace: "normal",
+        textAlign: "center",
+        marginTop: "10px",
+      }
+    : {
+        fontSize: "16px",
+        width: "150px",
+        whiteSpace: "nowrap",
+        textOverflow: "ellipsis",
+      };
+
   const totalAmount = chartData.reduce((acc, item) => acc + item.total, 0);
 
   return (
@@ -108,7 +125,13 @@ export function PieComponent({ pieData }: PieComponentProps) {
       <CardContent>
         <ChartContainer config={chartConfig}>
           <ResponsiveContainer>
-            <PieChart>
+            <PieChart
+              margin={{
+                top: 20,
+
+                bottom: isMobile ? 30 : 20,
+              }}
+            >
               <Tooltip content={<CustomTooltip />} />
               <Pie
                 data={chartData}
@@ -117,7 +140,7 @@ export function PieComponent({ pieData }: PieComponentProps) {
                 labelLine={false}
                 label={({ cx, cy, midAngle, outerRadius, value, index }) => {
                   const percentage = (value / totalAmount) * 100;
-                  if (percentage <= 0.5) return null; // Hide labels for percentages < 0.01%
+                  if (percentage <= 0.5) return null; // Hide labels for percentages < 0.05%
 
                   const RADIAN = Math.PI / 180;
                   const radius = outerRadius + 25; // Move labels 20 units outside the pie
@@ -145,19 +168,34 @@ export function PieComponent({ pieData }: PieComponentProps) {
                   />
                 ))}
               </Pie>
-              <Legend
-                layout={isMobile ? "horizontal" : "vertical"}
-                align={isMobile ? "center" : "right"}
-                verticalAlign={isMobile ? "bottom" : "middle"}
-                iconSize={8}
-                wrapperStyle={{
-                  fontSize: "16px",
-                  marginTop: isMobile ? "40px" : undefined,
-                  width: "150px",
-                  whiteSpace: "nowrap",
-                  textOverflow: "ellipsis",
-                }}
-              />
+              {isMobile ? (
+                <Legend
+                  layout="vertical"
+                  align="right"
+                  verticalAlign="middle"
+                  iconSize={8}
+                  wrapperStyle={{
+                    fontSize: "10px",
+                    width: "80px",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                />
+              ) : (
+                <Legend
+                  layout="vertical"
+                  align="right"
+                  verticalAlign="middle"
+                  iconSize={8}
+                  wrapperStyle={{
+                    fontSize: "16px",
+                    width: "150px",
+                    whiteSpace: "nowrap",
+                    textOverflow: "ellipsis",
+                  }}
+                />
+              )}
             </PieChart>
           </ResponsiveContainer>
         </ChartContainer>
