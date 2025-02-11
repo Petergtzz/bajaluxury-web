@@ -24,6 +24,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 type PieComponentProps = {
   pieData: { category: string; total_amount: number }[];
+  month: string;
 };
 
 type CustomTooltipProps = {
@@ -32,8 +33,12 @@ type CustomTooltipProps = {
   label?: string;
 };
 
-export function PieComponent({ pieData }: PieComponentProps) {
+export function PieComponent({ pieData, month }: PieComponentProps) {
   const isMobile = useIsMobile();
+
+  // Convert date to long format
+  const [year, mon] = month.split("-");
+  const displayedDate = new Date(Number(year), Number(mon) - 1, 1);
 
   const chartData = pieData.map((expense) => ({
     category: expense.category,
@@ -116,7 +121,7 @@ export function PieComponent({ pieData }: PieComponentProps) {
       <CardHeader className="items-center pb-0">
         <CardTitle>Monthly Expenses</CardTitle>
         <CardDescription>
-          {new Date().toLocaleString("default", {
+          {displayedDate.toLocaleDateString("default", {
             month: "long",
             year: "numeric",
           })}

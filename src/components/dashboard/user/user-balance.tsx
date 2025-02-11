@@ -63,7 +63,10 @@ export default function UserBalanceContent({
       <div className="w-full my-5 flex flex-col md:flex-row gap-4">
         {/* Income Statement - Takes Full Height */}
         <div className="w-full md:w-1/2 flex flex-col">
-          <IncomeStatement monthlyExpenses={data.incomeStatementData} />
+          <IncomeStatement
+            monthlyExpenses={data.incomeStatementData}
+            month={selectedMonth}
+          />
         </div>
 
         {/* Right Side: Balance Cards & Pie Chart */}
@@ -79,7 +82,7 @@ export default function UserBalanceContent({
           </div>
           {/* Pie Chart - Same Width as Balance Cards */}
           <div className="w-full">
-            <PieComponent pieData={data.pieData} />
+            <PieComponent pieData={data.pieData} month={selectedMonth} />
           </div>
         </div>
       </div>

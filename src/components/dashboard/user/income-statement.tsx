@@ -10,11 +10,16 @@ type ExpenseItem = {
     concept: string;
     total_amount: number;
   }[];
+  month: string;
 };
 
-export function IncomeStatement({ monthlyExpenses = [] }: ExpenseItem) {
+export function IncomeStatement({ monthlyExpenses = [], month }: ExpenseItem) {
   const exchangeRate = 19.0;
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+
+  // Convert date to long format
+  const [year, mon] = month.split("-");
+  const displayedDate = new Date(Number(year), Number(mon) - 1, 1);
 
   // Group expenses by category
   const groupedExpenses = monthlyExpenses.reduce(
@@ -56,7 +61,7 @@ export function IncomeStatement({ monthlyExpenses = [] }: ExpenseItem) {
       <CardHeader className="pb-2">
         <CardTitle className="tracking-tight text-sm font-medium">
           Income Statement (USD) -{" "}
-          {new Date().toLocaleString("default", {
+          {displayedDate.toLocaleDateString("default", {
             month: "long",
             year: "numeric",
           })}{" "}
