@@ -13,9 +13,8 @@ export default async function TasksPage() {
   }
 
   const role = session?.role ?? "user";
-  // const tabs = TABS_CONFIG[role] || [];
 
-  // Hanlde houseId only for user role
+  // Handle houseId only for user role
   const houseId = role === "user" ? session.houseId : undefined;
 
   return (
