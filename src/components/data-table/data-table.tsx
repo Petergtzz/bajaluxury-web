@@ -2,15 +2,6 @@
 
 import * as React from "react";
 import { flexRender } from "@tanstack/react-table";
-import { ChevronDown, DownloadIcon } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import {
   Table,
@@ -20,10 +11,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { exportTableToCSV } from "@/lib/export";
 import { DataPagination } from "./data-table-pagination";
 import { DataTableColumnHeader } from "./data-table-header";
 import { useTableConfig } from "@/hooks/use-table-config";
+import { ActionButtons } from "./data-table-action-buttons";
 
 type TableColumn = {
   accessorKey: string;
@@ -35,9 +26,14 @@ type TableColumn = {
 type TableComponentProps<T> = {
   data: T[];
   columns: TableColumn[];
+  isAdmin?: boolean;
 };
 
-export function TableComponent<T>({ data, columns }: TableComponentProps<T>) {
+export function TableComponent<T>({
+  data,
+  columns,
+  isAdmin = false,
+}: TableComponentProps<T>) {
   const { table, globalFilter, setGlobalFilter } = useTableConfig(
     data,
     columns,
@@ -52,40 +48,7 @@ export function TableComponent<T>({ data, columns }: TableComponentProps<T>) {
           onChange={(event) => setGlobalFilter(event.target.value)}
           className="max-w-sm"
         />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Columns <ChevronDown size={16} strokeWidth={1.0} />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => (
-                <DropdownMenuCheckboxItem
-                  key={column.id}
-                  className="capitalize tracking-tight text-sm font-medium"
-                  checked={column.getIsVisible()}
-                  onCheckedChange={(value) => column.toggleVisibility(!!value)}
-                >
-                  {column.id}
-                </DropdownMenuCheckboxItem>
-              ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <Button
-          variant="outline"
-          onClick={() =>
-            exportTableToCSV(table, {
-              filename: "data",
-              excludeColumns: ["select", "actions"],
-            })
-          }
-        >
-          <DownloadIcon size={16} strokeWidth={1.0} />
-          Export
-        </Button>
+        <ActionButtons table={table} isAdmin={isAdmin} />
       </div>
       <div className="rounded-md border">
         <Table>
