@@ -72,7 +72,7 @@ export function useTableConfig<T>(data: T[], columns: TableColumn[]) {
     const normalizedFilter = filterValue.toLowerCase();
 
     if (columnId === "date") {
-      // Handle date column separately.
+      // Handle date column separately.
       const date = new Date(rawValue);
       if (isNaN(date.getTime())) return false;
       const monthName = date

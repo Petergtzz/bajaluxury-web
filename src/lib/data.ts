@@ -9,7 +9,7 @@ export const localLineColumns = [
   },
 ];
 
-export const highendRestaurantColumns = [
+export const restaurantColumns = [
   {
     header: "Name",
     accessorKey: "name",
@@ -24,14 +24,14 @@ export const highendRestaurantColumns = [
   },
 ];
 
-export const localRestaurantColumns = [
+export const generalColumns = [
   {
     header: "Name",
     accessorKey: "name",
   },
   {
-    header: "Location",
-    accessorKey: "location",
+    header: "Category",
+    accessorKey: "category",
   },
   {
     header: "Phone",
@@ -58,6 +58,10 @@ export const localLineNumbers = [
   },
   {
     name: "Querencia",
+    phone: "624 145 6600",
+  },
+  {
+    name: "General",
     phone: "624 145 6600",
   },
 ];
@@ -315,5 +319,143 @@ export const localRestaurants = [
     name: "PEZGALLO",
     location: "Near Marina San Jose del Cabo",
     phone: "624 184 8628",
+  },
+];
+
+export const generalNumbers = [
+  {
+    name: "Brasilia",
+    category: "Massage, Manicure & Pedicure",
+    phone: "624 129 5671",
+  },
+  {
+    name: "Maggie Briseño",
+    category: "Pilates Instructor",
+    phone: "624 176 0173",
+  },
+  {
+    name: "Pilar Baeza",
+    category: "Barre Instructor",
+    phone: "624 235 3015",
+  },
+  {
+    name: "Fernanda Covelo",
+    category: "Yoga Instructor",
+    phone: "554 880 3951",
+  },
+  {
+    name: "Azul Federighi",
+    category: "Yoga Instructor",
+    phone: "624 139 4623",
+  },
+  {
+    name: "Alexis Diuran",
+    category: "Spray Tanning",
+    phone: "US 714 357 4363",
+  },
+  {
+    name: "Felix Abarca",
+    category: "Surf Instructor",
+    phone: "624 205 1890",
+  },
+  {
+    name: "Ricardo",
+    category: "Surf Instructor",
+    phone: "624 358 7166",
+  },
+  {
+    name: "Raul Coris",
+    category: "Swim Instructor",
+    phone: "624 109 1975",
+  },
+  {
+    name: "Dog Van",
+    category: "Dog Van",
+    phone: "624 125 3612",
+  },
+  {
+    name: "Vanessa de la Peña",
+    category: "Hairdresser",
+    phone: "664 203 3833",
+  },
+  {
+    name: "Clean House",
+    category: "Deep Cleaning",
+    phone: "624 158 8696",
+  },
+  {
+    name: "Rafael",
+    category: "Personal Driver",
+    phone: "624 242 0751",
+  },
+  {
+    name: "Mal Corte",
+    category: "Framing",
+    phone: "624 156 6696",
+  },
+  {
+    name: "Meritxell Anhelo",
+    category: "Astrology, Access Consciousness",
+    phone: "552 129 1630",
+  },
+  {
+    name: "Mariana",
+    category: "Sound Healing Therapy",
+    phone: "55 9197 3167",
+  },
+  {
+    name: "Daniela Hernandez",
+    category: "Photographer",
+    phone: "624 128 2965",
+  },
+  {
+    name: "California Ranch Market",
+    category: "Grocery Store",
+    phone: "624 191 6735",
+  },
+  {
+    name: "Tez Abbott",
+    category: "Fresh Dinner Delivery",
+    phone: "624 117 9492",
+  },
+  {
+    name: "Dr. Jose Ramon Barragan",
+    category: "Pediatrician",
+    phone: "624 175 0358",
+  },
+  {
+    name: "Dr. David Cepeda",
+    category: "Pediatrician",
+    phone: "55 3038 5877",
+  },
+  {
+    name: "Dr. Luis Landeros",
+    category: "Ophthalmologist",
+    phone: "624 128 9655",
+  },
+  {
+    name: "Dr. Musi",
+    category: "General Doctor",
+    phone: "624 122 4814",
+  },
+  {
+    name: "Eduardo Chavez",
+    category: "Mexican Documents",
+    phone: "624 355 7338",
+  },
+  {
+    name: "Sofia Parada",
+    category: "Nanny",
+    phone: "624 129 6688",
+  },
+  {
+    name: "Ashley Hamill",
+    category: "Nanny",
+    phone: "US 757 675 6234",
+  },
+  {
+    name: "Jackie Stevan",
+    category: "Tequila Tasting",
+    phone: "55 5252 6609",
   },
 ];

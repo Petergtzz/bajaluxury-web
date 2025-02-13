@@ -9,9 +9,10 @@ import {
   localLineNumbers,
   highendRestaurants,
   localRestaurants,
+  generalNumbers,
+  generalColumns,
   localLineColumns,
-  localRestaurantColumns,
-  highendRestaurantColumns,
+  restaurantColumns,
 } from "@/lib/data";
 
 export default function PhoneBookPage() {
@@ -31,21 +32,22 @@ export default function PhoneBookPage() {
           <TabsTrigger value="fine dinning">Fine Dinning</TabsTrigger>
           <TabsTrigger value="eateries">Eateries</TabsTrigger>
           <TabsTrigger value="contacts">Contacts</TabsTrigger>
+          <TabsTrigger value="general">General</TabsTrigger>
         </TabsList>
         <TabsContent value="fine dinning">
           <TableComponent
             data={highendRestaurants}
-            columns={highendRestaurantColumns}
+            columns={restaurantColumns}
           />
         </TabsContent>
         <TabsContent value="eateries">
-          <TableComponent
-            data={localRestaurants}
-            columns={localRestaurantColumns}
-          />
+          <TableComponent data={localRestaurants} columns={restaurantColumns} />
         </TabsContent>
         <TabsContent value="contacts">
           <TableComponent data={localLineNumbers} columns={localLineColumns} />
+        </TabsContent>
+        <TabsContent value="general">
+          <TableComponent data={generalNumbers} columns={generalColumns} />
         </TabsContent>
       </Tabs>
     </SidebarInset>
