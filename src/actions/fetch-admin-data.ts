@@ -6,6 +6,7 @@ import { Expense, Income, Balance } from "@/types";
 export async function fetchAllExpenses(): Promise<Expense[]> {
   const query = `
     SELECT
+      e.expense_id AS id,
       h.address AS house,
       e.date,
       e.concept,
@@ -18,10 +19,11 @@ export async function fetchAllExpenses(): Promise<Expense[]> {
     JOIN
       houses h ON e.house_id = h.house_id
     ORDER BY
-      e.date DESC
+      id DESC
     `;
   const result = await client.execute(query);
   return result.rows.map((row) => ({
+    id: row.id as number,
     house: row.house as string,
     date: row.date as string,
     category: row.category as string,
@@ -35,6 +37,7 @@ export async function fetchAllExpenses(): Promise<Expense[]> {
 export async function fetchAllIncomes(): Promise<Income[]> {
   const query = `
     SELECT
+      i.income_id AS id,
       h.address AS house,
       i.date,
       i.payment_method AS method,
@@ -44,11 +47,12 @@ export async function fetchAllIncomes(): Promise<Income[]> {
       incomes i
     JOIN
       houses h ON i.house_id = h.house_id
-    order by
-      i.date desc
+    ORDER BY
+      id DESC
     `;
   const result = await client.execute(query);
   return result.rows.map((row) => ({
+    id: row.id as number,
     house: row.house as string,
     date: row.date as string,
     method: row.method as string,
