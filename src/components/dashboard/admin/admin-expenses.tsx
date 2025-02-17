@@ -5,6 +5,7 @@ import { Expense } from "@/types";
 
 export async function AdminExpenses() {
   const expenses = await fetchAllExpenses();
+  const isAdmin = true;
 
   const columns = [
     { accessorKey: "house", header: "House" },
@@ -18,7 +19,11 @@ export async function AdminExpenses() {
 
   return (
     <div>
-      <TableComponent<Expense> data={expenses} columns={columns} />
+      <TableComponent<Expense>
+        data={expenses}
+        columns={columns}
+        isAdmin={isAdmin}
+      />
     </div>
   );
 }
