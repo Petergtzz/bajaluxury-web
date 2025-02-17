@@ -73,13 +73,11 @@ export function useTableConfig<T>(data: T[], columns: TableColumn[]) {
 
     if (columnId === "date") {
       // Handle date column separately.
-      const date = new Date(rawValue);
-      if (isNaN(date.getTime())) return false;
-      const monthName = date
-        .toLocaleString("en-US", { month: "long" })
-        .toLowerCase();
+      const date = DateTime.fromISO(rawValue);
+      if (!date.isValid) return false;
+      const monthName = date.toLocaleString({ month: "long" }).toLowerCase();
       const fullDateString = date
-        .toLocaleDateString("en-US", {
+        .toLocaleString({
           year: "numeric",
           month: "long",
           day: "numeric",
