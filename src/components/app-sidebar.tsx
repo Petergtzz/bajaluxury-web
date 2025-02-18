@@ -1,15 +1,14 @@
 "use client";
 
 import * as React from "react";
-
+import { HomeNav } from "@/components/home-nav";
 import {
   Sidebar,
-  SidebarHeader,
   SidebarGroupContent,
+  SidebarHeader,
 } from "@/components/ui/sidebar";
-import { HomeNav } from "@/components/home-nav";
-import { NavMain } from "./nav-main";
 import { items } from "@/config/docs";
+import { NavMain } from "./nav-main";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (

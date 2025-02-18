@@ -1,9 +1,10 @@
 "use client";
 
-import * as React from "react";
+import { Database, PencilRuler, Phone, Plus, Home } from "lucide-react";
 import Link from "next/link";
-import { Database, PencilRuler, Phone, Plus } from "lucide-react";
-import { HomeNav } from "@/components/home-nav";
+import * as React from "react";
+import { Button } from "./ui/button";
+import { MobileHomeNav } from "./mobile-home-nav";
 
 export default function MobileNav() {
   const [open, setOpen] = React.useState(false);
@@ -13,69 +14,68 @@ export default function MobileNav() {
   return (
     <nav className="fixed bottom-4 right-4 z-50">
       {/* Static Plus Button */}
-      <button
-        onClick={toggleMenu}
+      <Button
         className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] transition-transform duration-500 hover:rotate-45"
+        onClick={toggleMenu}
       >
-        <Plus size={16} strokeWidth={1.0} />
-      </button>
-
-      {/* Floating Home Button, wrapping HomeNav in a circular container */}
-      <div
-        onClick={closeMenu}
-        className={`absolute top-0 right-0 flex h-12 w-12 items-center justify-center rounded-full
-          bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] transition-all duration-300 ${
-            open
-              ? "translate-y-[-80px] opacity-100 scale-100"
-              : "translate-y-0 opacity-0 scale-0"
-          }`}
-      >
-        <div className="flex h-full w-full items-center justify-center">
-          <HomeNav />
-        </div>
-      </div>
+        <Plus className="h-4 w-4 stroke-1" />
+      </Button>
 
       {/* Floating Icon Buttons */}
-      <Link href="/dashboard">
-        <button
+      <div>
+        <Button
+          className={`absolute top-0 right-0 flex h-12 w-12 items-center justify-center rounded-full
+            bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] transition-transform duration-300 ${
+              open
+                ? "translate-y-[-80px] opacity-100 scale-100"
+                : "translate-y-0 opacity-0 scale-0"
+            }`}
           onClick={closeMenu}
+        >
+          <MobileHomeNav />
+        </Button>
+      </div>
+
+      <Link href="/dashboard">
+        <Button
           className={`absolute top-0 right-0 flex h-12 w-12 items-center justify-center rounded-full
             bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] transition-transform duration-300 ${
               open
                 ? "translate-y-[-160px] opacity-100 scale-100"
                 : "translate-y-0 opacity-0 scale-0"
             }`}
+          onClick={closeMenu}
         >
-          <Database size={16} strokeWidth={1.0} />
-        </button>
+          <Database className="h-4 w-4 stroke-1" />
+        </Button>
       </Link>
 
       <Link href="/tasks">
-        <button
-          onClick={closeMenu}
+        <Button
           className={`absolute top-0 right-0 flex h-12 w-12 items-center justify-center rounded-full
             bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] transition-transform duration-300 ${
               open
                 ? "translate-y-[-240px] opacity-100 scale-100"
                 : "translate-y-0 opacity-0 scale-0"
             }`}
+          onClick={closeMenu}
         >
-          <PencilRuler size={16} strokeWidth={1.0} />
-        </button>
+          <PencilRuler className="h-4 w-4 stroke-1" />
+        </Button>
       </Link>
 
       <Link href="/phonebook">
-        <button
-          onClick={closeMenu}
+        <Button
           className={`absolute top-0 right-0 flex h-12 w-12 items-center justify-center rounded-full
             bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] transition-transform duration-300 ${
               open
                 ? "translate-y-[-320px] opacity-100 scale-100"
                 : "translate-y-0 opacity-0 scale-0"
             }`}
+          onClick={closeMenu}
         >
-          <Phone size={16} strokeWidth={1.0} />
-        </button>
+          <Phone className="h-4 w-4 stroke-1" />
+        </Button>
       </Link>
 
       {/* SVG Filter for Gooey Effect */}

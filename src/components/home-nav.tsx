@@ -1,8 +1,7 @@
 "use client";
 
-import { Home, LogOut, Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
-
+import { logout } from "@/app/login/actions";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,7 +14,8 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { logout } from "@/app/login/actions";
+import { Home, LogOut, Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
 
 export function HomeNav() {
   const { isMobile } = useSidebar();
@@ -31,38 +31,39 @@ export function HomeNav() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton className="flex items-center justify-center">
-              <Home className="size-4" size={16} strokeWidth={1} />
+              <Home className="w-4 h-4 stroke-1" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-[--radix-dropdown-menu-trigger-width] min-w-48 rounded-lg p-2"
+            className="w-[--radix-dropdown-menu-trigger-width] min-w-48 rounded-lg p-2 mt-1"
             side={isMobile ? "bottom" : "right"}
             align="end"
             sideOffset={4}
           >
             <div className="space-y-2">
               <DropdownMenuItem className="p-1">
-                <button
+                <Button
+                  variant="ghost"
+                  className="h-4 p-1"
                   onClick={toggleTheme}
-                  className="flex items-center gap-2"
                 >
                   {theme === "dark" ? (
-                    <Sun className="size-4" size={16} strokeWidth={1.0} />
+                    <Sun className="w-4 h-4 stroke-1" />
                   ) : (
-                    <Moon className="size-4" size={16} strokeWidth={1.0} />
+                    <Moon className="w-4 h-4 stroke-1" />
                   )}
                   <span>
                     {theme === "dark"
                       ? "Switch to light mode"
                       : "Switch to dark mode"}{" "}
                   </span>
-                </button>
+                </Button>
               </DropdownMenuItem>
               <DropdownMenuItem className="p-1">
-                <div className="flex items-center gap-2">
-                  <LogOut className="size-4" size={16} strokeWidth={1.0} />
-                  <button onClick={() => logout()}>Log out</button>
-                </div>
+                <Button variant="ghost" className="h-4 p-1" onClick={logout}>
+                  <LogOut className="w-4 h-4 stroke-1" />
+                  Log out
+                </Button>
               </DropdownMenuItem>
             </div>
           </DropdownMenuContent>
