@@ -1,3 +1,5 @@
+"use server";
+
 import { client } from "@/lib/turso";
 import { Tasks } from "@/types";
 

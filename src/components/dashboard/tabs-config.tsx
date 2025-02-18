@@ -29,11 +29,15 @@ export const TABS_CONFIG: TabsConfig = {
     {
       value: "incomes",
       label: "Incomes",
-      content: (houseId: number) => <UserIncomesContent houseId={houseId} />,
+      content: (houseId) => <UserIncomesContent houseId={houseId} />,
     },
   ],
   admin: [
-    { value: "balances", label: "Balances", content: () => <AdminBalances /> },
+    {
+      value: "balances",
+      label: "Balances",
+      content: () => <AdminBalances />,
+    },
     { value: "expenses", label: "Expenses", content: () => <AdminExpenses /> },
     { value: "incomes", label: "Incomes", content: () => <AdminIncomes /> },
   ],

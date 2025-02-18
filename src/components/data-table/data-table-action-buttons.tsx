@@ -1,3 +1,4 @@
+import { useState, useCallback } from "react";
 import {
   ChevronDown,
   DownloadIcon,
@@ -5,8 +6,11 @@ import {
   Plus,
   SaveAll,
   RefreshCcw,
+  Usb,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { Toolbar, ToolbarButton } from "@/components/data-table/tool-bar";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -21,37 +25,55 @@ type ActionButtonProps = {
 };
 
 export function ActionButtons({ table, isAdmin }: ActionButtonProps) {
-  function handleAddEntry() {
-    console.log("Add Entry");
-  }
+  const [changeNumber, setChangeNumber] = useState(0);
+  const [isExecuting, setIsExecuting] = useState(false);
+
+  const onCommit = async () => {
+    setChangeNumber(0);
+  };
+
+  const onDiscard = () => {
+    setChangeNumber(0);
+  };
+
+  const onNewRow = useCallback(() => {
+    table.addRow();
+  }, [table]);
 
   return (
-    <div className="flex felx-col sm:flex-row items-center gap-3 ml-auto">
+    <div className="flex felx-col sm:flex-row gap-3 ml-auto">
       {/* ONLY show this to admin*/}
       {isAdmin && (
-        <>
-          <div className="flex justify-end gap-3">
-            <Button variant="ghost">
-              <SaveAll size={16} strokeWidth={1.0} />
-              Commit
-            </Button>
-            <Button variant="ghost" className="text-red-500">
-              Discard Change
-            </Button>
-          </div>
+        <Toolbar>
+          <ToolbarButton
+            text="Commit"
+            icon={<SaveAll size={16} strokeWidth={1.0} />}
+            disabled={!changeNumber || isExecuting}
+            loading={isExecuting}
+            onClick={onCommit}
+            badge={changeNumber ? changeNumber.toString() : ""}
+          />
+          <ToolbarButton
+            text="Discard Change"
+            destructive
+            disabled={!changeNumber}
+            onClick={onDiscard}
+          />
 
-          <div className="flex justify-end gap-3">
-            <Button variant="ghost" onClick={handleAddEntry}>
-              <Plus size={16} strokeWidth={1.0} color="#52ac5f" />
-            </Button>
-            <Button variant="ghost">
-              <Delete size={16} strokeWidth={1.0} color="#d42318" />
-            </Button>
-            <Button variant="ghost">
-              <RefreshCcw size={16} strokeWidth={1.0} color="#52ac5f" />
-            </Button>
-          </div>
-        </>
+          <Button variant="ghost">
+            <Plus className="text-green-600" size={16} strokeWidth={1.0} />
+          </Button>
+          <Button variant="ghost">
+            <Delete className="text-red-600" size={16} strokeWidth={1.0} />
+          </Button>
+          <Button variant="ghost">
+            <RefreshCcw
+              className="text-green-600"
+              size={16}
+              strokeWidth={1.0}
+            />
+          </Button>
+        </Toolbar>
       )}
 
       {/* Always show this -- user or admin*/}
