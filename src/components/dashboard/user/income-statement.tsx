@@ -1,8 +1,15 @@
 "use client";
 
-import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { formatNumber } from "@/lib/format-data";
 import { ChevronDown, ChevronRight } from "lucide-react";
+import { useState } from "react";
 
 type ExpenseItem = {
   monthlyExpenses: {
@@ -50,12 +57,6 @@ export function IncomeStatement({ monthlyExpenses = [], month }: ExpenseItem) {
     setExpanded((prev) => ({ ...prev, [category]: !prev[category] }));
   };
 
-  const formatNumber = (num: number) =>
-    num.toLocaleString(undefined, {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-
   return (
     <Card className="h-full">
       <CardHeader className="pb-2">
@@ -82,9 +83,9 @@ export function IncomeStatement({ monthlyExpenses = [], month }: ExpenseItem) {
             >
               <div className="w-1/2 tracking-tight text-sm font-medium px-4 flex items-center">
                 {expanded[category] ? (
-                  <ChevronDown size={16} strokeWidth={1.0} />
+                  <ChevronDown className="w-4 h-4 stroke-1" />
                 ) : (
-                  <ChevronRight size={16} strokeWidth={1.0} />
+                  <ChevronRight className="w-4 h-4 stroke-1" />
                 )}{" "}
                 {category}
               </div>
@@ -100,7 +101,7 @@ export function IncomeStatement({ monthlyExpenses = [], month }: ExpenseItem) {
               data.concepts.map((concept, index) => (
                 <div
                   key={index}
-                  className="flex text-sm py-2 border-b border-gray-200 bg-gray-200 dark:bg-gray-700"
+                  className="flex text-sm py-2 border-b border-gray-300 bg-gray-100 dark:bg-gray-800"
                 >
                   <div className="w-1/2 px-8"> - {concept.concept}</div>
                   <div className="w-1/4 px-4 text-right">

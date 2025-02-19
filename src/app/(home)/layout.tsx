@@ -1,7 +1,6 @@
 import "../globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
 import { NavWrapper } from "@/components/nav-wrapper";
 
 export default function RootLayout({

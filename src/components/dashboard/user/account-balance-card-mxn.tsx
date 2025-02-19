@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { formatNumber } from "@/lib/format-data";
 
 type AccountBalanceCardProps = {
   balance: number;
@@ -16,11 +17,7 @@ export function AccountBalanceCardMxn({ balance }: AccountBalanceCardProps) {
         <div
           className={`text-2xl font-bold ${balance >= 0 ? "text-green-800" : "text-red-800"}`}
         >
-          $
-          {balance.toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}
+          ${formatNumber(balance)}
         </div>
       </CardContent>
     </Card>

@@ -15,12 +15,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
+import { ChartConfig, ChartContainer } from "@/components/ui/chart";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { formatNumber } from "@/lib/format-data";
 
 type PieComponentProps = {
   pieData: { category: string; total_amount: number }[];
@@ -49,13 +46,6 @@ export function PieComponent({ pieData, month }: PieComponentProps) {
     total: { label: "Amount:" },
   } satisfies ChartConfig;
 
-  const formatAmount = (amount: number) => {
-    return amount.toLocaleString(undefined, {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-  };
-
   const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
     if (active && payload && payload.length) {
       const { category, total } = payload[0].payload;
@@ -77,7 +67,7 @@ export function PieComponent({ pieData, month }: PieComponentProps) {
             </p>
           </div>
           <p className="tracking-tight text-sm font-medium mt-1 text-gray-900 dark:text-gray-200">
-            Amount: $ {formatAmount(total)} MXN
+            Amount: $ {formatNumber(total)} MXN
           </p>
         </div>
       );
@@ -99,21 +89,6 @@ export function PieComponent({ pieData, month }: PieComponentProps) {
     "#001219ff",
   ];
 
-  const legendWrapperStyle = isMobile
-    ? {
-        fontSize: "14px",
-        width: "100%",
-        whiteSpace: "normal",
-        textAlign: "center",
-        marginTop: "10px",
-      }
-    : {
-        fontSize: "16px",
-        width: "150px",
-        whiteSpace: "nowrap",
-        textOverflow: "ellipsis",
-      };
-
   const totalAmount = chartData.reduce((acc, item) => acc + item.total, 0);
 
   return (
@@ -133,7 +108,6 @@ export function PieComponent({ pieData, month }: PieComponentProps) {
             <PieChart
               margin={{
                 top: 20,
-
                 bottom: isMobile ? 30 : 20,
               }}
             >
