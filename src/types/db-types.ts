@@ -10,6 +10,7 @@ export enum ColumnType {
   INTEGER = 2,
   REAL = 3,
   BLOB = 4,
+  NUMERIC = 5,
 }
 
 export interface ColumnHeader {

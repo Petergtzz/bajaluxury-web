@@ -7,7 +7,7 @@ import TursoDriver from "@/drivers/turso-driver";
 export async function AdminBalances() {
   const balances = await fetchAllBalances();
   const driver = new TursoDriver();
-  const result = await driver.query("SELECT * FROM expenses");
+  const result = await driver.query("SELECT * FROM balances");
   console.log(result);
 
   const columns = [

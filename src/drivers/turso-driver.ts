@@ -3,7 +3,9 @@ import {
   DatabaseHeader,
   DatabaseResultSet,
   DatabaseRow,
+  BaseDriver,
 } from "@/drivers/base-driver";
+import { convertSQLiteType } from "@/sql/sql-helper";
 
 export function transformRawResult(raw: ResultSet): DatabaseResultSet {
   const headerSet = new Set();
@@ -23,6 +25,7 @@ export function transformRawResult(raw: ResultSet): DatabaseResultSet {
       name: renamedHeaderName,
       displayName: headerName,
       originalType: headerType,
+      type: convertSQLiteType(headerType),
     };
   });
 
