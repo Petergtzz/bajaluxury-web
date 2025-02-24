@@ -298,8 +298,6 @@ export abstract class BaseDriver {
   abstract createUpdateTableSchema(change: DatabaseTableSchemaChange): string[];
   abstract createUpdateDatabaseSchema(change: DatabaseSchemaChange): string[];
 
-  abstract createTrigger(trigger: DatabaseTriggerSchema): string;
-  abstract dropTrigger(schemaName: string, name: string): string;
   abstract createView(view: DatabaseViewSchema): string;
   abstract dropView(schemaName: string, name: string): string;
 

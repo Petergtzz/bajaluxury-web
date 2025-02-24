@@ -37,10 +37,5 @@ export const TABS_CONFIG: TabsConfig = {
     { value: "balances", label: "Balances", content: () => <AdminBalances /> },
     { value: "expenses", label: "Expenses", content: () => <AdminExpenses /> },
     { value: "incomes", label: "Incomes", content: () => <AdminIncomes /> },
-    {
-      value: "test",
-      label: "test",
-      content: () => <TablePanel tableName="expenses" />,
-    },
   ],
 };
