@@ -245,9 +245,7 @@ export interface DatabaseSchemaChange {
 export abstract class BaseDriver {
   // Flags
   abstract getFlags(): DriverFlags;
-  abstract getCurrentSchema(): Promise<string | null>;
   abstract columnTypeSelector: ColumnTypeSelector;
-  abstract getCollationList(): string[];
 
   // Helper class
   abstract escapeId(id: string): string;
@@ -257,19 +255,12 @@ export abstract class BaseDriver {
   abstract close(): void;
 
   abstract query(stmt: string): Promise<DatabaseResultSet>;
-  abstract batch(stmts: string[]): Promise<DatabaseResultSet[]>;
   abstract transaction(stmts: string[]): Promise<DatabaseResultSet[]>;
 
-  abstract schemas(): Promise<DatabaseSchemas>;
   abstract tableSchema(
     schemaName: string,
     tableName: string,
   ): Promise<DatabaseTableSchema>;
-
-  abstract trigger(
-    schemaName: string,
-    name: string,
-  ): Promise<DatabaseTriggerSchema>;
 
   abstract findFirst(
     schemaName: string,
@@ -278,6 +269,7 @@ export abstract class BaseDriver {
   ): Promise<DatabaseResultSet>;
 
   abstract selectTable(
+    schemaName: string,
     tableName: string,
     options: SelectFromTableOptions,
   ): Promise<{ data: DatabaseResultSet }>;
@@ -291,15 +283,4 @@ export abstract class BaseDriver {
     // if the operation is unsafe
     validateSchema?: DatabaseTableSchema,
   ): Promise<DatabaseTableOperationReslt[]>;
-
-  abstract dropTable(schemaName: string, tableName: string): Promise<void>;
-  abstract emptyTable(schemaName: string, tableName: string): Promise<void>;
-
-  abstract createUpdateTableSchema(change: DatabaseTableSchemaChange): string[];
-  abstract createUpdateDatabaseSchema(change: DatabaseSchemaChange): string[];
-
-  abstract createView(view: DatabaseViewSchema): string;
-  abstract dropView(schemaName: string, name: string): string;
-
-  abstract view(schemaName: string, name: string): Promise<DatabaseViewSchema>;
 }
