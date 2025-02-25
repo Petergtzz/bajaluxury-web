@@ -29,7 +29,7 @@ export default async function TasksPage() {
       <p className="px-8 my-2 text-muted-foreground">
         Here's a list of the tasks being performed at your residence
       </p>
-      <div className="space-y-1 px-8">
+      <div className="space-y-1 p-5 px-8">
         {role === "user" ? (
           <UserTasksContent houseId={houseId!} />
         ) : (
