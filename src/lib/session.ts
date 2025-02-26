@@ -7,17 +7,16 @@ const encodedKey = new TextEncoder().encode(secretKey);
 
 export async function createSession(
   userId: number,
-  role: "admin" | "user",
+  role: string,
   houseId?: number,
 ) {
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
   const session = await encrypt({ userId, role, houseId, expiresAt });
-  // console.log("Session:", session);
 
   const cookieStore = await cookies();
   cookieStore.set("session", session, {
     httpOnly: true,
-    secure: false,
+    secure: true,
     sameSite: "lax",
     expires: expiresAt,
     path: "/",
@@ -31,7 +30,7 @@ export async function deleteSession() {
 
 type SessionPayload = {
   userId: number;
-  role: "admin" | "user";
+  role: string;
   houseId?: number;
   expiresAt: Date;
 };
