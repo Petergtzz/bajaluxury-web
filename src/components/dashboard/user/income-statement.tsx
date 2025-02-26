@@ -100,7 +100,7 @@ export function IncomeStatement({ monthlyExpenses = [], month }: ExpenseItem) {
               data.concepts.map((concept, index) => (
                 <div
                   key={index}
-                  className="flex text-sm py-2 border-b border-gray-200 bg-gray-200 dark:bg-gray-700"
+                  className="flex text-sm py-2 border-b border-gray-300 bg-gray-100 dark:bg-gray-800"
                 >
                   <div className="w-1/2 px-8"> - {concept.concept}</div>
                   <div className="w-1/4 px-4 text-right">
