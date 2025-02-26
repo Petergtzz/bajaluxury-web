@@ -16,12 +16,8 @@ export default function RootLayout({
       <body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <SidebarProvider>
-            <DriverInitializer>
-              <div className="layout-container">
-                <NavWrapper />
-                <div className="main-content">{children}</div>
-              </div>
-            </DriverInitializer>
+            <NavWrapper />
+            {children}
           </SidebarProvider>
         </ThemeProvider>
       </body>

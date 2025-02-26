@@ -14,7 +14,8 @@ import {
 } from "@/drivers/base-driver";
 import { convertSQLiteType, escapeSqlValue } from "@/drivers/sqlite/sql-helper";
 import { ColumnType } from "@/types/db-types";
-import { createClient, ResultSet } from "@libsql/client/web";
+import { ResultSet } from "@libsql/client/web";
+import { createClient } from "@libsql/client";
 import { deleteFrom, insertInto, updateTable } from "./query-builder";
 import { parseCreateTableScript } from "./sqlite/sql-parse-table";
 import { validateOperation } from "@/lib/validation";
@@ -64,7 +65,7 @@ export function transformRawResult(raw: ResultSet): DatabaseResultSet {
 }
 
 export default class TursoDriver extends BaseDriver {
-  private client;
+  protected client;
 
   constructor(url?: string, authToken?: string) {
     super();

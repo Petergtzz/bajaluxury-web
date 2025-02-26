@@ -5,7 +5,6 @@ import { AdminBalances } from "./admin/admin-balances";
 import { UserExpensesContent } from "./user/user-expenses";
 import { UserIncomesContent } from "./user/user-incomes";
 import UserBalanceContent from "./user/user-balance";
-import TablePanel from "../gui/table";
 
 type Tab = {
   value: string;

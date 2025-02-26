@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { useDatabaseDriver } from "@/context/driver-provider";
 import {
@@ -20,7 +19,7 @@ import { exportTableToCSV } from "@/lib/export";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Toolbar, ToolbarButton } from "../gui/tool-bar";
-import { DatabaseResultSet } from "@/drivers/base-driver";
+import { BaseDriver, DatabaseResultSet } from "@/drivers/base-driver";
 import { Console } from "console";
 import OptimizeTableState from "./table-optimized/table-optimized";
 import {
@@ -32,6 +31,7 @@ import {
   SelectItem,
   SelectLabel,
 } from "../ui/select";
+import TursoDriver from "@/drivers/turso-driver";
 
 interface TablePanelProps {
   tableName: string;
@@ -39,7 +39,6 @@ interface TablePanelProps {
 }
 
 export default function TablePanel({ tableName, schemaName }: TablePanelProps) {
-  console.log("TablePanel mounted, tableName:", tableName);
   const { databaseDriver } = useDatabaseDriver();
   const [error, setError] = useState<string>();
 
@@ -60,7 +59,7 @@ export default function TablePanel({ tableName, schemaName }: TablePanelProps) {
   const [revision, setRevision] = useState(1);
   const [lastQueryTimestamp, setLastQueryTimestamp] = useState(0);
 
-  console.log("Database driver:", databaseDriver);
+  console.log(databaseDriver);
 
   useEffect(() => {
     const fetchData = async () => {
