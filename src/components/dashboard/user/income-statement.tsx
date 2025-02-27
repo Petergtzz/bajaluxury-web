@@ -3,11 +3,19 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChevronDown, ChevronRight } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 type ExpenseItem = {
   monthlyExpenses: {
     category: string;
     concept: string;
+    method: string;
+    date: string;
+    description: string;
     total_amount: number;
   }[];
   month: string;
@@ -31,13 +39,25 @@ export function IncomeStatement({ monthlyExpenses = [], month }: ExpenseItem) {
       acc[category].total += item.total_amount / exchangeRate;
       acc[category].concepts.push({
         concept: item.concept,
+        method: item.method,
+        date: item.date,
+        description: item.description,
         total_amount: item.total_amount / exchangeRate,
       });
       return acc;
     },
     {} as Record<
       string,
-      { total: number; concepts: { concept: string; total_amount: number }[] }
+      {
+        total: number;
+        concepts: {
+          concept: string;
+          method: string;
+          date: string;
+          description: string;
+          total_amount: number;
+        }[];
+      }
     >,
   );
 
@@ -81,19 +101,23 @@ export function IncomeStatement({ monthlyExpenses = [], month }: ExpenseItem) {
               onClick={() => toggleExpand(category)}
             >
               <div className="w-1/2 tracking-tight text-sm font-medium px-4 flex items-center">
-                {expanded[category] ? (
-                  <ChevronDown size={16} strokeWidth={1.0} />
-                ) : (
-                  <ChevronRight size={16} strokeWidth={1.0} />
-                )}{" "}
-                {category}
+                <span className="flex-shrink-0 mr-2">
+                  {expanded[category] ? (
+                    <ChevronDown className="w-4 h-4 stroke-1" />
+                  ) : (
+                    <ChevronRight className="w-4 h-4 stroke-1" />
+                  )}
+                </span>
+                <span className="truncate" title={category}>
+                  {category}
+                </span>
               </div>
               <div className="w-1/4 px-4 text-right ">
                 <span className="mr-1">$</span>
                 {formatNumber(data.total)}
               </div>
               <div className="w-1/4 px-4 text-right">
-                {total ? ((data.total / total) * 100).toFixed(2) + "%" : "0%"}
+                {total ? ((data.total / total) * 100).toFixed(1) + "%" : "0%"}
               </div>
             </div>
             {expanded[category] &&
@@ -102,13 +126,22 @@ export function IncomeStatement({ monthlyExpenses = [], month }: ExpenseItem) {
                   key={index}
                   className="flex text-sm py-2 border-b border-gray-300 bg-gray-100 dark:bg-gray-800"
                 >
-                  <div className="w-1/2 px-8"> - {concept.concept}</div>
+                  <div className="w-1/2 px-8">
+                    <Tooltip>
+                      <TooltipTrigger title={concept.concept}>
+                        - {concept.concept}
+                      </TooltipTrigger>
+                      <TooltipContent title={concept.description}>
+                        {concept.description}
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
                   <div className="w-1/4 px-4 text-right">
                     <span className="mr-1">$</span>
                     {formatNumber(concept.total_amount)}
                   </div>
                   <div className="w-1/4 px-4 text-right">
-                    {((concept.total_amount / data.total) * 100).toFixed(2)}%
+                    {((concept.total_amount / data.total) * 100).toFixed(1)}%
                   </div>
                 </div>
               ))}

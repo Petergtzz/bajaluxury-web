@@ -99,21 +99,6 @@ export function PieComponent({ pieData, month }: PieComponentProps) {
     "#001219ff",
   ];
 
-  const legendWrapperStyle = isMobile
-    ? {
-        fontSize: "14px",
-        width: "100%",
-        whiteSpace: "normal",
-        textAlign: "center",
-        marginTop: "10px",
-      }
-    : {
-        fontSize: "16px",
-        width: "150px",
-        whiteSpace: "nowrap",
-        textOverflow: "ellipsis",
-      };
-
   const totalAmount = chartData.reduce((acc, item) => acc + item.total, 0);
 
   return (
@@ -133,7 +118,6 @@ export function PieComponent({ pieData, month }: PieComponentProps) {
             <PieChart
               margin={{
                 top: 20,
-
                 bottom: isMobile ? 30 : 20,
               }}
             >

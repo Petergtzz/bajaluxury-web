@@ -135,6 +135,9 @@ export async function fetchIncomeStatementData(houseId: number, month: string) {
     SELECT
       e.category,
       e.concept,
+      e.payment_method AS method,
+      e.date,
+      e.description,
       SUM(e.amount) AS total_amount
     FROM
       expenses e
@@ -154,6 +157,9 @@ export async function fetchIncomeStatementData(houseId: number, month: string) {
   return result.rows.map((row) => ({
     category: row.category as string,
     concept: row.concept as string,
+    method: row.method as string,
+    date: row.date as string,
+    description: row.description as string,
     total_amount: Number(row.total_amount),
   }));
 }
