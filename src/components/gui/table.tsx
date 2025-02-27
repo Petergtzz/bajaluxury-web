@@ -35,10 +35,17 @@ import TursoDriver from "@/drivers/turso-driver";
 
 interface TablePanelProps {
   tableName: string;
+  sessionRole?: string;
+  houseId?: number;
   schemaName?: string;
 }
 
-export default function TablePanel({ tableName, schemaName }: TablePanelProps) {
+export default function TablePanel({
+  tableName,
+  sessionRole,
+  houseId,
+  schemaName,
+}: TablePanelProps) {
   const { databaseDriver } = useDatabaseDriver();
   const [error, setError] = useState<string>();
 
@@ -101,31 +108,31 @@ export default function TablePanel({ tableName, schemaName }: TablePanelProps) {
       <div className="shrink-0 grow-0 border-b border-neutral-200 py-2 dark:border-neutral-800">
         <Toolbar>
           <ToolbarButton
-            text="Commit"
+            text="Save"
             icon={<SaveAll className="h-4 w-4 stroke-1" />}
           />
 
-          <ToolbarButton text="Discard Change" destructive />
+          <ToolbarButton text="Discard" destructive />
 
           <div className="mx-1">
             <Separator orientation="vertical" />
           </div>
 
-          <Button variant={"ghost"}>
-            <Plus className="h-4 w-4 stroke-1 text-green-600" />
-          </Button>
-
-          <Button variant={"ghost"}>
-            <Delete className="h-4 w-4 stroke-1 text-red-600" />
-          </Button>
-
           <Button
-            variant={"ghost"}
+            variant={"outline"}
             onClick={() => setRevision((prev) => prev + 1)}
             disabled={loading}
           >
             <RefreshCcw className="h-4 w-4 stroke-1 text-green-600" />
           </Button>
+
+          <Button variant={"outline"}>Add row</Button>
+
+          <Button variant={"outline"}>Delete row</Button>
+
+          <div className="mx-1">
+            <Separator orientation="vertical" />
+          </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline">
