@@ -18,6 +18,8 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import { HotTablePagination } from "./hot-table-pagination";
+import { Input } from "@/components/ui/input";
+import { HotTableColumnHeader } from "./hot-table-header";
 
 type TableColumn = {
   accessorKey: string;
@@ -68,17 +70,28 @@ export default function HotTable({ data, isAdmin }: HotTableProps) {
   };
 
   return (
-    <div className="w-full pt-5 ">
+    <div className="w-full">
+      <div className="flex items-center py-4 gap-3">
+        <Input placeholder="Search" className="max-w-sm" />
+      </div>
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
+              {/* Header Index */}
+              <TableHead
+                className="border border-gray-200 bg-gray-100"
+                style={{ width: 50 }}
+              ></TableHead>
               {headerGroup.headers.map((header) => (
                 <TableHead
                   key={header.id}
-                  className="border border-gray-300 bg-gray-100"
+                  className="border border-gray-200 bg-gray-100"
                 >
-                  {header.id}
+                  <HotTableColumnHeader
+                    column={header.column}
+                    title={header.id}
+                  />
                 </TableHead>
               ))}
             </TableRow>
@@ -89,22 +102,26 @@ export default function HotTable({ data, isAdmin }: HotTableProps) {
             table.getRowModel().rows.map((row, rowIndex) => (
               <TableRow
                 key={row.id}
-                className={`cursor-pointer ${
-                  selectedRow === rowIndex ? "bg-blue-100" : ""
+                className={`cursor-pointer border ${
+                  selectedRow === rowIndex ? "border-2 border-blue-700" : ""
                 }`}
                 onClick={() => handleRowSelection(rowIndex)}
               >
+                {/* Row Index */}
+                <TableCell className="border border-gray-200 bg-gray-100 text-right">
+                  {rowIndex + 1}
+                </TableCell>
                 {row.getVisibleCells().map((cell) => (
                   <TableCell
                     key={cell.id}
-                    className={`border border-gray-300 cursor-pointer ${
+                    className={`border border-gray-100 cursor-pointer ${
                       selectedCell?.row === rowIndex &&
                       selectedCell?.col === cell.column.id
-                        ? "bg-yellow-200"
+                        ? "border-2 border-blue-700"
                         : ""
                     }`}
                     onClick={(e) => {
-                      e.stopPropagation(); // Prevent row selection when clicking a cell
+                      e.stopPropagation();
                       handleCellSelection(rowIndex, cell.column.id);
                     }}
                   >
