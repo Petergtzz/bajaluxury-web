@@ -1,10 +1,14 @@
 import React from "react";
-import { fetchAllExpenses } from "@/actions/fetch-admin-data";
+import { fetchAllExpenses, query } from "@/actions/fetch-admin-data";
 import { TableComponent } from "@/components/data-table/data-table";
 import { Expense } from "@/types";
+import HotTable from "@/components/hot-table/hot-table";
 
 export async function AdminExpenses() {
   const expenses = await fetchAllExpenses();
+  const example = await query("expenses");
+
+  const data = example.rows;
 
   const columns = [
     { accessorKey: "house", header: "House" },
@@ -18,7 +22,12 @@ export async function AdminExpenses() {
 
   return (
     <div>
-      <TableComponent<Expense> data={expenses} columns={columns} />
+      {/*<TableComponent<Expense> data={expenses} columns={columns} />*/}
+      <HotTable
+        data={example}
+        // readonly={true}
+        // isAdmin={true}
+      />
     </div>
   );
 }
