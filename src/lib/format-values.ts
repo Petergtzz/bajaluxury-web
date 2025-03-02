@@ -1,12 +1,15 @@
 import { DateTime } from "luxon";
 
-export const formatAmount = (value: any) =>
-  typeof value === "number"
-    ? `$ ${value.toLocaleString(undefined, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      })}`
-    : `$0.00`;
+export const formatAmount = (value: any) => {
+  if (!value) return null;
+  const amount = parseFloat(value);
+  const formatted = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  }).format(amount);
+
+  return formatted;
+};
 
 export const formatDate = (value: any) => {
   if (!value) return "N/A";

@@ -10,13 +10,12 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { formatAmount, formatDate } from "@/lib/format-values";
+import getCellRenderer from "@/components/hot-table/hot-table-column-config";
 
 type TableColumn = {
   accessorKey: string;
   header: string;
-  isNumeric?: boolean;
-  cell?: ({ row }: { row: any }) => React.ReactNode;
+  customCell?: ({ cell }: { cell: any }) => React.ReactNode;
 };
 
 export function useTableConfig<T>(data: T[], columns: TableColumn[]) {
@@ -27,21 +26,10 @@ export function useTableConfig<T>(data: T[], columns: TableColumn[]) {
 
   const tableColumns = useMemo(() => {
     return columns.map((col) => {
-      // Determine the cell formatter based on the accessorKey.
-      let cellFormatter =
-        col.cell ?? (({ row }: { row: any }) => row.getValue(col.accessorKey));
-      if (["amount", "balance"].includes(col.accessorKey)) {
-        cellFormatter = ({ row }: { row: any }) =>
-          formatAmount(row.getValue(col.accessorKey));
-      } else if (col.accessorKey === "date") {
-        cellFormatter = ({ row }: { row: any }) =>
-          formatDate(row.getValue(col.accessorKey));
-      }
-
       return {
         accessorKey: col.accessorKey,
         header: col.header,
-        cell: cellFormatter,
+        cell: getCellRenderer(col),
         enableSorting: true,
         enableHiding: true,
       };

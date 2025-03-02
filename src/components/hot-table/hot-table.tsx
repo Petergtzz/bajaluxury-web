@@ -7,8 +7,9 @@ import {
   ColumnDef,
   flexRender,
   getPaginationRowModel,
+  createRow,
 } from "@tanstack/react-table";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import {
   Table,
   TableRow,
@@ -24,6 +25,8 @@ import { useTableConfig } from "@/hooks/use-table-config-test";
 import { Button } from "@/components/ui/button";
 import { RefreshCcw } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { isNumber } from "node:util";
+import { CANCELLED } from "node:dns";
 
 type TableColumn = {
   accessorKey: string;
@@ -45,6 +48,10 @@ export default function HotTable({ data, isAdmin }: HotTableProps) {
     row: number | string;
     col: string;
   } | null>(null);
+
+  const [changeNumber, setChangeNumber] = useState(0);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [newRowAdded, setNewRowAdded] = useState(false);
 
   const columns = useMemo(() => {
     return tableData.headers.map((column) => ({
@@ -68,22 +75,20 @@ export default function HotTable({ data, isAdmin }: HotTableProps) {
     setSelectedRow(null);
   };
 
-  const createEmptyRow = () => {
+  const createEmptyRow = useCallback(() => {
     const newRow: Record<string, any> = {};
 
     tableData.headers.forEach((header) => {
-      newRow[header.name] = "DEFAULT";
+      newRow[header.name] = "Default";
     });
 
     return newRow;
-  };
+  }, [tableData.headers]);
 
-  const handleAddRow = () => {
+  const handleAddRow = useCallback(() => {
     const newRow = createEmptyRow();
     setTableData((prevData) => {
-      console.log("Before adding, rows count:", prevData.rows.length);
       const updatedRows = [newRow, ...prevData.rows];
-      console.log("After adding, rows count:", updatedRows.length);
       return {
         ...prevData,
         rows: updatedRows,
@@ -92,6 +97,20 @@ export default function HotTable({ data, isAdmin }: HotTableProps) {
     // Clear any current selection (optional)
     setSelectedRow(null);
     setSelectedCell(null);
+  }, [createEmptyRow]);
+
+  const handleCellChange = (rowIndex: number, col: string, value: any) => {
+    let errorMessage = "";
+    if (col === "amount" && Number(value)) {
+      errorMessage = "Amount must be a number";
+    }
+
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [`${rowIndex}-${col}`]: errorMessage,
+    }));
+
+    setChangeNumber((prevNumber) => prevNumber + 1);
   };
 
   const handleDeleteRow = () => {
@@ -99,8 +118,6 @@ export default function HotTable({ data, isAdmin }: HotTableProps) {
       (row, index) => index !== selectedRow,
     );
     setTableData((prevData) => {
-      console.log("Before deleting, rows count:", prevData.rows.length);
-      console.log("After deleting, rows count:", updatedRows.length);
       return {
         ...prevData,
         rows: updatedRows,
@@ -111,8 +128,12 @@ export default function HotTable({ data, isAdmin }: HotTableProps) {
     setSelectedCell(null);
   };
 
+  const handleDiscardChanges = () => {
+    console.log("Discarding changes");
+  };
+
   const handleSave = () => {
-    console.log("Saving changes to the database:", data);
+    console.log("Saving changes to the database:");
   };
 
   return (
@@ -122,22 +143,33 @@ export default function HotTable({ data, isAdmin }: HotTableProps) {
           placeholder="Search"
           value={globalFilter ?? ""}
           onChange={(event) => setGlobalFilter(event.target.value)}
-          className="w-full sm:max-w-xs md:max-w-xs lg:max-w-md text-sm"
+          className="w-full max-w-60"
         />
-        <Button variant={"outline"}>Save Changes</Button>
-        <Button variant={"destructive"}>Discard</Button>
         <Button variant={"outline"}>
           <RefreshCcw className="h-4 w-4 stroke-1 text-green-600" />
         </Button>
         <Button variant="outline" onClick={handleAddRow}>
-          Add row
+          <div className="text-sm">Add row</div>
         </Button>
         <Button variant="outline" onClick={handleDeleteRow}>
-          Delete row
+          <div className="text-sm">Delete row</div>
         </Button>
-        <div className="mx-1">
-          <Separator orientation="vertical" />
-        </div>
+        {/* Track number of changes and display the number as a button */}
+        {changeNumber ? (
+          <>
+            <Button disabled={!changeNumber}>
+              <div>
+                Save {changeNumber ? changeNumber.toString() : ""} changes
+              </div>
+            </Button>
+
+            <Button variant={"destructive"}>
+              <div className="text-sm">Discard</div>
+            </Button>
+          </>
+        ) : (
+          <></>
+        )}
       </div>
       <Table>
         <TableHeader>
@@ -146,7 +178,7 @@ export default function HotTable({ data, isAdmin }: HotTableProps) {
               {/* Header Index */}
               <TableHead
                 className="border border-gray-200 bg-gray-100"
-                style={{ width: 50 }}
+                style={{ width: 40 }}
               ></TableHead>
               {headerGroup.headers.map((header) => (
                 <TableHead
@@ -188,7 +220,7 @@ export default function HotTable({ data, isAdmin }: HotTableProps) {
                       selectedCell?.col === cell.column.id
                         ? "border-2 border-blue-700"
                         : ""
-                    }`}
+                    } `}
                     onClick={(e) => {
                       e.stopPropagation();
                       handleCellSelection(rowIndex, cell.column.id);
