@@ -38,7 +38,7 @@ export function HotTableColumnHeader<TData, TValue>({
             ) : column.getIsSorted() === "asc" ? (
               <ArrowUp className="w-4 h-4 stroke-1" />
             ) : (
-              <ChevronsUpDown className="w-4 h-4 stroke-1" />
+              <ChevronsUpDown className="w-4 h-4 stroke-2" />
             )}
           </Button>
         </DropdownMenuTrigger>
