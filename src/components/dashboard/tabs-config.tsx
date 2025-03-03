@@ -5,6 +5,7 @@ import { AdminBalances } from "./admin/admin-balances";
 import { UserExpensesContent } from "./user/user-expenses";
 import { UserIncomesContent } from "./user/user-incomes";
 import UserBalanceContent from "./user/user-balance";
+import AdminDashboard from "./admin/admin-statements";
 
 type Tab = {
   value: string;
@@ -34,6 +35,11 @@ export const TABS_CONFIG: TabsConfig = {
   ],
   admin: [
     { value: "balances", label: "Balances", content: () => <AdminBalances /> },
+    {
+      value: "dashboard",
+      label: "Dashboard",
+      content: () => <AdminDashboard />,
+    },
     { value: "expenses", label: "Expenses", content: () => <AdminExpenses /> },
     { value: "incomes", label: "Incomes", content: () => <AdminIncomes /> },
   ],

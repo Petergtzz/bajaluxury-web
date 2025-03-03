@@ -77,3 +77,47 @@ export async function fetchAllBalances(): Promise<Balance[]> {
     balance: Number(row.balance),
   }));
 }
+
+export async function fetchDashboard(address: string, month: string) {
+  const query = `
+    SELECT
+      e.expense_id AS id,
+      h.address AS house,
+      e.date,
+      e.concept,
+      e.category,
+      e.payment_method AS method,
+      e.amount,
+      e.description
+    FROM,
+      expenses e
+    JOIN
+      houses h on e.house_id = h.house_id
+    WHERE
+      h.address = ?
+      AND strftime('%Y-%m', e.date) = ?
+    ORDER BY
+      e.expense_id DESC
+    `;
+  const result = await client.execute({
+    sql: query,
+    args: [address, month],
+  });
+  return result.rows.map((row) => ({
+    house: row.house as string,
+    balance: Number(row.balance),
+  }));
+}
+
+export async function fetchAddress() {
+  const query = `
+    SELECT
+      address
+    FROM
+      houses
+    `;
+  const result = await client.execute(query);
+  return result.rows.map((row) => ({
+    address: row.address as string,
+  }));
+}
