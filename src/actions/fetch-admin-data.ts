@@ -80,8 +80,29 @@ export async function fetchAllBalances(): Promise<Balance[]> {
   }));
 }
 
+export async function fetchAllStaements() {
+  const query = `
+    SELECT
+      e.expense_id AS id,
+      h.address AS house,
+      e.date,
+      e.concept,
+      e.category,
+      e.payment_method AS method,
+      e.amount,
+      e.description
+    FROM
+      expenses e
+    JOIN
+      houses h ON e.house_id = h.house_id
+    WHERE
+      S
+    `;
+}
+
 export async function query(
   tableName: string,
+  date?: string,
   order?: string,
 ): Promise<DatabaseResultSet> {
   const query = `
@@ -98,6 +119,8 @@ export async function query(
       ${tableName} e
     JOIN
       houses h ON e.house_id = h.house_id
+    WHERE
+      strftime('%Y-%m', e.date) = '${date}'
     `;
   const result = await client.execute(query);
   return transformRawResult(result);

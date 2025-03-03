@@ -1,3 +1,4 @@
+import React from "react";
 import { DateTime } from "luxon";
 import { useMemo, useState } from "react";
 import {
@@ -22,7 +23,8 @@ export function useTableConfig<T>(data: T[], columns: TableColumn[]) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [globalFilter, setGlobalFilter] = useState<string>("");
+  const [globalFilter, setGlobalFilter] = useState("");
+  const [rowSelection, setRowSelection] = useState({});
 
   const tableColumns = useMemo(() => {
     return columns.map((col) => {
@@ -84,11 +86,13 @@ export function useTableConfig<T>(data: T[], columns: TableColumn[]) {
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    onRowSelectionChange: setRowSelection,
     state: {
       sorting,
       columnFilters,
       columnVisibility,
       globalFilter,
+      rowSelection,
     },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,

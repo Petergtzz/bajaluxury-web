@@ -25,7 +25,6 @@ const getCellRenderer = (col: TableColumn) => {
       case "number":
         return <NumberCell value={value} />;
       default:
-        return <TextCell value={value} />;
     }
   };
 

@@ -1,14 +1,7 @@
 "use client";
 
 import { DatabaseResultSet } from "@/types/query-types";
-import {
-  useReactTable,
-  getCoreRowModel,
-  ColumnDef,
-  flexRender,
-  getPaginationRowModel,
-  createRow,
-} from "@tanstack/react-table";
+import { flexRender, ColumnDef } from "@tanstack/react-table";
 import { useState, useMemo, useCallback } from "react";
 import {
   Table,
@@ -25,14 +18,21 @@ import { useTableConfig } from "@/hooks/use-table-config-test";
 import { Button } from "@/components/ui/button";
 import { RefreshCcw } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { isNumber } from "node:util";
-import { CANCELLED } from "node:dns";
+
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  DropdownMenuCheckboxItem,
+} from "@/components/ui/dropdown-menu";
+import { DownloadIcon, ChevronDown } from "lucide-react";
+import { exportTableToCSV } from "@/lib/export";
 
 type TableColumn = {
   accessorKey: string;
   header: string;
-  isNumeric?: boolean;
-  cell?: ({ row }: { row: any }) => React.ReactNode;
+  customCell?: ({ cell }: { cell: any }) => React.ReactNode;
 };
 
 interface HotTableProps {
@@ -41,7 +41,7 @@ interface HotTableProps {
   isAdmin?: boolean;
 }
 
-export default function HotTable({ data, isAdmin }: HotTableProps) {
+export default function HotTable({ data, isAdmin = true }: HotTableProps) {
   const [tableData, setTableData] = useState(data);
   const [selectedRow, setSelectedRow] = useState<number | null>(null);
   const [selectedCell, setSelectedCell] = useState<{
@@ -53,11 +53,29 @@ export default function HotTable({ data, isAdmin }: HotTableProps) {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [newRowAdded, setNewRowAdded] = useState(false);
 
-  const columns = useMemo(() => {
-    return tableData.headers.map((column) => ({
-      accessorKey: column.name,
-      header: column.displayName,
-    }));
+  console.log(tableData);
+
+  const columns: TableColumn[] = useMemo(() => {
+    return [
+      {
+        accessorKey: "select",
+        header: "",
+        customCell: ({ cell }: { cell: any }) => (
+          <Checkbox
+            checked={cell.row.getIsSelected()}
+            onCheckedChange={(value) => cell.row.toggleSelected(!!value)}
+            aria-label="Select row"
+          />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+        size: 50,
+      },
+      ...tableData.headers.map((column) => ({
+        accessorKey: column.name,
+        header: column.displayName,
+      })),
+    ];
   }, [tableData.headers]);
 
   const { table, globalFilter, setGlobalFilter } = useTableConfig(
@@ -138,109 +156,150 @@ export default function HotTable({ data, isAdmin }: HotTableProps) {
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-5 gap-3">
+      <div className="flex items-center py-4 gap-3">
         <Input
           placeholder="Search"
           value={globalFilter ?? ""}
           onChange={(event) => setGlobalFilter(event.target.value)}
           className="w-full max-w-60"
         />
-        <Button variant={"outline"}>
-          <RefreshCcw className="h-4 w-4 stroke-1 text-green-600" />
-        </Button>
-        <Button variant="outline" onClick={handleAddRow}>
-          <div className="text-sm">Add row</div>
-        </Button>
-        <Button variant="outline" onClick={handleDeleteRow}>
-          <div className="text-sm">Delete row</div>
-        </Button>
-        {/* Track number of changes and display the number as a button */}
-        {changeNumber ? (
-          <>
-            <Button disabled={!changeNumber}>
-              <div>
-                Save {changeNumber ? changeNumber.toString() : ""} changes
-              </div>
-            </Button>
+        <div className="flex felx-col sm:flex-row items-center gap-3 ml-auto">
+          {isAdmin && (
+            <>
+              <Button variant={"outline"}>
+                <RefreshCcw className="h-4 w-4 stroke-1 text-green-600" />
+              </Button>
+              <Button variant="outline" onClick={handleAddRow}>
+                <div className="text-sm">Add row</div>
+              </Button>
+              <Button variant="outline" onClick={handleDeleteRow}>
+                <div className="text-sm">Delete row</div>
+              </Button>
 
-            <Button variant={"destructive"}>
-              <div className="text-sm">Discard</div>
-            </Button>
-          </>
-        ) : (
-          <></>
-        )}
-      </div>
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {/* Header Index */}
-              <TableHead
-                className="border border-gray-200 bg-gray-100"
-                style={{ width: 40 }}
-              ></TableHead>
-              {headerGroup.headers.map((header) => (
-                <TableHead
-                  key={header.id}
-                  className="border border-gray-200 bg-gray-100"
-                >
-                  <HotTableColumnHeader
-                    column={header.column}
-                    title={header.id}
-                  />
-                </TableHead>
-              ))}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows.length ? (
-            table.getRowModel().rows.map((row, rowIndex) => (
-              <TableRow
-                key={row.id}
-                className={`cursor-pointer border ${
-                  selectedRow === rowIndex
-                    ? "border-2 border-blue-700 bg-blue-50"
-                    : ""
-                }`}
-                onClick={() => handleRowSelection(rowIndex)}
-              >
-                {/* Row Index */}
-                <TableCell className="border border-gray-200 bg-gray-100 text-right">
-                  {rowIndex + 1}
-                </TableCell>
-                {/* Normal cell values */}
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell
-                    key={cell.id}
-                    style={{ height: 50 }}
-                    className={`border border-gray-100 cursor-pointer ${
-                      selectedCell?.row === rowIndex &&
-                      selectedCell?.col === cell.column.id
-                        ? "border-2 border-blue-700"
-                        : ""
-                    } `}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleCellSelection(rowIndex, cell.column.id);
-                    }}
+              {/* Track number of changes and display the number as a button */}
+              {changeNumber ? (
+                <>
+                  <Button disabled={!changeNumber}>
+                    <div>
+                      Save {changeNumber ? changeNumber.toString() : ""} changes
+                    </div>
+                  </Button>
+
+                  <Button variant={"destructive"}>
+                    <div className="text-sm">Discard</div>
+                  </Button>
+                </>
+              ) : (
+                <></>
+              )}
+            </>
+          )}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                Columns <ChevronDown className="w-4 h-4 stroke-1" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter((column: any) => column.getCanHide())
+                .map((column: any) => (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className="capitalize tracking-tight text-sm font-medium"
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(value) =>
+                      column.toggleVisibility(!!value)
+                    }
                   >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
+                    {column.id}
+                  </DropdownMenuCheckboxItem>
+                ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <Button
+            variant="outline"
+            onClick={() =>
+              exportTableToCSV(table, {
+                filename: "data",
+                excludeColumns: ["select", "actions"],
+              })
+            }
+          >
+            Export
+            <DownloadIcon className="w-4 h-4 stroke-1" />
+          </Button>
+        </div>
+      </div>
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead
+                    key={header.id}
+                    className="border border-gray-200 bg-gray-200"
+                  >
+                    <HotTableColumnHeader
+                      column={header.column}
+                      title={header.id}
+                    />
+                  </TableHead>
                 ))}
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows.length ? (
+              table.getRowModel().rows.map((row, rowIndex) => (
+                <TableRow
+                  key={row.id}
+                  className={`cursor-pointer border ${
+                    selectedRow === rowIndex
+                      ? "border-2 border-blue-700 bg-blue-50"
+                      : ""
+                  }`}
+                  onClick={() => handleRowSelection(rowIndex)}
+                >
+                  {/* Normal cell values */}
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell
+                      key={cell.id}
+                      style={{ height: 50 }}
+                      className={`border border-gray-100 cursor-pointer ${
+                        selectedCell?.row === rowIndex &&
+                        selectedCell?.col === cell.column.id
+                          ? "border-2 border-blue-700"
+                          : ""
+                      } `}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleCellSelection(rowIndex, cell.column.id);
+                      }}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
       <div className="flex items-center space-x-2 py-4">
         <HotTablePagination table={table} />
       </div>

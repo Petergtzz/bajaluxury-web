@@ -15,7 +15,7 @@ export type Props = {
 
 export const TextCell: FC<Props> = ({ value, columnWidth }) => {
   return (
-    <div className="truncate p-1" title={value} style={{ width: columnWidth }}>
+    <div className="p-1" title={value} style={{ width: columnWidth }}>
       {value}
     </div>
   );

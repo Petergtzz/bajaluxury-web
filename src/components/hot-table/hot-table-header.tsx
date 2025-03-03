@@ -22,10 +22,7 @@ export function HotTableColumnHeader<TData, TValue>({
   }
 
   return (
-    <div className="flex items-center gap-2">
-      <span className="text-left" style={{ textTransform: "capitalize" }}>
-        {title}
-      </span>
+    <div className="flex items-center space-x-2">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -33,12 +30,13 @@ export function HotTableColumnHeader<TData, TValue>({
             size="sm"
             className="h-8 data-[state=open]:bg-accent"
           >
+            <span className="capitalize text-left">{title}</span>
             {column.getIsSorted() === "desc" ? (
               <ArrowDown className="w-4 h-4 stroke-1" />
             ) : column.getIsSorted() === "asc" ? (
               <ArrowUp className="w-4 h-4 stroke-1" />
             ) : (
-              <ChevronsUpDown className="w-4 h-4 stroke-2" />
+              <ChevronsUpDown className="w-4 h-4 stroke-1" />
             )}
           </Button>
         </DropdownMenuTrigger>

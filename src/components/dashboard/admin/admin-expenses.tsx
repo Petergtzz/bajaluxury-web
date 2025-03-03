@@ -6,7 +6,10 @@ import HotTable from "@/components/hot-table/hot-table";
 
 export async function AdminExpenses() {
   const expenses = await fetchAllExpenses();
+  // console.log(expenses);
+
   const example = await query("expenses");
+  console.log(example);
 
   const data = example.rows;
 
