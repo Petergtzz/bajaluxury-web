@@ -1,15 +1,8 @@
 "use server";
-
 import { z } from "zod";
 import { createSession, deleteSession } from "@/lib/session";
 import { client } from "@/lib/turso";
 import { redirect } from "next/navigation";
-
-// const testUser = {
-//   id: "1",
-//   email: "contact@cosdensolutions.io",
-//   password: "12345678",
-// };
 
 const loginSchema = z.object({
   email: z
@@ -41,8 +34,6 @@ export async function login(prevState: any, formData: FormData) {
       args: [email],
     });
 
-    // console.log("userQuery", userQuery);
-
     if (userQuery.rows.length === 0) {
       return {
         errors: {
@@ -61,7 +52,6 @@ export async function login(prevState: any, formData: FormData) {
       };
     }
 
-    // console.log("user.user_id:", user.user_id, typeof user.user_id);
     await createSession(
       Number(user.user_id),
       user.role as "admin" | "user",
@@ -81,19 +71,6 @@ export async function login(prevState: any, formData: FormData) {
       redirect(redirectPath);
     }
   }
-
-  // Test user
-  // if (email !== testUser.email || password !== testUser.password) {
-  //   return {
-  //     errors: {
-  //       email: ["Invalid email or password"],
-  //     },
-  //   };
-  // }
-
-  // await createSession(testUser.id);
-
-  // redirect("/dashboard");
 }
 
 export async function logout() {
