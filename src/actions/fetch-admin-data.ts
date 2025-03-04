@@ -78,7 +78,29 @@ export async function fetchAllBalances(): Promise<Balance[]> {
   }));
 }
 
-export async function fetchDashboard(address: string, month: string) {
+export async function fetchBalance(address: string) {
+  const query = `
+    SELECT
+      h.address AS house,
+      b.balance
+    FROM
+      balances b
+    JOIN
+      houses h ON b.house_id = h.house_id
+    WHERE
+      h.address = ?
+    `;
+  const result = await client.execute({ sql: query, args: [address] });
+  return result.rows.map((row) => ({
+    house: row.house as string,
+    balance: Number(row.balance),
+  }));
+}
+
+export async function fetchIncomeStatementExpenses(
+  address: string,
+  month: string,
+) {
   const query = `
     SELECT
       e.expense_id AS id,
@@ -87,25 +109,66 @@ export async function fetchDashboard(address: string, month: string) {
       e.concept,
       e.category,
       e.payment_method AS method,
-      e.amount,
-      e.description
-    FROM,
+      e.description,
+      SUM(e.amount) AS total_amount
+    FROM
       expenses e
     JOIN
       houses h on e.house_id = h.house_id
     WHERE
       h.address = ?
       AND strftime('%Y-%m', e.date) = ?
-    ORDER BY
-      e.expense_id DESC
+    GROUP BY
+      e.category,
+      e.concept
     `;
   const result = await client.execute({
     sql: query,
     args: [address, month],
   });
   return result.rows.map((row) => ({
+    id: row.id as number,
     house: row.house as string,
-    balance: Number(row.balance),
+    date: row.date as string,
+    category: row.category as string,
+    concept: row.concept as string,
+    method: row.method as string,
+    description: row.description as string,
+    total_amount: Number(row.total_amount),
+  }));
+}
+
+export async function fetchIncomeStatementIncomes(
+  address: string,
+  month: string,
+) {
+  const query = `
+    SELECT
+      i.income_id AS id,
+      h.address AS house,
+      i.amount,
+      i.date,
+      i.payment_method AS method,
+      i.description
+    FROM
+      incomes i
+    JOIN
+      houses h on i.house_id = h.house_id
+    WHERE
+      h.address = ?
+      AND strftime('%Y-%m', i.date) = ?
+    `;
+  const result = await client.execute({
+    sql: query,
+    args: [address, month],
+  });
+  return result.rows.map((row) => ({
+    id: row.id as number,
+    house: row.house as string,
+    amount: Number(row.amount),
+    date: row.date as string,
+    method: row.method as string,
+    description: row.description as string,
   }));
 }
 

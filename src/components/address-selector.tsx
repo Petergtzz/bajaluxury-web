@@ -40,7 +40,7 @@ export default function AddressSelector({
 
   return (
     <Select onValueChange={handleSelect} value={defaultValue}>
-      <SelectTrigger className="w-1/5  md:h-[50px]">
+      <SelectTrigger className="w-full md:w-[200px]">
         <SelectValue placeholder="Select Address" />
       </SelectTrigger>
       <SelectContent>
