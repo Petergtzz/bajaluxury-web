@@ -11,6 +11,8 @@ export function AccountBalanceCard({
   balance,
   currency,
 }: AccountBalanceCardProps) {
+  const isUsd = currency ? currency === "USD" : false;
+
   return (
     <Card>
       <CardHeader className="pb-2">
@@ -22,7 +24,7 @@ export function AccountBalanceCard({
         <div
           className={`text-2xl font-bold ${balance >= 0 ? "text-green-800" : "text-red-800"}`}
         >
-          {formatAmount(balance)}
+          {isUsd ? formatAmount(balance / exchangeRate) : formatAmount(balance)}
         </div>
       </CardContent>
     </Card>
