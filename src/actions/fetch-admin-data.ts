@@ -98,7 +98,7 @@ export async function fetchBalance(houseId: number) {
 }
 
 export async function fetchIncomeStatementExpenses(
-  address: string,
+  house_id: number,
   month: string,
 ) {
   const query = `
@@ -116,7 +116,7 @@ export async function fetchIncomeStatementExpenses(
     JOIN
       houses h on e.house_id = h.house_id
     WHERE
-      h.address = ?
+      h.house_id = ?
       AND strftime('%Y-%m', e.date) = ?
     GROUP BY
       e.category,
@@ -124,7 +124,7 @@ export async function fetchIncomeStatementExpenses(
     `;
   const result = await client.execute({
     sql: query,
-    args: [address, month],
+    args: [house_id, month],
   });
   return result.rows.map((row) => ({
     id: row.id as number,

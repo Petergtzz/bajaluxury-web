@@ -7,7 +7,7 @@ const queryClient = new QueryClient();
 
 export default function OverviewPage() {
   return (
-    <div>
+    <div className="w-full">
       <Header title="Overview" />
       <div className="px-8">
         <QueryClientProvider client={queryClient}>

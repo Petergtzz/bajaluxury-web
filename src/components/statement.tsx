@@ -9,7 +9,10 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { formatAmount, formatDate } from "@/lib/formatter";
-import { formatDynamicAPIAccesses } from "next/dist/server/app-render/dynamic-rendering";
+import { fetchIncomeStatementData } from "@/actions/fetch-user-data";
+import { fetchIncomeStatementExpenses } from "@/actions/fetch-admin-data";
+import { useQuery } from "@tanstack/react-query";
+import Loading from "@/components/loading-component";
 
 type Expense = {
   id: number;
@@ -32,27 +35,37 @@ type Income = {
 };
 
 type Statement = {
-  expenses: Expense[];
-  incomes: Income[];
-  address?: string;
+  house_id: number;
   month: string;
 };
 
-export default function BalanceSheetLedger({
-  expenses = [],
-  incomes = [],
-  address,
-  month,
-}: Statement) {
-  // State to track expansion by category
+export default function IncomeStatement({ house_id, month }: Statement) {
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
 
   // Format the month for display in the header
   const [year, mon] = month.split("-");
   const displayedDate = new Date(Number(year), Number(mon) - 1, 1);
 
+  const {
+    data: expenses,
+    isError,
+    isPending,
+  } = useQuery({
+    queryKey: ["expenses", house_id, month],
+    queryFn: () => fetchIncomeStatementExpenses(house_id, month),
+    enabled: house_id !== null && house_id !== undefined,
+  });
+
+  if (isError) {
+    return <div>Error</div>;
+  }
+
+  if (isPending) {
+    return <Loading />;
+  }
+
   // Group expenses by category
-  const groupedExpenses = expenses.reduce(
+  const groupedExpenses = (expenses || []).reduce(
     (acc, item) => {
       const category = item.category;
       if (!acc[category]) {

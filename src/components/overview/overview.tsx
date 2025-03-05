@@ -10,6 +10,7 @@ import { AccountBalance } from "@/components/overview/components/account-balance
 import { Input } from "@/components/ui/input";
 import { useClientSession } from "../session-client-provider";
 import Loading from "../loading-component";
+import { ExchangeRateDisplay } from "./components/exhange-rate-display";
 
 export default function Overview() {
   const session = useClientSession();
@@ -21,7 +22,7 @@ export default function Overview() {
   const isAdmin = session?.role === "admin";
 
   // Handle user houseId
-  const houseId = isAdmin ? selectedAddress : session?.houseId;
+  const houseId = isAdmin ? (selectedAddress ?? -1) : (session?.houseId ?? -1);
 
   const {
     data: accountBalance,
@@ -50,18 +51,17 @@ export default function Overview() {
   };
 
   if (isError) {
-    <div>Error</div>;
+    return <div>Error</div>;
   }
 
   if (isPending) {
-    <Loading />;
+    return <Loading />;
   }
 
   return (
-    <div className="py-3">
-      {/* Top selectors */}
-      <div className="w-full flex md:justify-start items-center gap-4">
-        <div className="relative w-full md:max-w-xs">
+    <div className="py-2">
+      <div className="w-full flex justify-start items-center gap-4">
+        <div className="relative w-full max-w-xs">
           <Input placeholder="Search..." className="pl-8 pr-2" />
           <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 w-4 h-4 stroke-1" />
         </div>
@@ -75,9 +75,9 @@ export default function Overview() {
           defaultValue={selectedMonth}
           onMonthAction={handleMonthAction}
         />
+        <ExchangeRateDisplay />
       </div>
 
-      {/* Balance Cards arranged side by side */}
       <div className="mt-8 flex flex-row gap-14">
         <AccountBalance
           balance={
@@ -97,8 +97,9 @@ export default function Overview() {
         />
       </div>
 
-      {/* Income Statement */}
-      <div className="mt-8"></div>
+      <div className="mt-8">
+        <IncomeStatement house_id={houseId} month={selectedMonth} />
+      </div>
     </div>
   );
 }
