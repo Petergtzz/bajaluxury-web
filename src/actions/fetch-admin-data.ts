@@ -78,7 +78,7 @@ export async function fetchAllBalances(): Promise<Balance[]> {
   }));
 }
 
-export async function fetchBalance(address: string) {
+export async function fetchBalance(houseId: number) {
   const query = `
     SELECT
       h.address AS house,
@@ -88,9 +88,9 @@ export async function fetchBalance(address: string) {
     JOIN
       houses h ON b.house_id = h.house_id
     WHERE
-      h.address = ?
+      h.house_id = ?
     `;
-  const result = await client.execute({ sql: query, args: [address] });
+  const result = await client.execute({ sql: query, args: [houseId] });
   return result.rows.map((row) => ({
     house: row.house as string,
     balance: Number(row.balance),
@@ -172,15 +172,39 @@ export async function fetchIncomeStatementIncomes(
   }));
 }
 
+export async function fetchTotalCashAmount(address: string, month: string) {
+  const query = `
+    SELECT
+      h.address AS house,
+      SUM(e.amount) AS total_amount
+    FROM
+      expenses e
+    JOIN
+      houses h ON e.house_id = h.house_id
+    WHERE
+      h.address = ?
+      AND strftime('%Y-%m', e.date) = ?
+      AND e.payment_method = 'cash'
+    `;
+
+  const result = await client.execute({ sql: query, args: [address, month] });
+  return result.rows.map((row) => ({
+    house: row.house as string,
+    total_amount: Number(row.total_amount),
+  }));
+}
+
 export async function fetchAddress() {
   const query = `
     SELECT
+      house_id AS id,
       address
     FROM
       houses
     `;
   const result = await client.execute(query);
   return result.rows.map((row) => ({
+    id: row.id as number,
     address: row.address as string,
   }));
 }

@@ -12,7 +12,6 @@ export async function createSession(
 ) {
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
   const session = await encrypt({ userId, role, houseId, expiresAt });
-  // console.log("Session:", session);
 
   const cookieStore = await cookies();
   cookieStore.set("session", session, {
@@ -29,7 +28,7 @@ export async function deleteSession() {
   cookieStore.delete("session");
 }
 
-type SessionPayload = {
+export type SessionPayload = {
   userId: number;
   role: "admin" | "user";
   houseId?: number;

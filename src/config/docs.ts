@@ -1,6 +1,11 @@
-import { Database, PencilRuler, Phone } from "lucide-react";
+import { Zap, Database, PencilRuler, Phone } from "lucide-react";
 
 export const items = [
+  {
+    title: "Overview",
+    url: "/overview",
+    icon: Zap,
+  },
   {
     title: "Data",
     url: "/dashboard",
