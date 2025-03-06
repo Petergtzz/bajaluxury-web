@@ -3,11 +3,9 @@ import { formatAmount } from "@/lib/formatter";
 
 export function ExchangeRateDisplay() {
   return (
-    <div>
-      <h1>
-        Exhange Rate:
-        {formatAmount(exchangeRate)}
-      </h1>
+    <div className="flex flex-col text-xs text-gray-700 dark:text-white">
+      <span className="font-semibold">Exchange Rate:</span>
+      <span>{formatAmount(exchangeRate)}</span>
     </div>
   );
 }

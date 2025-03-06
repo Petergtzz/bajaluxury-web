@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { useClientSession } from "../session-client-provider";
 import Loading from "../loading-component";
 import { ExchangeRateDisplay } from "./components/exhange-rate-display";
+import StackedAreaChart from "./components/chart";
 
 export default function Overview() {
   const session = useClientSession();
@@ -100,6 +101,11 @@ export default function Overview() {
       <div className="mt-8">
         <IncomeStatement house_id={houseId} month={selectedMonth} />
       </div>
+      <StackedAreaChart
+        houseId={houseId}
+        month={selectedMonth}
+        method="credit card"
+      />
     </div>
   );
 }

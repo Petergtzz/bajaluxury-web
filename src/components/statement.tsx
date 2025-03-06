@@ -131,7 +131,7 @@ export default function IncomeStatement({ house_id, month }: Statement) {
       <CardContent>
         <div className="flex tracking-tight text-sm font-medium py-2 border-b border-gray-700 dark:border-gray-100">
           <div className="w-1/2 px-4">Category</div>
-          <div className="w-1/4 px-4 text-right">Total Cost</div>
+          <div className="w-1/4 px-4 text-right">Amount</div>
           <div className="w-1/4 px-4 text-right">% of Expenses</div>
         </div>
 
@@ -164,12 +164,12 @@ export default function IncomeStatement({ house_id, month }: Statement) {
               data.concepts.map((concept, index) => (
                 <div
                   key={index}
-                  className="flex text-sm py-2 border-b border-gray-300 bg-gray-100 dark:bg-gray-800"
+                  className="flex text-sm tracking-light py-2 border-b border-gray-300 bg-gray-100 dark:bg-gray-800"
                 >
-                  <div className="w-1/2 px-5">
+                  <div className="w-1/2 px-8">
                     <Tooltip>
                       <TooltipTrigger title={concept.concept}>
-                        - {concept.concept}
+                        {concept.concept}
                       </TooltipTrigger>
                       <TooltipContent title={concept.description}>
                         {concept.description}

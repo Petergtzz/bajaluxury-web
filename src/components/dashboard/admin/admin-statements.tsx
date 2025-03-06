@@ -6,14 +6,15 @@ import {
   fetchBalance,
 } from "@/actions/fetch-admin-data";
 import MonthSelector from "@/components/month-selector";
-import AddressSelector from "@/components/address-selector";
+import AddressSelector from "@/components/overview/components/address-selector";
 import IncomeStatement from "@/components/statement";
-import { Loader } from "lucide-react";
-import { AccountBalanceCard } from "@/components/account-balance";
+import { Loader, Search } from "lucide-react";
+import { AccountBalanceCard } from "@/components/overview/components/account-balance";
+import { Input } from "@/components/ui/input";
 
 export default function AdminDashboard() {
   const defaultMonth = new Date().toISOString().slice(0, 7);
-  const [selectedMonth, setSelectedMonth] = useState(defaultMonth);
+  const [selectedMonth, setSelectedMonth] = useState<string>(defaultMonth);
 
   const [data, setData] = useState<any>(null);
 
@@ -36,11 +37,11 @@ export default function AdminDashboard() {
   }, [selectedAddress, selectedMonth]);
 
   const handleMonthAction = (month: string) => {
-    setSelectedMonth(month);
+    if (month !== selectedMonth) setSelectedMonth(month);
   };
 
   const handleAddressAction = (address: string) => {
-    setSelectedAddress(address);
+    if (address !== selectedAddress) setSelectedAddress(address);
   };
 
   if (!data) {
@@ -60,35 +61,38 @@ export default function AdminDashboard() {
   return (
     <div className="pt-4">
       {/* Top selectors */}
-      <div className="w-full flex md:justify-start">
+      <div className="w-full flex md:justify-start items-center gap-4">
+        <div className="relative w-full md:max-w-xs">
+          <Input
+            placeholder="Search & Filter"
+            className="pl-8 pr-2 py-2 rounded"
+          />
+          <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 w-4 h-4 stroke-1" />
+        </div>
         <AddressSelector
           defaultValue={selectedAddress}
           onAddressAction={handleAddressAction}
         />
-        <div className="p-1.5" />
         <MonthSelector
           defaultValue={selectedMonth}
           onMonthAction={handleMonthAction}
         />
       </div>
 
-      {/* Main content grid: Left for cards, Right for income statement */}
-      <div className="mt-4 grid grid-cols-2 gap-4">
-        {/* Left Column: Account Balance Cards (stacked vertically) */}
-        <div className="w-60 flex flex-col gap-4">
-          <AccountBalanceCard balance={data.updatedBalance} currency="MXN" />
-          <AccountBalanceCard balance={data.updatedBalance} currency="USD" />
-        </div>
+      {/* Balance Cards arranged side by side */}
+      <div className="mt-4 flex flex-row gap-4">
+        <AccountBalanceCard balance={data.updatedBalance} currency="MXN" />
+        <AccountBalanceCard balance={data.updatedBalance} currency="USD" />
+      </div>
 
-        {/* Right Column: Income Statement (occupies half of the page); rest left blank */}
-        <div className="w-full">
-          <IncomeStatement
-            expenses={data.recentExpenses}
-            incomes={data.recentIncomes}
-            address={selectedAddress}
-            month={selectedMonth}
-          />
-        </div>
+      {/* Income Statement */}
+      <div className="mt-4">
+        <IncomeStatement
+          expenses={data.recentExpenses}
+          incomes={data.recentIncomes}
+          address={selectedAddress}
+          month={selectedMonth}
+        />
       </div>
     </div>
   );

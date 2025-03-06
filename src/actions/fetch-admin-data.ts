@@ -208,3 +208,35 @@ export async function fetchAddress() {
     address: row.address as string,
   }));
 }
+
+export async function fetchAreaChart(
+  houseId: number,
+  month: string,
+  method: string,
+) {
+  const query = `
+    SELECT
+      e.date,
+      e.category,
+      SUM(e.amount) AS total_amount
+    FROM
+      expenses e
+    WHERE
+      e.house_id = ?
+      AND strftime('%Y-%m', e.date) = ?
+      AND e.payment_method = ?
+    GROUP BY
+      e.category
+    ORDER BY
+      total_amount DESC;
+    `;
+  const result = await client.execute({
+    sql: query,
+    args: [houseId, month, method],
+  });
+  return result.rows.map((row) => ({
+    date: row.date as string,
+    category: row.category as string,
+    total_amount: Number(row.total_amount),
+  }));
+}
