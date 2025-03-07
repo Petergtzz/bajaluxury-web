@@ -6,11 +6,10 @@ import {
   SelectGroup,
   SelectItem,
   SelectValue,
-  SelectLabel,
 } from "@/components/ui/select";
 
 interface MethodSelectorProps {
-  defaultValue: string | null;
+  defaultValue: string;
   onMethodAction: (method: string) => void;
 }
 
@@ -18,19 +17,24 @@ export default function MethodSelector({
   defaultValue,
   onMethodAction,
 }: MethodSelectorProps) {
+  const options = ["credit card", "cash"];
+
   const handleSelect = (method: string) => {
     onMethodAction(method);
   };
 
   return (
-    <Select onValueChange={handleSelect} value={defaultValue?.toString()}>
+    <Select onValueChange={handleSelect} value={defaultValue}>
       <SelectTrigger className="w-full md:w-[200px]">
         <SelectValue placeholder="Payment Type" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectItem value="Credit Card">Credit Card</SelectItem>
-          <SelectItem value="Cash">Cash</SelectItem>
+          {options.map((opt) => (
+            <SelectItem key={opt} value={opt}>
+              {opt}
+            </SelectItem>
+          ))}
         </SelectGroup>
       </SelectContent>
     </Select>

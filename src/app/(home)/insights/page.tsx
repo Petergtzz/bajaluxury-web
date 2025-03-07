@@ -1,5 +1,5 @@
 "use client";
-import Overview from "@/components/overview/overview";
+import Insights from "@/components/insights/insights";
 import { Header } from "@/components/header";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
@@ -11,7 +11,7 @@ export default function InsightsPage() {
       <Header title="Insights" exchangeRate={true} />
       <div className="px-8">
         <QueryClientProvider client={queryClient}>
-          <Overview />
+          <Insights />
         </QueryClientProvider>
       </div>
     </div>

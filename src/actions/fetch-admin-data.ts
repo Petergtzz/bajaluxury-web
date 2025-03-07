@@ -254,3 +254,31 @@ export async function fetchAreaChart(
     cumulative_amount_total: Number(row.cumulative_amount_total),
   }));
 }
+
+export async function fetchTotalSpendAmount(
+  houseId: number,
+  month: string,
+  method: string,
+) {
+  const query = `
+    SELECT
+      h.address AS house,
+      SUM(e.amount) AS total_amount
+    FROM
+      expenses e
+    JOIN
+      houses h ON e.house_id = h.house_id
+    WHERE
+      e.house_id = ?
+      AND strftime('%Y-%m', e.date) = ?
+      AND e.payment_method = ?
+    `;
+  const result = await client.execute({
+    sql: query,
+    args: [houseId, month, method],
+  });
+  return result.rows.map((row) => ({
+    house: row.house as string,
+    total_amount: Number(row.total_amount),
+  }));
+}

@@ -1,20 +1,21 @@
 "use client";
-import { fetchBalance } from "@/actions/fetch-admin-data";
+import { fetchTotalSpendAmount } from "@/actions/fetch-admin-data";
 import MonthSelector from "@/components/month-selector";
-import { AccountBalance } from "@/components/overview/components/account-balance";
 import AddressSelector from "@/components/overview/components/address-selector";
-import IncomeStatement from "@/components/statement";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { AlertDestructive } from "../error-message";
 import Loading from "../loading-component";
 import { useClientSession } from "../session-client-provider";
+import MethodSelector from "@/components/overview/components/method-selector";
+import AmountDisplay from "./utils/amount-display";
+import { AlertDestructive } from "../error-message";
 
-export default function Overview() {
+export default function Insights() {
   const session = useClientSession();
   const defaultMonth = new Date().toISOString().slice(0, 7);
   const [selectedMonth, setSelectedMonth] = useState<string>(defaultMonth);
   const [selectedAddress, setSelectedAddress] = useState<number | null>(1);
+  const [selectedMethod, setSelectedMethod] = useState<string>("cash");
 
   // Check if user is admin
   const isAdmin = session?.role === "admin";
@@ -23,13 +24,14 @@ export default function Overview() {
   const houseId = isAdmin ? (selectedAddress ?? -1) : (session?.houseId ?? -1);
 
   const {
-    data: accountBalance,
+    data: accountSpend,
     error,
     isError,
     isPending,
   } = useQuery({
-    queryKey: ["accountBalance", houseId],
-    queryFn: () => fetchBalance(houseId ?? -1),
+    queryKey: ["accountSpend", houseId, selectedMonth, selectedMethod],
+    queryFn: () =>
+      fetchTotalSpendAmount(houseId ?? -1, selectedMonth, selectedMethod),
     enabled: houseId !== null && houseId !== undefined,
   });
 
@@ -48,6 +50,10 @@ export default function Overview() {
     setSelectedAddress(houseId);
   };
 
+  const handleMethodAction = (method: string) => {
+    setSelectedMethod(method);
+  };
+
   if (isError) {
     return <AlertDestructive message={error.message} />;
   }
@@ -55,6 +61,8 @@ export default function Overview() {
   if (isPending) {
     return <Loading />;
   }
+
+  console.log(selectedMethod);
 
   return (
     <div className="py-0">
@@ -69,30 +77,24 @@ export default function Overview() {
           defaultValue={selectedMonth}
           onMonthAction={handleMonthAction}
         />
+        <MethodSelector
+          defaultValue={selectedMethod}
+          onMethodAction={handleMethodAction}
+        />
       </div>
 
       <div className="mt-8 flex flex-row gap-14">
-        <AccountBalance
-          balance={
-            accountBalance && accountBalance.length > 0
-              ? accountBalance[0].balance
+        <AmountDisplay
+          amount={
+            accountSpend && accountSpend.length > 0
+              ? accountSpend[0].total_amount
               : 0
           }
-          currency="MXN"
-        />
-        <AccountBalance
-          balance={
-            accountBalance && accountBalance.length > 0
-              ? accountBalance[0].balance
-              : 0
-          }
-          currency="USD"
+          month={selectedMonth}
         />
       </div>
 
-      <div className="mt-8">
-        <IncomeStatement house_id={houseId} month={selectedMonth} />
-      </div>
+      <div className="mt-8"></div>
     </div>
   );
 }
