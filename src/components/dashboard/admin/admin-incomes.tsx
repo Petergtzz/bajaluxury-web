@@ -1,10 +1,26 @@
-import React from "react";
 import { fetchAllIncomes } from "@/actions/fetch-admin-data";
 import { TableComponent } from "@/components/data-table/data-table";
+import Loading from "@/components/loading-component";
 import { Income } from "@/types";
+import { useQuery } from "@tanstack/react-query";
 
-export async function AdminIncomes() {
-  const incomes = await fetchAllIncomes();
+export default function AdminIncomes() {
+  const {
+    data: allIncomes,
+    isError,
+    isPending,
+  } = useQuery({
+    queryKey: ["allIncomes"],
+    queryFn: fetchAllIncomes,
+  });
+
+  if (isError) {
+    return <div>Error</div>;
+  }
+
+  if (isPending) {
+    return <Loading />;
+  }
 
   const columns = [
     { accessorKey: "house", header: "House" },
@@ -16,7 +32,7 @@ export async function AdminIncomes() {
 
   return (
     <div>
-      <TableComponent<Income> data={incomes} columns={columns} />
+      <TableComponent<Income> data={allIncomes} columns={columns} />
     </div>
   );
 }

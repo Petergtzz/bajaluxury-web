@@ -1,10 +1,26 @@
-import React from "react";
 import { fetchAllExpenses } from "@/actions/fetch-admin-data";
 import { TableComponent } from "@/components/data-table/data-table";
+import Loading from "@/components/loading-component";
 import { Expense } from "@/types";
+import { useQuery } from "@tanstack/react-query";
 
-export async function AdminExpenses() {
-  const expenses = await fetchAllExpenses();
+export default function AdminExpenses() {
+  const {
+    data: allExpenses,
+    isError,
+    isPending,
+  } = useQuery({
+    queryKey: ["allExpenses"],
+    queryFn: fetchAllExpenses,
+  });
+
+  if (isError) {
+    return <div>Error</div>;
+  }
+
+  if (isPending) {
+    return <Loading />;
+  }
 
   const columns = [
     { accessorKey: "house", header: "House" },
@@ -18,7 +34,7 @@ export async function AdminExpenses() {
 
   return (
     <div>
-      <TableComponent<Expense> data={expenses} columns={columns} />
+      <TableComponent<Expense> data={allExpenses} columns={columns} />
     </div>
   );
 }
