@@ -172,7 +172,11 @@ export async function fetchIncomeStatementIncomes(
   }));
 }
 
-export async function fetchTotalCashAmount(address: string, month: string) {
+export async function fetchTotalCashAmount(
+  house_id: number,
+  month: string,
+  method: string,
+) {
   const query = `
     SELECT
       h.address AS house,
@@ -182,12 +186,15 @@ export async function fetchTotalCashAmount(address: string, month: string) {
     JOIN
       houses h ON e.house_id = h.house_id
     WHERE
-      h.address = ?
+      h.house_id = ?
       AND strftime('%Y-%m', e.date) = ?
-      AND e.payment_method = 'cash'
+      AND e.payment_method = ?
     `;
 
-  const result = await client.execute({ sql: query, args: [address, month] });
+  const result = await client.execute({
+    sql: query,
+    args: [house_id, month, method],
+  });
   return result.rows.map((row) => ({
     house: row.house as string,
     total_amount: Number(row.total_amount),
@@ -218,17 +225,22 @@ export async function fetchAreaChart(
     SELECT
       e.date,
       e.category,
-      SUM(e.amount) AS total_amount
+      e.amount,
+      SUM(e.amount) OVER (
+        PARTITION BY e.category
+        ORDER BY e.date
+      ) AS cumulative_amount_by_category,
+      SUM(e.amount) OVER (
+        ORDER BY e.date
+      ) AS cumulative_amount_total
     FROM
       expenses e
     WHERE
       e.house_id = ?
       AND strftime('%Y-%m', e.date) = ?
       AND e.payment_method = ?
-    GROUP BY
-      e.category
     ORDER BY
-      total_amount DESC;
+      e.date ASC;
     `;
   const result = await client.execute({
     sql: query,
@@ -237,6 +249,8 @@ export async function fetchAreaChart(
   return result.rows.map((row) => ({
     date: row.date as string,
     category: row.category as string,
-    total_amount: Number(row.total_amount),
+    amount: Number(row.amount),
+    cumulative_amount_by_category: Number(row.cumulative_amount_by_category),
+    cumulative_amount_total: Number(row.cumulative_amount_total),
   }));
 }

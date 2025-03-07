@@ -12,12 +12,14 @@ import { useClientSession } from "../session-client-provider";
 import Loading from "../loading-component";
 import { ExchangeRateDisplay } from "./components/exhange-rate-display";
 import StackedAreaChart from "./components/chart";
+import MethodSelector from "./components/method-selector";
 
 export default function Overview() {
   const session = useClientSession();
   const defaultMonth = new Date().toISOString().slice(0, 7);
   const [selectedMonth, setSelectedMonth] = useState<string>(defaultMonth);
   const [selectedAddress, setSelectedAddress] = useState<number | null>(1);
+  const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
 
   // Check if user is admin
   const isAdmin = session?.role === "admin";
@@ -51,6 +53,10 @@ export default function Overview() {
     setSelectedAddress(houseId);
   };
 
+  const handleMethodAction = (method: string) => {
+    setSelectedMethod(method);
+  };
+
   if (isError) {
     return <div>Error</div>;
   }
@@ -60,12 +66,8 @@ export default function Overview() {
   }
 
   return (
-    <div className="py-2">
+    <div className="py-0">
       <div className="w-full flex justify-start items-center gap-4">
-        <div className="relative w-full max-w-xs">
-          <Input placeholder="Search..." className="pl-8 pr-2" />
-          <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 w-4 h-4 stroke-1" />
-        </div>
         {isAdmin && (
           <AddressSelector
             defaultValue={selectedAddress ?? 0}
@@ -76,7 +78,10 @@ export default function Overview() {
           defaultValue={selectedMonth}
           onMonthAction={handleMonthAction}
         />
-        <ExchangeRateDisplay />
+        <MethodSelector
+          defaultValue={selectedMethod}
+          onMethodAction={handleMethodAction}
+        />
       </div>
 
       <div className="mt-8 flex flex-row gap-14">
@@ -101,11 +106,6 @@ export default function Overview() {
       <div className="mt-8">
         <IncomeStatement house_id={houseId} month={selectedMonth} />
       </div>
-      <StackedAreaChart
-        houseId={houseId}
-        month={selectedMonth}
-        method="credit card"
-      />
     </div>
   );
 }
