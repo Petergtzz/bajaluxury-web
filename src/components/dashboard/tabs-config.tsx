@@ -1,16 +1,15 @@
 import React from "react";
-import { AdminExpenses } from "./admin/admin-expenses";
-import { AdminIncomes } from "./admin/admin-incomes";
-import { AdminBalances } from "./admin/admin-balances";
-import { UserExpensesContent } from "./user/user-expenses";
-import { UserIncomesContent } from "./user/user-incomes";
+import AdminBalances from "./admin/admin-balances";
+import AdminExpenses from "./admin/admin-expenses";
+import AdminIncomes from "./admin/admin-incomes";
 import UserBalanceContent from "./user/user-balance";
-import AdminDashboard from "./admin/admin-statements";
+import UserExpensesContent from "./user/user-expenses";
+import UserIncomesContent from "./user/user-incomes";
 
 type Tab = {
   value: string;
   label: string;
-  content: (houseId: number) => React.ReactNode;
+  content: () => React.ReactNode;
 };
 
 type TabsConfig = Record<string, Tab[]>;
@@ -20,23 +19,23 @@ export const TABS_CONFIG: TabsConfig = {
     {
       value: "balances",
       label: "Balance",
-      content: (houseId) => <UserBalanceContent houseId={houseId} />,
+      content: () => <UserBalanceContent />,
     },
     {
       value: "expenses",
       label: "Expenses",
-      content: (houseId) => <UserExpensesContent houseId={houseId} />,
+      content: () => <UserExpensesContent />,
     },
     {
       value: "incomes",
       label: "Incomes",
-      content: (houseId: number) => <UserIncomesContent houseId={houseId} />,
+      content: () => <UserIncomesContent />,
     },
   ],
   admin: [
     {
-      value: "statements",
-      label: "Statements",
+      value: "statement",
+      label: "Statement",
       content: () => <AdminBalances />,
     },
     { value: "expenses", label: "Expenses", content: () => <AdminExpenses /> },

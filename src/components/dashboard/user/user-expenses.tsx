@@ -2,15 +2,30 @@ import React from "react";
 import { Expense } from "@/types";
 import { TableComponent } from "@/components/data-table/data-table";
 import { fetchUserExpenses } from "@/actions/fetch-user-data";
+import { useQuery } from "@tanstack/react-query";
+import Loading from "@/components/loading-component";
+import { useClientSession } from "@/components/session-client-provider";
 
-type UserExpensesContentProps = {
-  houseId: number;
-};
+export default function UserExpensesContent() {
+  const session = useClientSession();
+  const houseId = session?.houseId ?? 0;
 
-export async function UserExpensesContent({
-  houseId,
-}: UserExpensesContentProps) {
-  const expenses = await fetchUserExpenses(houseId);
+  const {
+    data: expenses,
+    isError,
+    isPending,
+  } = useQuery({
+    queryKey: ["expenses", houseId],
+    queryFn: () => fetchUserExpenses(houseId),
+  });
+
+  if (isError) {
+    return <div>Error</div>;
+  }
+
+  if (isPending) {
+    return <Loading />;
+  }
 
   const columns = [
     { accessorKey: "date", header: "Date" },

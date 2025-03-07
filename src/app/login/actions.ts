@@ -58,7 +58,7 @@ export async function login(prevState: any, formData: FormData) {
       Number(user.house_id) ?? undefined,
     );
 
-    redirectPath = `/dashboard`;
+    redirectPath = `/insights`;
   } catch (error) {
     console.error("Login error:", error);
     return {

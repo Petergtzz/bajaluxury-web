@@ -1,17 +1,13 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { fetchBalance, fetchTotalCashAmount } from "@/actions/fetch-admin-data";
+import { fetchBalance } from "@/actions/fetch-admin-data";
 import MonthSelector from "@/components/month-selector";
+import { AccountBalance } from "@/components/overview/components/account-balance";
 import AddressSelector from "@/components/overview/components/address-selector";
 import IncomeStatement from "@/components/statement";
-import { Loader, Search } from "lucide-react";
-import { AccountBalance } from "@/components/overview/components/account-balance";
-import { Input } from "@/components/ui/input";
-import { useClientSession } from "../session-client-provider";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import Loading from "../loading-component";
-import { ExchangeRateDisplay } from "./components/exhange-rate-display";
-import StackedAreaChart from "./components/chart";
+import { useClientSession } from "../session-client-provider";
 import MethodSelector from "./components/method-selector";
 
 export default function Overview() {
@@ -31,7 +27,6 @@ export default function Overview() {
     data: accountBalance,
     isError,
     isPending,
-    refetch,
   } = useQuery({
     queryKey: ["accountBalance", houseId],
     queryFn: () => fetchBalance(houseId ?? -1),

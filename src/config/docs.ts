@@ -1,15 +1,15 @@
-import { Zap, Database, PencilRuler, Phone } from "lucide-react";
+import { Zap, PencilRuler, Phone, CreditCard } from "lucide-react";
 
 export const items = [
   {
-    title: "Overview",
-    url: "/overview",
+    title: "Insights",
+    url: "/insights",
     icon: Zap,
   },
   {
-    title: "Data",
-    url: "/dashboard",
-    icon: Database,
+    title: "Overview",
+    url: "/overview",
+    icon: CreditCard,
   },
   {
     title: "Tasks",

@@ -6,10 +6,10 @@ import {
   fetchBalance,
 } from "@/actions/fetch-admin-data";
 import MonthSelector from "@/components/month-selector";
-import AddressSelector from "@/components/overview/components/address-selector";
+import AddressSelector from "@/components/insights/components/address-selector";
 import IncomeStatement from "@/components/statement";
 import { Loader, Search } from "lucide-react";
-import { AccountBalanceCard } from "@/components/overview/components/account-balance";
+import { AccountBalanceCard } from "@/components/insights/components/account-balance";
 import { Input } from "@/components/ui/input";
 
 export default function AdminDashboard() {

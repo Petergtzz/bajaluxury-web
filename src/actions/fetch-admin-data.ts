@@ -61,7 +61,7 @@ export async function fetchAllIncomes(): Promise<Income[]> {
   }));
 }
 
-export async function fetchAllBalances(): Promise<Balance[]> {
+export async function fetchAllBalances() {
   const query = `
     SELECT
       h.address AS house,

@@ -1,91 +1,9 @@
-"use client";
+import Overview from "@/components/overview/overview";
 
-import React, { useEffect, useState } from "react";
-import { AccountBalanceCardMxn } from "./account-balance-card-mxn";
-import { PieComponent } from "./pie-chart";
-import { AccountBalanceCardUsd } from "./account-balance-card-usd";
-import { IncomeStatement } from "./income-statement";
-import MonthSelector from "@/components/month-selector";
-import {
-  fetchBalance,
-  fetchPieData,
-  fetchIncomeStatementData,
-} from "@/actions/fetch-user-data";
-import LoadingComponent from "@/components/loading-component";
-
-type UserBalanceContentProps = {
-  houseId: number;
-};
-
-export default function UserBalanceContent({
-  houseId,
-}: UserBalanceContentProps) {
-  const defaultMonth = new Date().toISOString().slice(0, 7);
-  const [selectedMonth, setSelectedMonth] = useState<string>(defaultMonth);
-  const [data, setData] = useState<any>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const [balance, pieData, incomeStatementData] = await Promise.all([
-        fetchBalance(houseId),
-        fetchPieData(houseId, selectedMonth),
-        fetchIncomeStatementData(houseId, selectedMonth),
-      ]);
-
-      const updatedBalance = balance?.[0]?.balance ?? 0;
-
-      setData({ updatedBalance, pieData, incomeStatementData });
-    };
-    fetchData();
-  }, [houseId, selectedMonth]);
-
-  const handleMonthAction = (month: string) => {
-    setSelectedMonth(month);
-  };
-
-  if (!data) {
-    return (
-      <div className="flex items-center justify-center h-full">
-        <LoadingComponent />
-      </div>
-    );
-  }
-
+export default function UserBalanceContent() {
   return (
-    <div className="relative w-full flex flex-col">
-      {/* Month Selector */}
-      <div className="w-full pt-3 flex md:justify-start">
-        <MonthSelector
-          defaultValue={selectedMonth}
-          onMonthAction={handleMonthAction}
-        />
-      </div>
-      <div className="w-full my-5 flex flex-col md:flex-row gap-4">
-        {/* Income Statement - Takes Full Height */}
-        <div className="w-full md:w-1/2 flex flex-col">
-          <IncomeStatement
-            monthlyExpenses={data.incomeStatementData}
-            month={selectedMonth}
-          />
-        </div>
-
-        {/* Right Side: Balance Cards & Pie Chart */}
-        <div className="w-full md:w-1/2 flex flex-col gap-4">
-          {/* Balance Cards - Side by Side */}
-          <div className="flex flex-col md:flex-row gap-4 w-full">
-            <div className="w-full md:w-1/2">
-              <AccountBalanceCardUsd balance={data.updatedBalance} />
-            </div>
-            <div className="w-full md:w-1/2">
-              <AccountBalanceCardMxn balance={data.updatedBalance} />
-            </div>
-          </div>
-          {/* Pie Chart - Same Width as Balance Cards */}
-          <div className="w-full">
-            <PieComponent pieData={data.pieData} month={selectedMonth} />
-          </div>
-        </div>
-      </div>
+    <div className="pt-5">
+      <Overview />
     </div>
   );
 }

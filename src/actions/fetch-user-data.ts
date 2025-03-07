@@ -3,11 +3,7 @@
 import { Balance, Income, Expense } from "@/types";
 import { client } from "@/lib/turso";
 
-export async function fetchUserExpenses(houseId: number): Promise<Expense[]> {
-  if (!houseId) {
-    throw new Error("houseId is required to fetch expenses.");
-  }
-
+export async function fetchUserExpenses(houseId: number) {
   const query = `
     SELECT
       h.address AS house,
@@ -42,7 +38,7 @@ export async function fetchUserExpenses(houseId: number): Promise<Expense[]> {
   }));
 }
 
-export async function fetchUserIncomes(houseId: number): Promise<Income[]> {
+export async function fetchUserIncomes(houseId: number) {
   if (!houseId) {
     throw new Error("houseId is required to fetch expenses.");
   }
