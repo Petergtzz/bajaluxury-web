@@ -1,6 +1,5 @@
 "use client";
-
-import { Database, PencilRuler, Phone, Plus, Home } from "lucide-react";
+import { Zap, CreditCard, PencilRuler, Phone, Plus, Home } from "lucide-react";
 import Link from "next/link";
 import * as React from "react";
 import { Button } from "./ui/button";

@@ -2,9 +2,20 @@ import React from "react";
 import { Tasks } from "@/types";
 import { TableComponent } from "@/components/data-table/data-table";
 import { fetchAdminTasks } from "@/actions/fetch-tasks";
+import { useQuery } from "@tanstack/react-query";
+import { AlertDestructive } from "../error-message";
+import Loading from "../loading-component";
 
-export async function AdminTasksContent() {
-  const tasks = await fetchAdminTasks();
+export default function AdminTasksContent() {
+  const {
+    data: adminTasks,
+    error,
+    isError,
+    isPending,
+  } = useQuery({
+    queryKey: ["adminTasks"],
+    queryFn: fetchAdminTasks,
+  });
 
   const columns = [
     { accessorKey: "house", header: "House" },
@@ -13,9 +24,17 @@ export async function AdminTasksContent() {
     { accessorKey: "date", header: "Date" },
   ];
 
+  if (isError) {
+    return <AlertDestructive message={error.message} />;
+  }
+
+  if (isPending) {
+    return <Loading />;
+  }
+
   return (
     <div>
-      <TableComponent<Tasks> data={tasks} columns={columns} />
+      <TableComponent<Tasks> data={adminTasks} columns={columns} />
     </div>
   );
 }

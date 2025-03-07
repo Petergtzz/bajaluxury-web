@@ -1,7 +1,7 @@
+"use server";
 import { client } from "@/lib/turso";
-import { Tasks } from "@/types";
 
-export async function fetchAdminTasks(): Promise<Tasks[]> {
+export async function fetchAdminTasks() {
   const query = `
     SELECT
       t.task_id AS task,
@@ -26,11 +26,7 @@ export async function fetchAdminTasks(): Promise<Tasks[]> {
   }));
 }
 
-export async function fetchUserTasks(houseId: number): Promise<Tasks[]> {
-  if (!houseId) {
-    throw new Error("houseId is required to fetch expenses.");
-  }
-
+export async function fetchUserTasks(houseId: number) {
   const query = `
     SELECT
       t.task_id AS task,
