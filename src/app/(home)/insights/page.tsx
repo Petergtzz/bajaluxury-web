@@ -1,17 +1,17 @@
 "use client";
-import Dashboard from "@/components/dashboard/dashboard";
+import Overview from "@/components/overview/overview";
 import { Header } from "@/components/header";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();
 
-export default function OverviewPage() {
+export default function InsightsPage() {
   return (
     <div className="w-full">
-      <Header title="Overview" exchangeRate={true} />
+      <Header title="Insights" exchangeRate={true} />
       <div className="px-8">
         <QueryClientProvider client={queryClient}>
-          <Dashboard />
+          <Overview />
         </QueryClientProvider>
       </div>
     </div>
