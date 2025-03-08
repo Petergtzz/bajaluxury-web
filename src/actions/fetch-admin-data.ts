@@ -282,3 +282,26 @@ export async function fetchTotalSpendAmount(
     total_amount: Number(row.total_amount),
   }));
 }
+
+export async function fetchTotalDepositAmount(houseId: number, month: string) {
+  const query = `
+    SELECT
+      h.address AS house,
+      SUM(i.amount) AS total_amount
+    FROM
+      incomes i
+    JOIN
+      houses h ON i.house_id = h.house_id
+    WHERE
+      i.house_id = ?
+      AND strftime('%Y-%m', i.date) = ?
+    `;
+  const result = await client.execute({
+    sql: query,
+    args: [houseId, month],
+  });
+  return result.rows.map((row) => ({
+    house: row.house as string,
+    total_amount: Number(row.total_amount),
+  }));
+}

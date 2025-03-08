@@ -1,5 +1,8 @@
 "use client";
-import { fetchTotalSpendAmount } from "@/actions/fetch-admin-data";
+import {
+  fetchTotalDepositAmount,
+  fetchTotalSpendAmount,
+} from "@/actions/fetch-admin-data";
 import MonthSelector from "@/components/month-selector";
 import AddressSelector from "@/components/overview/components/address-selector";
 import { useQuery } from "@tanstack/react-query";
@@ -7,8 +10,9 @@ import { useEffect, useState } from "react";
 import Loading from "../loading-component";
 import { useClientSession } from "../session-client-provider";
 import MethodSelector from "@/components/overview/components/method-selector";
-import AmountDisplay from "./utils/amount-display";
+import Spend from "./utils/spend";
 import { AlertDestructive } from "../error-message";
+import Deposits from "./utils/deposits";
 
 export default function Insights() {
   const session = useClientSession();
@@ -25,13 +29,24 @@ export default function Insights() {
 
   const {
     data: accountSpend,
-    error,
-    isError,
-    isPending,
+    error: spendError,
+    isError: isSpendError,
+    isPending: isSpendPending,
   } = useQuery({
     queryKey: ["accountSpend", houseId, selectedMonth, selectedMethod],
     queryFn: () =>
       fetchTotalSpendAmount(houseId ?? -1, selectedMonth, selectedMethod),
+    enabled: houseId !== null && houseId !== undefined,
+  });
+
+  const {
+    data: accountDeposits,
+    error: depositError,
+    isError: isDepositError,
+    isPending: isDepositPending,
+  } = useQuery({
+    queryKey: ["accountDeposits", houseId, selectedMonth],
+    queryFn: () => fetchTotalDepositAmount(houseId ?? -1, selectedMonth),
     enabled: houseId !== null && houseId !== undefined,
   });
 
@@ -54,11 +69,15 @@ export default function Insights() {
     setSelectedMethod(method);
   };
 
-  if (isError) {
-    return <AlertDestructive message={error.message} />;
+  if (isSpendError || isDepositError) {
+    return (
+      <AlertDestructive
+        message={spendError?.message || depositError?.message}
+      />
+    );
   }
 
-  if (isPending) {
+  if (isSpendPending || isDepositPending) {
     return <Loading />;
   }
 
@@ -84,12 +103,12 @@ export default function Insights() {
       </div>
 
       <div className="mt-8 flex flex-row gap-14">
-        <AmountDisplay
-          amount={
-            accountSpend && accountSpend.length > 0
-              ? accountSpend[0].total_amount
-              : 0
-          }
+        <Spend
+          amount={accountSpend?.[0]?.total_amount ?? 0}
+          month={selectedMonth}
+        />
+        <Deposits
+          amount={accountDeposits?.[0]?.total_amount ?? 0}
           month={selectedMonth}
         />
       </div>

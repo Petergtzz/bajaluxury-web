@@ -17,7 +17,7 @@ export function AccountBalance({ balance, currency }: AccountBalanceProps) {
       </Heading>
       <div className="flex-grow" />
       <Text
-        className={`m1-3 text-3xl font-bold ${
+        className={`m1-3 text-3xl font-normal ${
           balance >= 0 ? "text-green-600" : "text-red-700"
         }`}
       >

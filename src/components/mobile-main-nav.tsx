@@ -35,7 +35,7 @@ export default function MobileNav() {
         </Button>
       </div>
 
-      <Link href="/dashboard">
+      <Link href="/insights">
         <Button
           className={`absolute top-0 right-0 flex h-12 w-12 items-center justify-center rounded-full
             bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] transition-transform duration-300 ${
@@ -45,7 +45,21 @@ export default function MobileNav() {
             }`}
           onClick={closeMenu}
         >
-          <Database className="h-4 w-4 stroke-1" />
+          <Zap className="h-4 w-4 stroke-1" />
+        </Button>
+      </Link>
+
+      <Link href="/overview">
+        <Button
+          className={`absolute top-0 right-0 flex h-12 w-12 items-center justify-center rounded-full
+            bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] transition-transform duration-300 ${
+              open
+                ? "translate-y-[-160px] opacity-100 scale-100"
+                : "translate-y-0 opacity-0 scale-0"
+            }`}
+          onClick={closeMenu}
+        >
+          <CreditCard className="h-4 w-4 stroke-1" />
         </Button>
       </Link>
 

@@ -1,12 +1,12 @@
 import { formatAmount } from "@/lib/formatter";
 import { Text, Heading } from "@radix-ui/themes";
 
-type AccountDisplayProps = {
+type SpendProps = {
   amount: number;
   month: string;
 };
 
-export default function AmountDisplay({ amount, month }: AccountDisplayProps) {
+export default function Spend({ amount, month }: SpendProps) {
   const [year, mon] = month.split("-");
   const displayedDate = new Date(Number(year), Number(mon) - 1, 1);
 
@@ -19,7 +19,9 @@ export default function AmountDisplay({ amount, month }: AccountDisplayProps) {
         Spend
       </Heading>
       <div className="flex-grow" />
-      <Text className="m1-3 text-3xl font-bol">{formatAmount(amount)}</Text>
+      <Text className="text-3xl font-normal">
+        {amount ? formatAmount(amount) : "$0.00"}
+      </Text>
     </div>
   );
 }
