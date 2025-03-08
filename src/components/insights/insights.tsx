@@ -4,12 +4,12 @@ import {
   fetchTotalSpendAmount,
 } from "@/actions/fetch-admin-data";
 import MonthSelector from "@/components/month-selector";
-import AddressSelector from "@/components/overview/components/address-selector";
+import AddressSelector from "@/components/address-selector";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import Loading from "../loading-component";
 import { useClientSession } from "../session-client-provider";
-import MethodSelector from "@/components/insights/utils/method-selector";
+import MethodSelector from "@/components/method-selector";
 import Spend from "./utils/spend";
 import { AlertDestructive } from "../error-message";
 import Deposits from "./utils/deposits";
@@ -81,11 +81,9 @@ export default function Insights() {
     return <Loading />;
   }
 
-  console.log(selectedMethod);
-
   return (
     <div className="py-0">
-      <div className="w-full flex justify-start items-center gap-4">
+      <div className="w-full flex justify-end items-center gap-6">
         {isAdmin && (
           <AddressSelector
             defaultValue={selectedAddress ?? 0}
@@ -102,18 +100,20 @@ export default function Insights() {
         />
       </div>
 
-      <div className="mt-8 flex flex-row gap-14">
+      <div className="mt-4 flex flex-row gap-2 md:gap-14">
         <Spend
           amount={accountSpend?.[0]?.total_amount ?? 0}
           month={selectedMonth}
         />
+
+        {/* adjust width as needed */}
         <Deposits
           amount={accountDeposits?.[0]?.total_amount ?? 0}
           month={selectedMonth}
         />
       </div>
 
-      <div className="mt-8"></div>
+      <div className="mt-4"></div>
     </div>
   );
 }

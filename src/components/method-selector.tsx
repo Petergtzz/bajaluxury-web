@@ -25,7 +25,7 @@ export default function MethodSelector({
 
   return (
     <Select onValueChange={handleSelect} value={defaultValue}>
-      <SelectTrigger className="w-full md:w-[200px]">
+      <SelectTrigger className="w-full md:w-[120px]">
         <SelectValue placeholder="Payment Type" />
       </SelectTrigger>
       <SelectContent>

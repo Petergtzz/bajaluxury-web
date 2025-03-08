@@ -54,7 +54,7 @@ export default function MobileNav() {
           className={`absolute top-0 right-0 flex h-12 w-12 items-center justify-center rounded-full
             bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] transition-transform duration-300 ${
               open
-                ? "translate-y-[-160px] opacity-100 scale-100"
+                ? "translate-y-[-240px] opacity-100 scale-100"
                 : "translate-y-0 opacity-0 scale-0"
             }`}
           onClick={closeMenu}
@@ -68,7 +68,7 @@ export default function MobileNav() {
           className={`absolute top-0 right-0 flex h-12 w-12 items-center justify-center rounded-full
             bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] transition-transform duration-300 ${
               open
-                ? "translate-y-[-240px] opacity-100 scale-100"
+                ? "translate-y-[-320px] opacity-100 scale-100"
                 : "translate-y-0 opacity-0 scale-0"
             }`}
           onClick={closeMenu}
@@ -82,7 +82,7 @@ export default function MobileNav() {
           className={`absolute top-0 right-0 flex h-12 w-12 items-center justify-center rounded-full
             bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] transition-transform duration-300 ${
               open
-                ? "translate-y-[-320px] opacity-100 scale-100"
+                ? "translate-y-[-400px] opacity-100 scale-100"
                 : "translate-y-0 opacity-0 scale-0"
             }`}
           onClick={closeMenu}

@@ -2,7 +2,7 @@
 import { fetchBalance } from "@/actions/fetch-admin-data";
 import MonthSelector from "@/components/month-selector";
 import { AccountBalance } from "@/components/overview/components/account-balance";
-import AddressSelector from "@/components/overview/components/address-selector";
+import AddressSelector from "@/components/address-selector";
 import IncomeStatement from "@/components/statement";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";

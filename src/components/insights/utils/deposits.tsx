@@ -11,7 +11,7 @@ export default function Deposits({ amount, month }: DepositsProps) {
   const displayedDate = new Date(Number(year), Number(mon) - 1, 1);
 
   return (
-    <div className="flex flex-col justify-between ">
+    <div className="flex flex-col justify-between md:w-[150px]">
       <Heading as="h1" className="tracking-tight text-sm font-medium">
         {displayedDate.toLocaleDateString("default", {
           month: "long",

@@ -7,6 +7,7 @@ import {
   SelectGroup,
   SelectItem,
   SelectValue,
+  SelectLabel,
 } from "@/components/ui/select";
 import { fetchAddress } from "@/actions/fetch-admin-data";
 
@@ -40,11 +41,12 @@ export default function AddressSelector({
 
   return (
     <Select onValueChange={handleSelect} value={defaultValue?.toString()}>
-      <SelectTrigger className="w-full md:w-[200px]">
+      <SelectTrigger className="w-full md:w-[150px]">
         <SelectValue placeholder="Select Address" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
+          <SelectLabel className="font-semibold">Address</SelectLabel>
           {data.map((opt) => (
             <SelectItem key={opt.id} value={opt.id.toString()}>
               {opt.address}
