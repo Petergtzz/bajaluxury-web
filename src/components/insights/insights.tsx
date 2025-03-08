@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import Loading from "../loading-component";
 import { useClientSession } from "../session-client-provider";
-import MethodSelector from "@/components/overview/components/method-selector";
+import MethodSelector from "@/components/insights/utils/method-selector";
 import Spend from "./utils/spend";
 import { AlertDestructive } from "../error-message";
 import Deposits from "./utils/deposits";

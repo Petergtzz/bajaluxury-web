@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { AlertDestructive } from "../error-message";
 import Loading from "../loading-component";
 import { useClientSession } from "../session-client-provider";
+import { PieComponent } from "./components/chart";
 
 export default function Overview() {
   const session = useClientSession();
@@ -58,7 +59,7 @@ export default function Overview() {
 
   return (
     <div className="py-0">
-      <div className="w-full flex justify-start items-center gap-4">
+      <div className="w-full flex md:justify-start items-center gap-4">
         {isAdmin && (
           <AddressSelector
             defaultValue={selectedAddress ?? 0}
@@ -71,27 +72,27 @@ export default function Overview() {
         />
       </div>
 
-      <div className="mt-8 flex flex-row gap-14">
+      <div className="mt-4 flex flex-col md:flex-row gap-6 md:gap-14">
         <AccountBalance
-          balance={
-            accountBalance && accountBalance.length > 0
-              ? accountBalance[0].balance
-              : 0
-          }
+          balance={accountBalance?.[0]?.balance ?? 0}
           currency="MXN"
         />
         <AccountBalance
-          balance={
-            accountBalance && accountBalance.length > 0
-              ? accountBalance[0].balance
-              : 0
-          }
+          balance={accountBalance?.[0]?.balance ?? 0}
           currency="USD"
         />
       </div>
 
-      <div className="mt-8">
-        <IncomeStatement house_id={houseId} month={selectedMonth} />
+      <div className="w-full mt-4 flex flex-col md:flex-row gap-4">
+        <div className="w-full md:w-1/2 flex flex-col">
+          <IncomeStatement house_id={houseId} month={selectedMonth} />
+        </div>
+
+        <div className="w-full md:w-1/2 flex flex-col gap-4">
+          <div className="w-full">
+            <PieComponent house_id={houseId} month={selectedMonth} />
+          </div>
+        </div>
       </div>
     </div>
   );

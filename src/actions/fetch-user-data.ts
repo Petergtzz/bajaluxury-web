@@ -93,10 +93,6 @@ export async function fetchBalance(houseId: number): Promise<Balance[]> {
 }
 
 export async function fetchPieData(houseId: number, month: string) {
-  if (!houseId) {
-    throw new Error("houseId is required to fetch expenses.");
-  }
-
   const query = `
     SELECT
       e.category,
