@@ -9,10 +9,6 @@ export default function Tasks() {
   const role = session?.role ?? "user";
 
   return (
-    <div>
-      <div className="space-y-1">
-        {role === "user" ? <UserTasksContent /> : <AdminTasksContent />}
-      </div>
-    </div>
+    <div>{role === "user" ? <UserTasksContent /> : <AdminTasksContent />}</div>
   );
 }

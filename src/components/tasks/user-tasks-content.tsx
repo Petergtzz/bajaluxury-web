@@ -1,7 +1,7 @@
 import React from "react";
 import { Tasks } from "@/types";
 import { TableComponent } from "@/components/data-table/data-table";
-import { fetchUserTasks } from "@/actions/fetch-tasks";
+import { fetchUserTasks } from "@/actions/fetch-turso-data";
 import { useQuery } from "@tanstack/react-query";
 import { useClientSession } from "../session-client-provider";
 import { AlertDestructive } from "../error-message";

@@ -2,7 +2,7 @@
 import {
   fetchTotalDepositAmount,
   fetchTotalSpendAmount,
-} from "@/actions/fetch-admin-data";
+} from "@/actions/fetch-turso-data";
 import AddressSelector from "@/components/address-selector";
 import MethodSelector from "@/components/method-selector";
 import MonthSelector from "@/components/month-selector";

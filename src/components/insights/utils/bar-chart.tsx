@@ -7,20 +7,13 @@ import {
   Tooltip,
   Legend,
   YAxis,
-  ResponsiveContainer,
 } from "recharts";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
+import { ChartConfig, ChartContainer } from "@/components/ui/chart";
 import { useQuery } from "@tanstack/react-query";
 import { AlertDestructive } from "@/components/error-message";
 import Loading from "@/components/loading-component";
-import { fetchBarData } from "@/actions/fetch-admin-data";
+import { fetchBarLineData } from "@/actions/fetch-turso-data";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { formatAmount } from "@/lib/formatter";
 import { COLORS } from "@/constants/colors";
 import { Separator } from "@/components/ui/separator";
 import CustomTooltip from "@/components/custom-tooltip";
@@ -44,7 +37,7 @@ export default function BarComponent({ house_id, month }: BarComponentProps) {
     isPending,
   } = useQuery({
     queryKey: ["barData", house_id, month],
-    queryFn: () => fetchBarData(house_id, month),
+    queryFn: () => fetchBarLineData(house_id, month),
   });
 
   if (isError) {

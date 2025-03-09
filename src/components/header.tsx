@@ -4,9 +4,11 @@ import { Separator } from "./ui/separator";
 export function Header({
   title,
   exchangeRate,
+  description,
 }: {
   title: string;
   exchangeRate: boolean;
+  description?: string;
 }) {
   return (
     <div>

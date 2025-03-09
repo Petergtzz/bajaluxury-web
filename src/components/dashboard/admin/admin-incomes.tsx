@@ -1,4 +1,4 @@
-import { fetchAllIncomes } from "@/actions/fetch-admin-data";
+import { fetchAllIncomes } from "@/actions/fetch-turso-data";
 import { TableComponent } from "@/components/data-table/data-table";
 import Loading from "@/components/loading-component";
 import { Income } from "@/types";
