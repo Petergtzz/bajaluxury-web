@@ -12,12 +12,12 @@ export function AccountBalance({ balance, currency }: AccountBalanceProps) {
 
   return (
     <div className="flex flex-col justify-between ">
-      <Heading as="h1" className="tracking-tight text-sm font-medium">
+      <Heading as="h1" className="tracking-tight text-sm font-normal">
         Account Balance ({currency})
       </Heading>
       <div className="flex-grow" />
       <Text
-        className={`m1-3 text-3xl font-normal ${
+        className={`text-3xl font-normal ${
           balance >= 0 ? "text-green-600" : "text-red-700"
         }`}
       >

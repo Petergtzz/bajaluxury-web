@@ -17,8 +17,8 @@ type TabsConfig = Record<string, Tab[]>;
 export const TABS_CONFIG: TabsConfig = {
   user: [
     {
-      value: "balances",
-      label: "Balance",
+      value: "income statement",
+      label: "Income Statement",
       content: () => <UserBalanceContent />,
     },
     {
@@ -27,15 +27,15 @@ export const TABS_CONFIG: TabsConfig = {
       content: () => <UserExpensesContent />,
     },
     {
-      value: "incomes",
-      label: "Incomes",
+      value: "deposits",
+      label: "Deposits",
       content: () => <UserIncomesContent />,
     },
   ],
   admin: [
     {
-      value: "statement",
-      label: "Statement",
+      value: "income statement",
+      label: "Income Statement",
       content: () => <AdminBalances />,
     },
     { value: "expenses", label: "Expenses", content: () => <AdminExpenses /> },

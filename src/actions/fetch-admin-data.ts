@@ -216,42 +216,37 @@ export async function fetchAddress() {
   }));
 }
 
-export async function fetchAreaChart(
-  houseId: number,
-  month: string,
-  method: string,
-) {
+export async function fetchBarData(houseId: number, month: string) {
   const query = `
     SELECT
-      e.date,
-      e.category,
-      e.amount,
-      SUM(e.amount) OVER (
-        PARTITION BY e.category
-        ORDER BY e.date
-      ) AS cumulative_amount_by_category,
-      SUM(e.amount) OVER (
-        ORDER BY e.date
-      ) AS cumulative_amount_total
+      h.address AS house,
+      strftime('%Y-%m', e.date) AS month,
+      SUM(CASE WHEN e.payment_method = 'cash' THEN e.amount ELSE 0 END) AS total_cash_amount,
+      SUM(CASE WHEN e.payment_method = 'credit card' THEN e.amount ELSE 0 END) AS total_credit_card_amount,
+      SUM(CASE WHEN e.payment_method IN ('cash', 'credit card') THEN e.amount ELSE 0 END) AS total_amount
     FROM
       expenses e
+    JOIN
+      houses h ON e.house_id = h.house_id
     WHERE
       e.house_id = ?
-      AND strftime('%Y-%m', e.date) = ?
-      AND e.payment_method = ?
+      AND e.date >= date('now', '-6 months')
+      AND strftime('%Y-%m', e.date) <= ?
+    GROUP BY
+      strftime('%Y-%m', e.date)
     ORDER BY
-      e.date ASC;
+      month ASC
     `;
   const result = await client.execute({
     sql: query,
-    args: [houseId, month, method],
+    args: [houseId, month],
   });
   return result.rows.map((row) => ({
-    date: row.date as string,
-    category: row.category as string,
-    amount: Number(row.amount),
-    cumulative_amount_by_category: Number(row.cumulative_amount_by_category),
-    cumulative_amount_total: Number(row.cumulative_amount_total),
+    house: row.house as string,
+    month: row.month as string,
+    total_cash_amount: Number(row.total_cash_amount),
+    total_credit_card_amount: Number(row.total_credit_card_amount),
+    total_amount: Number(row.total_amount),
   }));
 }
 

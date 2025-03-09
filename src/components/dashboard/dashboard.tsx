@@ -20,7 +20,7 @@ export default function Dashboard() {
         </TabsList>
 
         {tabs.map((tab) => (
-          <TabsContent key={tab.value} value={tab.value} className="space-y-1">
+          <TabsContent key={tab.value} value={tab.value}>
             {tab.content()}
           </TabsContent>
         ))}

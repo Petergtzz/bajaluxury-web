@@ -1,7 +1,7 @@
 "use client";
 import { fetchBalance } from "@/actions/fetch-admin-data";
 import MonthSelector from "@/components/month-selector";
-import { AccountBalance } from "@/components/overview/components/account-balance";
+import { AccountBalance } from "@/components/overview/utils/account-balance";
 import AddressSelector from "@/components/address-selector";
 import IncomeStatement from "@/components/statement";
 import { useQuery } from "@tanstack/react-query";
@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { AlertDestructive } from "../error-message";
 import Loading from "../loading-component";
 import { useClientSession } from "../session-client-provider";
-import { PieComponent } from "./components/chart";
+import { PieComponent } from "./utils/pie-chart";
 
 export default function Overview() {
   const session = useClientSession();
@@ -58,8 +58,8 @@ export default function Overview() {
   }
 
   return (
-    <div className="py-0">
-      <div className="w-full flex md:justify-start items-center gap-4">
+    <div>
+      <div className="w-full flex justify-start items-center gap-4">
         {isAdmin && (
           <AddressSelector
             defaultValue={selectedAddress ?? 0}
@@ -72,7 +72,7 @@ export default function Overview() {
         />
       </div>
 
-      <div className="mt-4 flex flex-col md:flex-row gap-6 md:gap-14">
+      <div className="mt-4 flex flex-col md:flex-row gap-4 md:gap-14">
         <AccountBalance
           balance={accountBalance?.[0]?.balance ?? 0}
           currency="MXN"

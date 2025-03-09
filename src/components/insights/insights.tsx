@@ -3,16 +3,19 @@ import {
   fetchTotalDepositAmount,
   fetchTotalSpendAmount,
 } from "@/actions/fetch-admin-data";
-import MonthSelector from "@/components/month-selector";
 import AddressSelector from "@/components/address-selector";
+import MethodSelector from "@/components/method-selector";
+import MonthSelector from "@/components/month-selector";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import { AlertDestructive } from "../error-message";
 import Loading from "../loading-component";
 import { useClientSession } from "../session-client-provider";
-import MethodSelector from "@/components/method-selector";
-import Spend from "./utils/spend";
-import { AlertDestructive } from "../error-message";
 import Deposits from "./utils/deposits";
+import Spend from "./utils/spend";
+import { Input } from "@/components/ui/input";
+import { SearchIcon } from "lucide-react";
+import BarComponent from "./utils/bar-chart";
 
 export default function Insights() {
   const session = useClientSession();
@@ -23,7 +26,6 @@ export default function Insights() {
 
   // Check if user is admin
   const isAdmin = session?.role === "admin";
-
   // Handle user houseId
   const houseId = isAdmin ? (selectedAddress ?? -1) : (session?.houseId ?? -1);
 
@@ -100,20 +102,20 @@ export default function Insights() {
         />
       </div>
 
-      <div className="mt-4 flex flex-row gap-2 md:gap-14">
+      <div className="mt-4 flex flex-col md:flex-row gap-4 md:gap-14">
         <Spend
           amount={accountSpend?.[0]?.total_amount ?? 0}
           month={selectedMonth}
         />
-
-        {/* adjust width as needed */}
         <Deposits
           amount={accountDeposits?.[0]?.total_amount ?? 0}
           month={selectedMonth}
         />
       </div>
 
-      <div className="mt-4"></div>
+      <div className="mt-6">
+        <BarComponent house_id={houseId} month={selectedMonth} />
+      </div>
     </div>
   );
 }
