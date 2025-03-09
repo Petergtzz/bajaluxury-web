@@ -1,6 +1,7 @@
 import { DateTime } from "luxon";
 
 export const formatAmount = (value: any) => {
+  if (value === 0) return "$0.00";
   if (!value) return null;
   const amount = parseFloat(value);
   const formatted = new Intl.NumberFormat("en-US", {

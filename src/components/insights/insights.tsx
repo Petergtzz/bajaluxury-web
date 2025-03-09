@@ -14,8 +14,11 @@ import { useClientSession } from "../session-client-provider";
 import Deposits from "./utils/deposits";
 import Spend from "./utils/spend";
 import { Input } from "@/components/ui/input";
-import { SearchIcon } from "lucide-react";
+import { SearchIcon, TrendingUp, ChartNoAxesColumn } from "lucide-react";
 import BarComponent from "./utils/bar-chart";
+import LineComponent from "./utils/line-chart";
+import { Separator } from "../ui/separator";
+import { Button } from "../ui/button";
 
 export default function Insights() {
   const session = useClientSession();
@@ -23,6 +26,7 @@ export default function Insights() {
   const [selectedMonth, setSelectedMonth] = useState<string>(defaultMonth);
   const [selectedAddress, setSelectedAddress] = useState<number | null>(1);
   const [selectedMethod, setSelectedMethod] = useState<string>("cash");
+  const [chartType, setChartType] = useState<"bar" | "line">("bar");
 
   // Check if user is admin
   const isAdmin = session?.role === "admin";
@@ -85,7 +89,7 @@ export default function Insights() {
 
   return (
     <div className="py-0">
-      <div className="w-full flex justify-end items-center gap-6">
+      <div className="w-full flex flex-col md:flex-row justify-start items-center gap-6">
         {isAdmin && (
           <AddressSelector
             defaultValue={selectedAddress ?? 0}
@@ -111,10 +115,27 @@ export default function Insights() {
           amount={accountDeposits?.[0]?.total_amount ?? 0}
           month={selectedMonth}
         />
+        <div className="mt-1 md:mt-4 flex flex-1 justify-start md:justify-end gap-4">
+          <Button variant="outline" onClick={() => setChartType("bar")}>
+            Bar
+            <TrendingUp className="w-4 h-4 stroke-1" />
+          </Button>
+          <Button variant="outline" onClick={() => setChartType("line")}>
+            Line
+            <ChartNoAxesColumn className="w-4 h-4 stroke-1" />
+          </Button>
+        </div>
       </div>
 
-      <div className="mt-6">
-        <BarComponent house_id={houseId} month={selectedMonth} />
+      <div className="mt-4">
+        <Separator className="mb-4" />
+        <div className="w-full">
+          {chartType === "bar" ? (
+            <BarComponent house_id={houseId} month={selectedMonth} />
+          ) : (
+            <LineComponent house_id={houseId} month={selectedMonth} />
+          )}
+        </div>
       </div>
     </div>
   );

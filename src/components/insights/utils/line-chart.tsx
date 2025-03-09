@@ -1,14 +1,13 @@
-"use client";
 import {
-  Bar,
-  BarChart,
+  Line,
+  LineChart,
   CartesianGrid,
   XAxis,
   Tooltip,
   Legend,
   YAxis,
-  ResponsiveContainer,
 } from "recharts";
+
 import {
   ChartConfig,
   ChartContainer,
@@ -22,15 +21,15 @@ import { fetchBarData } from "@/actions/fetch-admin-data";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { formatAmount } from "@/lib/formatter";
 import { COLORS } from "@/constants/colors";
-import { Separator } from "@/components/ui/separator";
 import CustomTooltip from "@/components/custom-tooltip";
+import { Label } from "@/components/ui/label";
 
 type BarComponentProps = {
   house_id: number;
   month: string;
 };
 
-export default function BarComponent({ house_id, month }: BarComponentProps) {
+export default function LineComponent({ house_id, month }: BarComponentProps) {
   const isMobile = useIsMobile();
 
   // Convert date to long format
@@ -89,13 +88,13 @@ export default function BarComponent({ house_id, month }: BarComponentProps) {
 
   return (
     <ChartContainer config={chartConfig}>
-      <BarChart data={chartData}>
+      <LineChart data={chartData}>
         <CartesianGrid vertical={false} />
         <XAxis
           dataKey="month"
           tickLine={false}
           tickMargin={10}
-          axisLine={true}
+          axisLine={false}
           tickFormatter={(value) => {
             const [year, mon] = value.split("-");
             const displayedDate = new Date(Number(year), Number(mon) - 1, 1);
@@ -117,20 +116,23 @@ export default function BarComponent({ house_id, month }: BarComponentProps) {
           iconType="circle"
           iconSize={10}
         />
-        <Separator />
-        <Bar
+        <Line
+          type="monotone"
           dataKey="total_cash_amount"
-          stackId="a"
-          fill={COLORS[0]}
-          radius={[0, 0, 4, 4]}
+          stroke={COLORS[0]} // Define appropriate color for cash
+          strokeWidth={2}
+          dot={false}
+          activeDot={{ r: 8 }}
         />
-        <Bar
+        <Line
+          type="monotone"
           dataKey="total_credit_card_amount"
-          stackId="a"
-          fill={COLORS[2]}
-          radius={[4, 4, 0, 0]}
+          stroke={COLORS[2]} // Define appropriate color for credit card
+          strokeWidth={2}
+          dot={false}
+          activeDot={{ r: 8 }}
         />
-      </BarChart>
+      </LineChart>
     </ChartContainer>
   );
 }
