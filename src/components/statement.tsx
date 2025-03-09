@@ -1,38 +1,17 @@
 "use client";
-import { useMemo, useState } from "react";
-import { exchangeRate } from "@/constants/exchange-rate";
+import { fetchIncomeStatementData } from "@/actions/fetch-turso-data";
+import Loading from "@/components/loading-component";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChevronDown, ChevronRight } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { formatAmount, formatDate } from "@/lib/formatter";
-import { fetchIncomeStatementData } from "@/actions/fetch-user-data";
-import { fetchIncomeStatementExpenses } from "@/actions/fetch-admin-data";
+import { exchangeRate } from "@/constants/exchange-rate";
+import { formatAmount } from "@/lib/formatter";
 import { useQuery } from "@tanstack/react-query";
-import Loading from "@/components/loading-component";
-
-type Expense = {
-  id: number;
-  house: string;
-  date: string;
-  category: string;
-  concept: string;
-  method: string;
-  description: string;
-  total_amount: number;
-};
-
-type Income = {
-  id: number;
-  house: string;
-  amount: number;
-  date: string;
-  method: string;
-  description: string;
-};
+import { ChevronDown, ChevronRight } from "lucide-react";
+import { useState } from "react";
 
 type Statement = {
   house_id: number;
@@ -52,7 +31,7 @@ export default function IncomeStatement({ house_id, month }: Statement) {
     isPending,
   } = useQuery({
     queryKey: ["expenses", house_id, month],
-    queryFn: () => fetchIncomeStatementExpenses(house_id, month),
+    queryFn: () => fetchIncomeStatementData(house_id, month),
     enabled: house_id !== null && house_id !== undefined,
   });
 

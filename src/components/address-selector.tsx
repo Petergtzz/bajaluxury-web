@@ -9,7 +9,7 @@ import {
   SelectValue,
   SelectLabel,
 } from "@/components/ui/select";
-import { fetchAddress } from "@/actions/fetch-admin-data";
+import { fetchAddress } from "@/actions/fetch-turso-data";
 
 export interface Address {
   id: number;

@@ -14,13 +14,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
+import { ChartConfig, ChartContainer } from "@/components/ui/chart";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { fetchPieData } from "@/actions/fetch-user-data";
+import { fetchPieData } from "@/actions/fetch-turso-data";
 import { useQuery } from "@tanstack/react-query";
 import { AlertDestructive } from "@/components/error-message";
 import Loading from "@/components/loading-component";

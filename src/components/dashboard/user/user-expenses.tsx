@@ -1,10 +1,11 @@
 import React from "react";
 import { Expense } from "@/types";
 import { TableComponent } from "@/components/data-table/data-table";
-import { fetchUserExpenses } from "@/actions/fetch-user-data";
+import { fetchUserExpenses } from "@/actions/fetch-turso-data";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "@/components/loading-component";
 import { useClientSession } from "@/components/session-client-provider";
+import { AlertDestructive } from "@/components/error-message";
 
 export default function UserExpensesContent() {
   const session = useClientSession();
@@ -12,6 +13,7 @@ export default function UserExpensesContent() {
 
   const {
     data: expenses,
+    error,
     isError,
     isPending,
   } = useQuery({
@@ -20,7 +22,7 @@ export default function UserExpensesContent() {
   });
 
   if (isError) {
-    return <div>Error</div>;
+    return <AlertDestructive message={error.message} />;
   }
 
   if (isPending) {
