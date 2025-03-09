@@ -1,12 +1,14 @@
-import { fetchAllExpenses } from "@/actions/fetch-admin-data";
+import { fetchAllExpenses } from "@/actions/fetch-turso-data";
 import { TableComponent } from "@/components/data-table/data-table";
 import Loading from "@/components/loading-component";
 import { Expense } from "@/types";
 import { useQuery } from "@tanstack/react-query";
+import { AlertDestructive } from "@/components/error-message";
 
 export default function AdminExpenses() {
   const {
     data: allExpenses,
+    error,
     isError,
     isPending,
   } = useQuery({
@@ -15,7 +17,7 @@ export default function AdminExpenses() {
   });
 
   if (isError) {
-    return <div>Error</div>;
+    return <AlertDestructive message={error.message} />;
   }
 
   if (isPending) {

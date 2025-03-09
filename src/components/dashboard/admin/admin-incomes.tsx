@@ -3,10 +3,12 @@ import { TableComponent } from "@/components/data-table/data-table";
 import Loading from "@/components/loading-component";
 import { Income } from "@/types";
 import { useQuery } from "@tanstack/react-query";
+import { AlertDestructive } from "@/components/error-message";
 
 export default function AdminIncomes() {
   const {
     data: allIncomes,
+    error,
     isError,
     isPending,
   } = useQuery({
@@ -15,7 +17,7 @@ export default function AdminIncomes() {
   });
 
   if (isError) {
-    return <div>Error</div>;
+    return <AlertDestructive message={error.message} />;
   }
 
   if (isPending) {

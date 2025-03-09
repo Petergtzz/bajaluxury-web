@@ -1,8 +1,8 @@
 "use client";
-import { fetchBalance } from "@/actions/fetch-admin-data";
+import { fetchAccountBalance } from "@/actions/fetch-turso-data";
+import AddressSelector from "@/components/address-selector";
 import MonthSelector from "@/components/month-selector";
 import { AccountBalance } from "@/components/overview/utils/account-balance";
-import AddressSelector from "@/components/address-selector";
 import IncomeStatement from "@/components/statement";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
@@ -30,7 +30,7 @@ export default function Overview() {
     isPending,
   } = useQuery({
     queryKey: ["accountBalance", houseId],
-    queryFn: () => fetchBalance(houseId ?? -1),
+    queryFn: () => fetchAccountBalance(houseId ?? -1),
     enabled: houseId !== null && houseId !== undefined,
   });
 
