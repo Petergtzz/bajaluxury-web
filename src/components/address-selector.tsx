@@ -7,7 +7,6 @@ import {
   SelectGroup,
   SelectItem,
   SelectValue,
-  SelectLabel,
 } from "@/components/ui/select";
 import { fetchAddress } from "@/actions/fetch-turso-data";
 
@@ -46,7 +45,6 @@ export default function AddressSelector({
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectLabel className="font-semibold">Address</SelectLabel>
           {data.map((opt) => (
             <SelectItem key={opt.id} value={opt.id.toString()}>
               {opt.address}

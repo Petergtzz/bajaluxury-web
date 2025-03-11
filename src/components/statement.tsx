@@ -12,6 +12,7 @@ import { formatAmount } from "@/lib/formatter";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { useState } from "react";
+import { AlertDestructive } from "@/components/error-message";
 
 type Statement = {
   house_id: number;
@@ -27,6 +28,7 @@ export default function IncomeStatement({ house_id, month }: Statement) {
 
   const {
     data: expenses,
+    error,
     isError,
     isPending,
   } = useQuery({
@@ -36,7 +38,7 @@ export default function IncomeStatement({ house_id, month }: Statement) {
   });
 
   if (isError) {
-    return <div>Error</div>;
+    return <AlertDestructive message={error.message} />;
   }
 
   if (isPending) {

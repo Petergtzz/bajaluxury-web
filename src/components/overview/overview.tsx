@@ -59,7 +59,7 @@ export default function Overview() {
 
   return (
     <div>
-      <div className="w-full flex justify-start items-center gap-4">
+      <div className="w-full flex flex-col md:flex-row justify-start items-center gap-6">
         {isAdmin && (
           <AddressSelector
             defaultValue={selectedAddress ?? 0}
@@ -72,23 +72,26 @@ export default function Overview() {
         />
       </div>
 
-      <div className="mt-4 flex flex-col md:flex-row gap-4 md:gap-14">
-        <AccountBalance
-          balance={accountBalance?.[0]?.balance ?? 0}
-          currency="MXN"
-        />
-        <AccountBalance
-          balance={accountBalance?.[0]?.balance ?? 0}
-          currency="USD"
-        />
-      </div>
-
-      <div className="w-full mt-4 flex flex-col md:flex-row gap-4">
+      <div className="w-full my-5 flex flex-col md:flex-row gap-4">
         <div className="w-full md:w-1/2 flex flex-col">
           <IncomeStatement house_id={houseId} month={selectedMonth} />
         </div>
 
         <div className="w-full md:w-1/2 flex flex-col gap-4">
+          <div className="flex flex-col md:flex-row gap-4 w-full">
+            <div className="w-full md:w-1/2">
+              <AccountBalance
+                balance={accountBalance?.[0]?.balance ?? 0}
+                currency="MXN"
+              />
+            </div>
+            <div className="w-full md:w-1/2">
+              <AccountBalance
+                balance={accountBalance?.[0]?.balance ?? 0}
+                currency="USD"
+              />
+            </div>
+          </div>
           <div className="w-full">
             <PieComponent house_id={houseId} month={selectedMonth} />
           </div>

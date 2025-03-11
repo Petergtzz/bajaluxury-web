@@ -1,6 +1,7 @@
 import { formatAmount } from "@/lib/formatter";
 import { exchangeRate } from "@/constants/exchange-rate";
 import { Text, Heading } from "@radix-ui/themes";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
 type AccountBalanceProps = {
   balance: number;
@@ -11,18 +12,21 @@ export function AccountBalance({ balance, currency }: AccountBalanceProps) {
   const isUsd = currency ? currency === "USD" : false;
 
   return (
-    <div className="flex flex-col justify-between ">
-      <Heading as="h1" className="tracking-tight text-sm font-normal">
-        Account Balance ({currency})
-      </Heading>
-      <div className="flex-grow" />
-      <Text
-        className={`text-3xl font-normal ${
-          balance >= 0 ? "text-green-600" : "text-red-700"
-        }`}
-      >
-        {isUsd ? formatAmount(balance / exchangeRate) : formatAmount(balance)}
-      </Text>
-    </div>
+    <Card>
+      <CardHeader className="pb-2">
+        <CardTitle className="tracking-tight text-sm font-medium">
+          Account Balance ({currency})
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Text
+          className={`text-2xl font-normal ${
+            balance >= 0 ? "text-green-600" : "text-red-700"
+          }`}
+        >
+          {isUsd ? formatAmount(balance / exchangeRate) : formatAmount(balance)}
+        </Text>
+      </CardContent>
+    </Card>
   );
 }

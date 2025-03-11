@@ -102,13 +102,13 @@ export function PieComponent({ house_id, month }: PieComponentProps) {
   return (
     <Card className="tracking-tight text-sm font-medium">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Monthly Expenses</CardTitle>
-        <CardDescription>
+        <CardTitle className="font-medium">
+          Monthly Expenses -{" "}
           {displayedDate.toLocaleDateString("default", {
             month: "long",
             year: "numeric",
           })}
-        </CardDescription>
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
