@@ -1,5 +1,13 @@
 "use client";
-import { Zap, CreditCard, PencilRuler, Phone, Plus, Home } from "lucide-react";
+import {
+  Zap,
+  CreditCard,
+  PencilRuler,
+  Phone,
+  Plus,
+  Home,
+  CircleDollarSign,
+} from "lucide-react";
 import Link from "next/link";
 import * as React from "react";
 import { Button } from "./ui/button";
@@ -35,7 +43,7 @@ export default function MobileNav() {
         </Button>
       </div>
 
-      <Link href="/insights">
+      <Link href="/dashboard">
         <Button
           className={`absolute top-0 right-0 flex h-12 w-12 items-center justify-center rounded-full
             bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] transition-transform duration-300 ${
@@ -45,11 +53,11 @@ export default function MobileNav() {
             }`}
           onClick={closeMenu}
         >
-          <Zap className="h-4 w-4 stroke-1" />
+          <CircleDollarSign className="h-4 w-4 stroke-1" />
         </Button>
       </Link>
 
-      <Link href="/overview">
+      <Link href="/insights">
         <Button
           className={`absolute top-0 right-0 flex h-12 w-12 items-center justify-center rounded-full
             bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] transition-transform duration-300 ${
@@ -63,6 +71,7 @@ export default function MobileNav() {
         </Button>
       </Link>
 
+      {/*
       <Link href="/tasks">
         <Button
           className={`absolute top-0 right-0 flex h-12 w-12 items-center justify-center rounded-full
@@ -76,13 +85,14 @@ export default function MobileNav() {
           <PencilRuler className="h-4 w-4 stroke-1" />
         </Button>
       </Link>
+      */}
 
       <Link href="/phonebook">
         <Button
           className={`absolute top-0 right-0 flex h-12 w-12 items-center justify-center rounded-full
             bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] transition-transform duration-300 ${
               open
-                ? "translate-y-[-400px] opacity-100 scale-100"
+                ? "translate-y-[-320px] opacity-100 scale-100"
                 : "translate-y-0 opacity-0 scale-0"
             }`}
           onClick={closeMenu}

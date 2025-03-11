@@ -19,7 +19,7 @@ export default function Spend({ amount, month }: SpendProps) {
         Spend
       </Heading>
       <div className="flex-grow" />
-      <Text className="text-3xl font-normal">
+      <Text className="text-2xl font-normal">
         {amount ? formatAmount(amount) : "$0.00"}
       </Text>
     </div>

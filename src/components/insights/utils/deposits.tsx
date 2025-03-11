@@ -19,7 +19,7 @@ export default function Deposits({ amount, month }: DepositsProps) {
         Deposits
       </Heading>
       <div className="flex-grow" />
-      <Text className="text-3xl font-normal">
+      <Text className="text-2xl font-normal">
         {amount ? formatAmount(amount) : "$0.00"}
       </Text>
     </div>
