@@ -1,21 +1,23 @@
-import { Zap, PencilRuler, Phone, CreditCard } from "lucide-react";
+import { PencilRuler, Phone, CircleDollarSign, CreditCard } from "lucide-react";
 
 export const items = [
   {
-    title: "Insights",
-    url: "/insights",
-    icon: Zap,
+    title: "Dashboard",
+    url: "/dashboard",
+    icon: CircleDollarSign,
   },
   {
-    title: "Overview",
-    url: "/overview",
+    title: "Insights",
+    url: "/insights",
     icon: CreditCard,
   },
+  /*
   {
     title: "Tasks",
     url: "/tasks",
     icon: PencilRuler,
   },
+  */
   {
     title: "Phone",
     url: "/phonebook",

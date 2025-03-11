@@ -9,7 +9,7 @@ const queryClient = new QueryClient();
 export default function OverviewPage() {
   return (
     <div className="w-full">
-      <Header title="Overview" exchangeRate={true} />
+      <Header title="Dashboard" exchangeRate={true} />
       <div className="px-8">
         <QueryClientProvider client={queryClient}>
           <Dashboard />
