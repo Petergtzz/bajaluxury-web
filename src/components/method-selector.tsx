@@ -17,7 +17,7 @@ export default function MethodSelector({
   defaultValue,
   onMethodAction,
 }: MethodSelectorProps) {
-  const options = ["credit card", "cash"];
+  const options = ["credit card", "cash", "check"];
 
   const handleSelect = (method: string) => {
     onMethodAction(method);

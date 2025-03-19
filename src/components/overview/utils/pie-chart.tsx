@@ -89,7 +89,7 @@ export function PieComponent({ house_id, month }: PieComponentProps) {
             </p>
           </div>
           <p className="tracking-tight text-sm font-medium mt-1 text-gray-900 dark:text-gray-200">
-            Amount: $ {formatAmount(total)} MXN
+            Amount: {formatAmount(total)} MXN
           </p>
         </div>
       );
