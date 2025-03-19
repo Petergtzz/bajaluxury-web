@@ -1,4 +1,5 @@
 import React from "react";
+import AdminStatements from "./admin/admin-statements";
 import AdminBalances from "./admin/admin-balances";
 import AdminExpenses from "./admin/admin-expenses";
 import AdminIncomes from "./admin/admin-incomes";
@@ -34,8 +35,13 @@ export const TABS_CONFIG: TabsConfig = {
   ],
   admin: [
     {
-      value: "income statement",
-      label: "Income Statement",
+      value: "statement",
+      label: "Statement",
+      content: () => <AdminStatements />,
+    },
+    {
+      value: "balances",
+      label: "Balances",
       content: () => <AdminBalances />,
     },
     { value: "expenses", label: "Expenses", content: () => <AdminExpenses /> },

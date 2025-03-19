@@ -81,6 +81,23 @@ export async function fetchAllIncomes() {
   }));
 }
 
+// Used to fetch all balances of all houses
+export async function fetchAllBalances() {
+  const query = `
+    SELECT
+      h.address AS house,
+      b.balance
+    FROM
+      balances b
+    JOIN houses h ON b.house_id = h.house_id
+    `;
+  const result = await client.execute(query);
+  return result.rows.map((row) => ({
+    house: row.house as string,
+    balance: Number(row.balance),
+  }));
+}
+
 // Used to fetch expenses for income statement
 export async function fetchIncomeStatementData(
   house_id: number,
