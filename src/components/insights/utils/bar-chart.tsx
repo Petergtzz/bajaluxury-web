@@ -124,7 +124,7 @@ export default function BarComponent({ house_id, month }: BarComponentProps) {
           dataKey="total_credit_card_amount"
           stackId="a"
           fill={COLORS[2]}
-          radius={[4, 4, 0, 0]}
+          radius={[0, 0, 0, 0]}
         />
         <Bar
           dataKey="total_check_amount"
