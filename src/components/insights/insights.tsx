@@ -129,7 +129,7 @@ export default function Insights() {
 
       <div className="mt-4">
         <Separator className="mb-4" />
-        <div className="w-full">
+        <div className="w-full md:w-2/3">
           {chartType === "bar" ? (
             <BarComponent house_id={houseId} month={selectedMonth} />
           ) : (
