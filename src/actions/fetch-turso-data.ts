@@ -238,7 +238,8 @@ export async function fetchBarLineData(houseId: number, month: string) {
       strftime('%Y-%m', e.date) AS month,
       SUM(CASE WHEN e.payment_method = 'cash' THEN e.amount ELSE 0 END) AS total_cash_amount,
       SUM(CASE WHEN e.payment_method = 'credit card' THEN e.amount ELSE 0 END) AS total_credit_card_amount,
-      SUM(CASE WHEN e.payment_method IN ('cash', 'credit card') THEN e.amount ELSE 0 END) AS total_amount
+      SUM(CASE WHEN e.payment_method = 'check' THEN e.amount ELSE 0 END) AS total_check_amount,
+      SUM(CASE WHEN e.payment_method IN ('cash', 'credit card', 'check') THEN e.amount ELSE 0 END) AS total_amount
     FROM
       expenses e
     JOIN
@@ -261,6 +262,7 @@ export async function fetchBarLineData(houseId: number, month: string) {
     month: row.month as string,
     total_cash_amount: Number(row.total_cash_amount),
     total_credit_card_amount: Number(row.total_credit_card_amount),
+    total_check_amount: Number(row.total_check_amount),
     total_amount: Number(row.total_amount),
   }));
 }

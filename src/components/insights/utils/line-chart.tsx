@@ -59,6 +59,7 @@ export default function LineComponent({ house_id, month }: BarComponentProps) {
     month: expense.month,
     total_cash_amount: expense.total_cash_amount,
     total_credit_card_amount: expense.total_credit_card_amount,
+    total_check_amount: expense.total_check_amount,
     total_amount: expense.total_amount,
   }));
 
@@ -81,6 +82,8 @@ export default function LineComponent({ house_id, month }: BarComponentProps) {
         return "Cash";
       case "total_credit_card_amount":
         return "Credit Card";
+      case "total_check_amount":
+        return "Check";
       default:
         return value;
     }
@@ -128,6 +131,14 @@ export default function LineComponent({ house_id, month }: BarComponentProps) {
           type="monotone"
           dataKey="total_credit_card_amount"
           stroke={COLORS[2]} // Define appropriate color for credit card
+          strokeWidth={2}
+          dot={false}
+          activeDot={{ r: 8 }}
+        />
+        <Line
+          type="monotone"
+          dataKey="total_check_amount"
+          stroke={COLORS[4]} // Define appropriate color for credit card
           strokeWidth={2}
           dot={false}
           activeDot={{ r: 8 }}

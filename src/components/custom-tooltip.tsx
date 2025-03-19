@@ -1,5 +1,6 @@
 import { formatAmount } from "@/lib/formatter";
 import { COLORS } from "@/constants/colors";
+import { ALL } from "dns";
 
 const AmountItem = ({
   label,
@@ -26,15 +27,21 @@ const AmountItem = ({
 type CustomTooltipProps = {
   active?: boolean;
   payload?: {
-    payload: { total_cash_amount: number; total_credit_card_amount: number };
+    payload: {
+      total_cash_amount: number;
+      total_credit_card_amount: number;
+      total_check_amount: number;
+    };
   }[];
   label?: string;
 };
 
 const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
   if (active && payload && payload.length) {
-    const { total_cash_amount, total_credit_card_amount } = payload[0].payload;
-    const total = total_cash_amount + total_credit_card_amount;
+    const { total_cash_amount, total_credit_card_amount, total_check_amount } =
+      payload[0].payload;
+    const total =
+      total_cash_amount + total_credit_card_amount + total_check_amount;
 
     return (
       <div className="bg-white dark:bg-gray-950 p-3 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
@@ -43,6 +50,11 @@ const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
           label="Credit Card"
           amount={total_credit_card_amount}
           color={COLORS[2]}
+        />
+        <AmountItem
+          label="Check"
+          amount={total_check_amount}
+          color={COLORS[4]}
         />
 
         {/* Divider Line */}
