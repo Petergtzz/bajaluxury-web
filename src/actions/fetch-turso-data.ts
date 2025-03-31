@@ -1,5 +1,6 @@
 "use server";
 import { client } from "@/lib/turso";
+import { ResultSet } from "@libsql/client";
 
 // Used to fetch the balance of a house
 export async function fetchAccountBalance(houseId: number) {
@@ -41,16 +42,20 @@ export async function fetchAllExpenses() {
       id DESC
     `;
   const result = await client.execute(query);
-  return result.rows.map((row) => ({
-    id: row.id as number,
-    house: row.house as string,
-    date: row.date as string,
-    category: row.category as string,
-    concept: row.concept as string,
-    method: row.method as string,
-    amount: Number(row.amount),
-    description: row.description as string,
-  }));
+  return {
+    columnTypes: result.columnTypes,
+    columns: result.columns,
+    rows: result.rows.map((row) => ({
+      id: row.id as number,
+      house: row.house as string,
+      date: row.date as string,
+      concept: row.concept as string,
+      category: row.category as string,
+      method: row.method as string,
+      amount: Number(row.amount),
+      description: row.description as string,
+    })),
+  };
 }
 
 // Used to fetch all incomes of all houses

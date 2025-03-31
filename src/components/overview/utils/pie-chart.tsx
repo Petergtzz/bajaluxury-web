@@ -127,7 +127,7 @@ export function PieComponent({ house_id, month }: PieComponentProps) {
                 labelLine={false}
                 label={({ cx, cy, midAngle, outerRadius, value, index }) => {
                   const percentage = (value / totalAmount) * 100;
-                  if (percentage <= 0.5) return null; // Hide labels for percentages < 0.05%
+                  if (percentage < 0.08) return null; // Hide labels for percentages < 0.05%
 
                   const RADIAN = Math.PI / 180;
                   const radius = outerRadius + 25; // Move labels 20 units outside the pie

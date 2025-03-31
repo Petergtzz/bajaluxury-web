@@ -22,3 +22,14 @@ export const formatDate = (value: any) => {
     day: "numeric",
   });
 };
+
+export const formatPrettyDate = (value: any) => {
+  if (!value) return "N/A";
+  const date = DateTime.fromISO(value);
+  if (!date.isValid) return "Invalid Date";
+  return date.toLocaleString({
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+};

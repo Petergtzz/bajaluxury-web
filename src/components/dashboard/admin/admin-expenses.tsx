@@ -1,9 +1,11 @@
+import React from "react";
 import { fetchAllExpenses } from "@/actions/fetch-turso-data";
 import { TableComponent } from "@/components/data-table/data-table";
 import Loading from "@/components/loading-component";
 import { Expense } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { AlertDestructive } from "@/components/error-message";
+import { DataTable } from "@/components/data-table2/data-table";
 
 export default function AdminExpenses() {
   const {
@@ -24,19 +26,9 @@ export default function AdminExpenses() {
     return <Loading />;
   }
 
-  const columns = [
-    { accessorKey: "house", header: "House" },
-    { accessorKey: "date", header: "Date" },
-    { accessorKey: "category", header: "Category" },
-    { accessorKey: "concept", header: "Concept" },
-    { accessorKey: "method", header: "Method" },
-    { accessorKey: "amount", header: "Amount" },
-    { accessorKey: "description", header: "Description" },
-  ];
-
   return (
-    <div>
-      <TableComponent<Expense> data={allExpenses} columns={columns} />
+    <div className="mt-4">
+      <DataTable data={allExpenses} />
     </div>
   );
 }

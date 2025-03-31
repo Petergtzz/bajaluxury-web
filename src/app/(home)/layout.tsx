@@ -2,6 +2,7 @@ import { NavWrapper } from "@/components/nav-wrapper";
 import SessionProvider from "@/components/session-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import "../globals.css";
 
 export default function RootLayout({
@@ -18,7 +19,7 @@ export default function RootLayout({
           <SidebarProvider>
             <SessionProvider>
               <NavWrapper />
-              {children}
+              <NuqsAdapter>{children}</NuqsAdapter>
             </SessionProvider>
           </SidebarProvider>
         </ThemeProvider>
