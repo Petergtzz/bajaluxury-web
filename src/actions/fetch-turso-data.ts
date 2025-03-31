@@ -396,3 +396,80 @@ export async function fetchUserTasks(houseId: number) {
     date: row.date as string,
   }));
 }
+
+// Used to merge expenses and incomes into a single table (users)
+export async function fetchMergedData(houseId: number) {
+  const query = `
+    SELECT
+      *
+    FROM
+      (
+        SELECT
+          house,
+          date,
+          category,
+          concept,
+          method,
+          amount,
+          SUM(
+            CASE
+              WHEN category = 'income' THEN amount -- Add all incomes
+              WHEN method = 'cash' THEN - amount -- Subtract cash expenses
+              ELSE 0
+            END
+          ) OVER (
+            ORDER BY
+              date ROWS BETWEEN UNBOUNDED PRECEDING
+              AND CURRENT ROW
+          ) AS balance,
+          description
+        FROM
+          (
+            SELECT
+              h.address AS house,
+              e.date,
+              e.category,
+              e.concept,
+              e.payment_method AS method,
+              e.amount,
+              e.description
+            FROM
+              expenses e
+              JOIN houses h ON e.house_id = h.house_id
+            WHERE
+              h.house_id = ?
+            UNION ALL
+            SELECT
+              h.address AS house,
+              i.date,
+              'income' AS category,
+              'payment' AS concept,
+              i.payment_method AS method,
+              i.amount,
+              i.description
+            FROM
+              incomes i
+              JOIN houses h ON i.house_id = h.house_id
+            WHERE
+              h.house_id = ?
+          ) AS combined
+      ) AS sorted_data
+    ORDER BY
+      date DESC;
+    `;
+  const result = await client.execute({
+    sql: query,
+    args: [houseId, houseId],
+  });
+
+  return result.rows.map((row) => ({
+    house: row.house as string,
+    date: row.date as string,
+    category: row.category as string,
+    concept: row.concept as string,
+    method: row.method as string,
+    amount: Number(row.amount),
+    balance: Number(row.balance),
+    description: row.description as string,
+  }));
+}

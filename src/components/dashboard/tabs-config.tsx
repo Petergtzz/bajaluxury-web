@@ -6,6 +6,7 @@ import AdminIncomes from "./admin/admin-incomes";
 import UserBalanceContent from "./user/user-balance";
 import UserExpensesContent from "./user/user-expenses";
 import UserIncomesContent from "./user/user-incomes";
+import UserAllContent from "./user/user-all";
 
 type Tab = {
   value: string;
@@ -22,6 +23,7 @@ export const TABS_CONFIG: TabsConfig = {
       label: "Income Statement",
       content: () => <UserBalanceContent />,
     },
+    { value: "all", label: "All", content: () => <UserAllContent /> },
     {
       value: "expenses",
       label: "Expenses",
