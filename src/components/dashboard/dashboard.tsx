@@ -9,22 +9,20 @@ export default function Dashboard() {
   const tabs = TABS_CONFIG[role] || [];
 
   return (
-    <div>
-      <Tabs defaultValue={tabs[0]?.value}>
-        <TabsList>
-          {tabs.map((tab) => (
-            <TabsTrigger key={tab.value} value={tab.value}>
-              {tab.label}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-
+    <Tabs defaultValue={tabs[0]?.value}>
+      <TabsList>
         {tabs.map((tab) => (
-          <TabsContent key={tab.value} value={tab.value}>
-            {tab.content()}
-          </TabsContent>
+          <TabsTrigger key={tab.value} value={tab.value}>
+            {tab.label}
+          </TabsTrigger>
         ))}
-      </Tabs>
-    </div>
+      </TabsList>
+
+      {tabs.map((tab) => (
+        <TabsContent key={tab.value} value={tab.value}>
+          {tab.content()}
+        </TabsContent>
+      ))}
+    </Tabs>
   );
 }

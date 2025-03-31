@@ -41,7 +41,7 @@ export function TableComponent<T>({
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4 gap-3">
+      <div className="flex items-center py-3 gap-3">
         <Input
           placeholder="Search"
           value={globalFilter ?? ""}

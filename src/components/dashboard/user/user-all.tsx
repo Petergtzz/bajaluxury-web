@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import Loading from "@/components/loading-component";
 import { useClientSession } from "@/components/session-client-provider";
 import { AlertDestructive } from "@/components/error-message";
+import { expenseColumns } from "@/components/data-table/columns/expenses-columns";
 
 export default function UserAllContent() {
   const session = useClientSession();
@@ -40,7 +41,7 @@ export default function UserAllContent() {
 
   return (
     <div>
-      <TableComponent data={merged} columns={columns} />
+      <TableComponent data={merged} columns={expenseColumns} />
     </div>
   );
 }

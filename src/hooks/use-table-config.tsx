@@ -10,31 +10,13 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { formatPrettyDate, formatAmount } from "@/lib/formatter";
 
 type TableColumn = {
   accessorKey: string;
   header: string;
   isNumeric?: boolean;
   cell?: ({ row }: { row: any }) => React.ReactNode;
-};
-
-const formatAmount = (value: any) =>
-  typeof value === "number"
-    ? `$ ${value.toLocaleString(undefined, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      })}`
-    : `$0.00`;
-
-const formatDate = (value: any) => {
-  if (!value) return "N/A";
-  const date = DateTime.fromISO(value);
-  if (!date.isValid) return "Invalid Date";
-  return date.toLocaleString({
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
 };
 
 export function useTableConfig<T>(data: T[], columns: TableColumn[]) {
@@ -53,7 +35,7 @@ export function useTableConfig<T>(data: T[], columns: TableColumn[]) {
           formatAmount(row.getValue(col.accessorKey));
       } else if (col.accessorKey === "date") {
         cellFormatter = ({ row }: { row: any }) =>
-          formatDate(row.getValue(col.accessorKey));
+          formatPrettyDate(row.getValue(col.accessorKey));
       }
 
       return {
