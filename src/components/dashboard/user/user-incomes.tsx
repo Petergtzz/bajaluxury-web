@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import Loading from "@/components/loading-component";
 import { useClientSession } from "@/components/session-client-provider";
 import { AlertDestructive } from "@/components/error-message";
+import { getIncomeColumns } from "@/components/data-table/columns/income-columns";
 
 export default function UserIncomesContent() {
   const session = useClientSession();
@@ -29,12 +30,7 @@ export default function UserIncomesContent() {
     return <Loading />;
   }
 
-  const columns = [
-    { accessorKey: "date", header: "Date" },
-    { accessorKey: "method", header: "Method" },
-    { accessorKey: "amount", header: "Amount" },
-    { accessorKey: "description", header: "Description" },
-  ];
+  const columns = getIncomeColumns(false);
 
   return (
     <div>

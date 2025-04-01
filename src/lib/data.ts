@@ -197,6 +197,11 @@ export const highendRestaurants = [
     location: "Shoppes at Palmilla",
     phone: "333 200 8370",
   },
+  {
+    name: "Cadiz",
+    location: "Downtown",
+    phone: "561 270 6307",
+  },
 ];
 
 export const localRestaurants = [

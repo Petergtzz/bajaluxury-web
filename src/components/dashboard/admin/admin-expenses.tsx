@@ -4,6 +4,7 @@ import Loading from "@/components/loading-component";
 import { Expense } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { AlertDestructive } from "@/components/error-message";
+import { getExpenseColumns } from "@/components/data-table/columns/expense-columns";
 
 export default function AdminExpenses() {
   const {
@@ -24,15 +25,7 @@ export default function AdminExpenses() {
     return <Loading />;
   }
 
-  const columns = [
-    { accessorKey: "house", header: "House" },
-    { accessorKey: "date", header: "Date" },
-    { accessorKey: "category", header: "Category" },
-    { accessorKey: "concept", header: "Concept" },
-    { accessorKey: "method", header: "Method" },
-    { accessorKey: "amount", header: "Amount" },
-    { accessorKey: "description", header: "Description" },
-  ];
+  const columns = getExpenseColumns(true);
 
   return (
     <div>

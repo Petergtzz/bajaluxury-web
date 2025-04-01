@@ -10,7 +10,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { formatPrettyDate, formatAmount } from "@/lib/formatter";
+import { formatPrettyDate } from "@/lib/formatter";
 
 type TableColumn = {
   accessorKey: string;
@@ -24,29 +24,6 @@ export function useTableConfig<T>(data: T[], columns: TableColumn[]) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [globalFilter, setGlobalFilter] = useState<string>("");
-
-  const tableColumns = useMemo(() => {
-    return columns.map((col) => {
-      // Determine the cell formatter based on the accessorKey.
-      let cellFormatter =
-        col.cell ?? (({ row }: { row: any }) => row.getValue(col.accessorKey));
-      if (["amount", "balance"].includes(col.accessorKey)) {
-        cellFormatter = ({ row }: { row: any }) =>
-          formatAmount(row.getValue(col.accessorKey));
-      } else if (col.accessorKey === "date") {
-        cellFormatter = ({ row }: { row: any }) =>
-          formatPrettyDate(row.getValue(col.accessorKey));
-      }
-
-      return {
-        accessorKey: col.accessorKey,
-        header: col.header,
-        cell: cellFormatter,
-        enableSorting: true,
-        enableHiding: true,
-      };
-    });
-  }, [columns]);
 
   const globalFilterFn = (row: any, columnId: string, filterValue: string) => {
     const rawValue = row.getValue(columnId);
@@ -91,7 +68,7 @@ export function useTableConfig<T>(data: T[], columns: TableColumn[]) {
 
   const table = useReactTable({
     data,
-    columns: tableColumns,
+    columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -101,6 +78,11 @@ export function useTableConfig<T>(data: T[], columns: TableColumn[]) {
       columnFilters,
       columnVisibility,
       globalFilter,
+    },
+    initialState: {
+      pagination: {
+        pageSize: 20,
+      },
     },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,

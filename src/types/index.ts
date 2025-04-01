@@ -1,3 +1,9 @@
+export type TableColumn = {
+  accessorKey: string;
+  header: string;
+  cell?: (row: any) => React.ReactNode;
+};
+
 export interface Balance {
   house: string;
   balance: number;

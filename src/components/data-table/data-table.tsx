@@ -15,13 +15,7 @@ import { DataPagination } from "./data-table-pagination";
 import { DataTableColumnHeader } from "./data-table-header";
 import { useTableConfig } from "@/hooks/use-table-config";
 import { ActionButtons } from "./data-table-action-buttons";
-
-type TableColumn = {
-  accessorKey: string;
-  header: string;
-  isNumeric?: boolean;
-  cell?: (row: any) => React.ReactNode;
-};
+import { TableColumn } from "@/types";
 
 type TableComponentProps<T> = {
   data: T[];
@@ -74,7 +68,7 @@ export function TableComponent<T>({
                     <TableCell
                       key={cell.id}
                       style={{
-                        width: "140px",
+                        width: "150px",
                       }}
                       className="px-4"
                     >

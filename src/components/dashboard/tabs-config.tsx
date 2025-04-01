@@ -19,8 +19,8 @@ type TabsConfig = Record<string, Tab[]>;
 export const TABS_CONFIG: TabsConfig = {
   user: [
     {
-      value: "income statement",
-      label: "Income Statement",
+      value: "statement",
+      label: "Statement",
       content: () => <UserBalanceContent />,
     },
     { value: "all", label: "All", content: () => <UserAllContent /> },

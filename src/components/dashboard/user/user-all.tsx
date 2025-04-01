@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import Loading from "@/components/loading-component";
 import { useClientSession } from "@/components/session-client-provider";
 import { AlertDestructive } from "@/components/error-message";
-import { expenseColumns } from "@/components/data-table/columns/expenses-columns";
+import { getMergedColumns } from "@/components/data-table/columns/all-columns";
 
 export default function UserAllContent() {
   const session = useClientSession();
@@ -29,19 +29,11 @@ export default function UserAllContent() {
     return <Loading />;
   }
 
-  const columns = [
-    { accessorKey: "date", header: "Date" },
-    { accessorKey: "category", header: "Category" },
-    { accessorKey: "concept", header: "Concept" },
-    { accessorKey: "method", header: "Method" },
-    { accessorKey: "amount", header: "Amount" },
-    { accessorKey: "balance", header: "Balance" },
-    { accessorKey: "description", header: "Description" },
-  ];
+  const columns = getMergedColumns(false);
 
   return (
     <div>
-      <TableComponent data={merged} columns={expenseColumns} />
+      <TableComponent data={merged} columns={columns} />
     </div>
   );
 }

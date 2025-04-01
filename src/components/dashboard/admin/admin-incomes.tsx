@@ -4,6 +4,7 @@ import Loading from "@/components/loading-component";
 import { Income } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { AlertDestructive } from "@/components/error-message";
+import { getIncomeColumns } from "@/components/data-table/columns/income-columns";
 
 export default function AdminIncomes() {
   const {
@@ -24,13 +25,7 @@ export default function AdminIncomes() {
     return <Loading />;
   }
 
-  const columns = [
-    { accessorKey: "house", header: "House" },
-    { accessorKey: "date", header: "Date" },
-    { accessorKey: "method", header: "Method" },
-    { accessorKey: "amount", header: "Amount" },
-    { accessorKey: "description", header: "Description" },
-  ];
+  const columns = getIncomeColumns(true);
 
   return (
     <div>

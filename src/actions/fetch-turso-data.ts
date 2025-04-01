@@ -400,62 +400,68 @@ export async function fetchUserTasks(houseId: number) {
 // Used to merge expenses and incomes into a single table (users)
 export async function fetchMergedData(houseId: number) {
   const query = `
-    SELECT
-      *
-    FROM
-      (
+    WITH
+      ordered_transactions AS (
         SELECT
-          house,
-          date,
-          category,
-          concept,
-          method,
-          amount,
-          SUM(
-            CASE
-              WHEN category = 'income' THEN amount -- Add all incomes
-              WHEN method = 'cash' THEN - amount -- Subtract cash expenses
-              ELSE 0
-            END
-          ) OVER (
-            ORDER BY
-              date ROWS BETWEEN UNBOUNDED PRECEDING
-              AND CURRENT ROW
-          ) AS balance,
-          description
+          h.address AS house,
+          e.date,
+          e.category,
+          e.concept,
+          e.payment_method AS method,
+          - e.amount AS amount, -- Expenses are negative
+          e.description,
+          e.expense_id AS transaction_id,
+          0 AS is_income
         FROM
-          (
-            SELECT
-              h.address AS house,
-              e.date,
-              e.category,
-              e.concept,
-              e.payment_method AS method,
-              e.amount,
-              e.description
-            FROM
-              expenses e
-              JOIN houses h ON e.house_id = h.house_id
-            WHERE
-              h.house_id = ?
-            UNION ALL
-            SELECT
-              h.address AS house,
-              i.date,
-              'income' AS category,
-              'payment' AS concept,
-              i.payment_method AS method,
-              i.amount,
-              i.description
-            FROM
-              incomes i
-              JOIN houses h ON i.house_id = h.house_id
-            WHERE
-              h.house_id = ?
-          ) AS combined
-      ) AS sorted_data
+          expenses e
+          JOIN houses h ON e.house_id = h.house_id
+        WHERE
+          h.house_id = ?
+        UNION ALL
+        SELECT
+          h.address AS house,
+          i.date,
+          'income' AS category,
+          'payment' AS concept,
+          i.payment_method AS method,
+          i.amount AS amount, -- Income is positive
+          i.description,
+          i.income_id AS transaction_id,
+          1 AS is_income
+        FROM
+          incomes i
+          JOIN houses h ON i.house_id = h.house_id
+        WHERE
+          h.house_id = ?
+      )
+    SELECT
+      house,
+      date,
+      category,
+      concept,
+      method,
+      CASE
+        WHEN is_income = 0 THEN - amount
+        ELSE amount
+      END AS amount, -- Show expenses as positive
+      SUM(
+        CASE
+          WHEN is_income = 1 THEN amount -- All income counts
+          WHEN method = 'cash' THEN amount -- Only cash expenses count (already negative)
+          ELSE 0 -- Ignore credit card expenses
+        END
+      ) OVER (
+        ORDER BY
+          date,
+          transaction_id ROWS BETWEEN UNBOUNDED PRECEDING
+          AND CURRENT ROW
+      ) AS balance,
+      description
+    FROM
+      ordered_transactions
     ORDER BY
-      date DESC;
+      date DESC,
+      transaction_id DESC;
     `;
   const result = await client.execute({
     sql: query,
