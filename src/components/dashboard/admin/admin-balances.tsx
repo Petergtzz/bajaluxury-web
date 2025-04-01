@@ -4,6 +4,7 @@ import { AlertDestructive } from "@/components/error-message";
 import Loading from "@/components/loading-component";
 import { Balance } from "@/types";
 import { useQuery } from "@tanstack/react-query";
+import { getBalanceColumns } from "@/components/data-table/columns/balance-columns";
 
 export default function AdminBalances() {
   const {
@@ -24,14 +25,11 @@ export default function AdminBalances() {
     return <Loading />;
   }
 
-  const columns = [
-    { accessorKey: "house", header: "House" },
-    { accessorKey: "balance", header: "Balance" },
-  ];
+  const columns = getBalanceColumns;
 
   return (
     <div>
-      <TableComponent<Balance> data={allBalances} columns={columns} />
+      <TableComponent data={allBalances} columns={columns} />
     </div>
   );
 }

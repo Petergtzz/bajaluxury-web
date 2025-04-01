@@ -81,7 +81,7 @@ export function useTableConfig<T>(data: T[], columns: TableColumn[]) {
     },
     initialState: {
       pagination: {
-        pageSize: 20,
+        pageSize: 30,
       },
     },
     onSortingChange: setSorting,
